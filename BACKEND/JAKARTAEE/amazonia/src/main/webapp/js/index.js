@@ -130,7 +130,9 @@ async function actualizarListadoProductos() {
     if (pagina === 1) {
         pInicio.classList.add('disabled');
         pAnterior.classList.add('disabled');
-    } else if (pagina === numeroPaginas) {
+    }
+	
+	if (pagina === numeroPaginas) {
         pSiguiente.classList.add('disabled');
         pFin.classList.add('disabled');
     }
