@@ -94,13 +94,12 @@
 				</ul>
 			</nav>
 		</section>
-		
+
 		<section id="detalle">
 			<div class="card mb-3">
 				<div class="row g-0">
 					<div class="col-md-4">
-						<img src=""
-							class="img-fluid rounded-start" alt="...">
+						<img src="" class="img-fluid rounded-start" alt="...">
 					</div>
 					<div class="col-md-8">
 						<div class="card-body">
@@ -110,7 +109,7 @@
 								<small class="text-body-secondary"></small>
 							</p>
 
-							<form class="d-flex" action="carrito/anadir">
+							<form id="anadir-carrito" class="d-flex">
 								<input type="hidden" name="id" value="">
 
 								<button class="me-3 btn btn-primary" type="submit">Añadir
@@ -132,6 +131,106 @@
 						</div>
 					</div>
 				</div>
+			</div>
+		</section>
+
+		<section id="carrito">
+			<h2>
+				<i class="bi bi-cart"></i> Carrito
+			</h2>
+
+
+			<div class="table-responsive">
+				<table class="table">
+					<caption>Carrito</caption>
+
+					<thead class="table-secondary">
+						<tr>
+							<th></th>
+							<th>Nombre</th>
+							<th class="text-end">Precio</th>
+							<th class="text-center">Cantidad</th>
+							<th class="text-end d-none d-md-table-cell">Subtotal</th>
+							<th class="text-end d-none d-md-table-cell">IVA</th>
+							<th class="text-end">Total</th>
+						</tr>
+					</thead>
+
+					<tbody>
+						<c:forEach items="${carrito.lineas}" var="linea">
+							<tr class="align-middle">
+								<td><a href="carrito/borrar?id=${linea.producto.id}"><i
+										class="text-danger bi bi-trash"></i></a></td>
+								<td>${linea.producto.nombre}</td>
+								<td class="text-end"><fmt:formatNumber type="currency"
+										value="${linea.producto.precio}" /></td>
+								<td class="text-center">
+									<form class="input-group" action="carrito/anadir">
+										<button id="menos" class="btn btn-outline-secondary"
+											type="submit" name="cantidad" value="-1">
+											<i
+												class="bi ${linea.cantidad - 1 != 0 ? 'bi-dash': 'bi-trash'}"></i>
+										</button>
+
+										<input type="hidden" name="id" value="${linea.producto.id}">
+
+										<input id="cantidad" readonly type="text" pattern="\d+"
+											class="form-control text-center" value="${linea.cantidad}"
+											min="1">
+
+										<button id="mas" class="btn btn-outline-secondary"
+											type="submit" name="cantidad" value="1">
+											<i class="bi bi-plus-lg"></i>
+										</button>
+									</form>
+								</td>
+								<td class="text-end d-none d-md-table-cell"><fmt:formatNumber
+										type="currency" value="${linea.subTotal}" /></td>
+								<td class="text-end d-none d-md-table-cell"><fmt:formatNumber
+										type="currency" value="${linea.iva}" /></td>
+								<td class="text-end fw-bold"><fmt:formatNumber
+										type="currency" value="${linea.total}" /></td>
+							</tr>
+						</c:forEach>
+					</tbody>
+
+					<tfoot class="table-secondary">
+						<tr>
+							<td colspan="3"></td>
+							<td class="d-none d-md-table-cell"></td>
+							<td class="d-none d-md-table-cell"></td>
+							<td class="text-end">Subtotal</td>
+							<td class="text-end"><fmt:formatNumber type="currency"
+									value="${carrito.subTotal}" /></td>
+						</tr>
+						<tr>
+							<td colspan="3"></td>
+							<td class="d-none d-md-table-cell"></td>
+							<td class="d-none d-md-table-cell"></td>
+							<td class="text-end">IVA</td>
+							<td class="text-end"><fmt:formatNumber type="currency"
+									value="${carrito.iva}" /></td>
+						</tr>
+						<tr class="fw-bold">
+							<td colspan="3"></td>
+							<td class="d-none d-md-table-cell"></td>
+							<td class="d-none d-md-table-cell"></td>
+							<td class="text-end">Total</td>
+							<td class="text-end"><fmt:formatNumber type="currency"
+									value="${carrito.total}" /></td>
+						</tr>
+						<tr class="fw-bold">
+							<td colspan="3"></td>
+							<td class="d-none d-md-table-cell"></td>
+							<td class="d-none d-md-table-cell"></td>
+							<td class="text-end"></td>
+							<td class="text-end"><a href="facturar"
+								class="btn btn-primary">Tramitar pedido</a></td>
+						</tr>
+
+					</tfoot>
+
+				</table>
 			</div>
 		</section>
 	</main>

@@ -20,14 +20,16 @@ function euro(cantidad) {
     return fmt.format(cantidad);
 }
 
+crearCarrito();
+
 window.addEventListener('DOMContentLoaded', async () => {
     variablesGlobales();
-	
-	eventosGlobales();
-	
+
+    eventosGlobales();
+
     alerta.style.display = 'none';
 
-	listado();
+    listado();
 });
 
 function eventosGlobales() {
@@ -38,10 +40,11 @@ function eventosGlobales() {
 
     document.querySelector('#buscar-texto').addEventListener('submit', buscar);
 
-
     for (const enlacePaginacion of document.querySelectorAll('.pagination a')) {
         enlacePaginacion.addEventListener('click', paginacion);
     }
+
+    document.querySelector('#anadir-carrito').addEventListener('submit', anadirCarrito);
 }
 
 function variablesGlobales() {
@@ -52,8 +55,8 @@ function variablesGlobales() {
     pNumero = document.querySelector('#p-numero a');
     pSiguiente = document.querySelector('#p-siguiente a');
     pFin = document.querySelector('#p-fin a');
-	
-	fila = document.querySelector('#listado .row');
+
+    fila = document.querySelector('#listado .row');
 }
 
 function masMenosCantidad() {
@@ -131,8 +134,8 @@ async function actualizarListadoProductos() {
         pInicio.classList.add('disabled');
         pAnterior.classList.add('disabled');
     }
-	
-	if (pagina === numeroPaginas) {
+
+    if (pagina === numeroPaginas) {
         pSiguiente.classList.add('disabled');
         pFin.classList.add('disabled');
     }
@@ -156,19 +159,33 @@ async function detalle(id) {
 
 function listado(e) {
     e && e.preventDefault();
-    
-	actualizarListadoProductos();
-    
-	mostrar('listado');
+
+    actualizarListadoProductos();
+
+    mostrar('listado');
 }
 
 function buscar(e) {
     e && e.preventDefault();
 
-	pagina = 1;
-	texto = document.querySelector('[name=texto]').value;
-	
+    pagina = 1;
+    texto = document.querySelector('[name=texto]').value;
+
     listado();
+}
+
+async function anadirCarrito(e) {
+    e && e.preventDefault();
+
+    const id = document.querySelector('[name=id]').value;
+    const cantidad = document.getElementById('cantidad').value;
+
+    const respuesta = await fetch(`${URL}/${id}`);
+    const producto = await respuesta.json();
+
+	anadirProductoACarrito(producto, cantidad);
+	
+    mostrar('carrito');
 }
 
 function mostrar(id) {
@@ -181,9 +198,27 @@ function mostrar(id) {
     document.getElementById(id).style.display = null;
 }
 
+function crearCarrito() {
+    localStorage.setItem('carrito', JSON.stringify([]));
 
+    return [];
+}
 
+function obtenerCarrito() {
+    return JSON.parse(localStorage.getItem('carrito'));
+}
 
+function guardarCarrito(carrito) {
+    localStorage.setItem('carrito', JSON.stringify(carrito));
+
+    return carrito;
+}
+
+function anadirProductoACarrito(producto, cantidad) {
+    const carrito = [...obtenerCarrito(), {producto, cantidad}];
+
+    guardarCarrito(carrito);
+}
 
 
 
