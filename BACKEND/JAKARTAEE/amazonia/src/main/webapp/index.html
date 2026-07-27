@@ -17,7 +17,7 @@
 	<nav class="navbar navbar-expand-lg bg-dark sticky-top"
 		data-bs-theme="dark">
 		<div class="container-fluid">
-			<a class="navbar-brand" href="index">AmazoniaJS</a>
+			<a class="navbar-brand" href="#">AmazoniaJS</a>
 			<button class="navbar-toggler" type="button"
 				data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
 				aria-controls="navbarSupportedContent" aria-expanded="false"
@@ -26,7 +26,7 @@
 			</button>
 			<div class="collapse navbar-collapse" id="navbarSupportedContent">
 				<ul class="navbar-nav me-auto mb-2 mb-lg-0">
-					<li class="nav-item"><a class="nav-link" href="index">Principal</a>
+					<li class="nav-item"><a class="nav-link" href="#">Principal</a>
 					</li>
 				</ul>
 				<form class="d-flex" role="search">
@@ -91,6 +91,57 @@
 					</a></li>
 				</ul>
 			</nav>
+		</section>
+		
+		<section id="detalle">
+			<div class="card mb-3">
+				<div class="row g-0">
+					<div class="col-md-4">
+						<img src="fotos/${producto.id}.jpg"
+							class="img-fluid rounded-start" alt="...">
+					</div>
+					<div class="col-md-8">
+						<div class="card-body">
+							<h5 class="card-title"></h5>
+							<p class="card-text"></p>
+							<p class="card-text">
+								<small class="text-body-secondary"></small>
+							</p>
+
+							<form class="d-flex" action="carrito/anadir">
+								<input type="hidden" name="id" value="${producto.id}">
+
+								<button class="me-3 btn btn-primary" type="submit">Añadir
+									a carrito</button>
+
+								<span class="input-group" style="width: auto">
+									<button id="menos" class="btn btn-outline-secondary"
+										type="button">
+										<i class="bi bi-dash"></i>
+									</button> <input id="cantidad" name="cantidad" type="text" pattern="\d+"
+									class="form-control text-center" style="max-width: 3rem"
+									value="1" min="1">
+									<button id="mas" class="btn btn-outline-secondary"
+										type="button">
+										<i class="bi bi-plus-lg"></i>
+									</button>
+								</span>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<script>
+const menos = document.querySelector('#menos');
+const mas = document.querySelector('#mas');
+const cantidad = document.querySelector('#cantidad');
+
+console.log(menos, mas, cantidad);
+
+menos.addEventListener('click', () => cantidad.value > 1 ? cantidad.value-- : cantidad.value);
+mas.addEventListener('click', () => cantidad.value++);
+</script>
 		</section>
 	</main>
 
