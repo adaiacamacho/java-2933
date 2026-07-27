@@ -10,6 +10,8 @@
 
 <link rel="stylesheet" href="css/index.css">
 
+<link rel="icon" href="imgs/cart.svg">
+
 <script type="module" src="js/index.js"></script>
 
 </head>
@@ -29,7 +31,7 @@
 					<li class="nav-item"><a class="nav-link" href="#">Principal</a>
 					</li>
 				</ul>
-				<form class="d-flex" role="search">
+				<form id="buscar-texto" class="d-flex" role="search">
 					<input name="texto" class="form-control me-2" type="search"
 						placeholder="Buscar" aria-label="Search" value="" />
 					<button class="btn btn-outline-light" type="submit">Buscar</button>
@@ -97,7 +99,7 @@
 			<div class="card mb-3">
 				<div class="row g-0">
 					<div class="col-md-4">
-						<img src="fotos/${producto.id}.jpg"
+						<img src=""
 							class="img-fluid rounded-start" alt="...">
 					</div>
 					<div class="col-md-8">
@@ -109,7 +111,7 @@
 							</p>
 
 							<form class="d-flex" action="carrito/anadir">
-								<input type="hidden" name="id" value="${producto.id}">
+								<input type="hidden" name="id" value="">
 
 								<button class="me-3 btn btn-primary" type="submit">Añadir
 									a carrito</button>

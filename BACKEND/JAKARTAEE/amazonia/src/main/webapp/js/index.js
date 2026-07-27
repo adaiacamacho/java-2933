@@ -26,6 +26,8 @@ window.addEventListener('DOMContentLoaded', async () => {
     document.querySelectorAll('.navbar-brand, .navbar-nav:first-of-type .nav-link:first-of-type')
         .forEach(enlaceListado => enlaceListado.addEventListener('click', listado));
 
+    document.querySelector('#buscar-texto').addEventListener('submit', buscar);
+
     alerta = document.querySelector('#alerta');
 
     pInicio = document.querySelector('#p-inicio a');
@@ -131,9 +133,20 @@ async function detalle(id) {
 }
 
 function listado(e) {
-    e.preventDefault();
-    actualizarListadoProductos();
-    mostrar('listado');
+    e && e.preventDefault();
+    
+	actualizarListadoProductos();
+    
+	mostrar('listado');
+}
+
+function buscar(e) {
+    e && e.preventDefault();
+
+	pagina = 1;
+	texto = document.querySelector('[name=texto]').value;
+	
+    listado();
 }
 
 function mostrar(id) {
