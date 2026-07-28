@@ -37,7 +37,7 @@
 					<button class="btn btn-outline-light" type="submit">Buscar</button>
 				</form>
 				<ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-					<li class="nav-item"><a class="nav-link" href="carrito"><i
+					<li class="nav-item"><a id="ver-carrito" class="nav-link" href="#"><i
 							class="bi bi-cart"></i></a></li>
 
 					<li class="nav-item administrador"><a class="nav-link"
@@ -157,41 +157,6 @@
 					</thead>
 
 					<tbody>
-						<c:forEach items="${carrito.lineas}" var="linea">
-							<tr class="align-middle">
-								<td><a href="carrito/borrar?id=${linea.producto.id}"><i
-										class="text-danger bi bi-trash"></i></a></td>
-								<td>${linea.producto.nombre}</td>
-								<td class="text-end"><fmt:formatNumber type="currency"
-										value="${linea.producto.precio}" /></td>
-								<td class="text-center">
-									<form class="input-group" action="carrito/anadir">
-										<button id="menos" class="btn btn-outline-secondary"
-											type="submit" name="cantidad" value="-1">
-											<i
-												class="bi ${linea.cantidad - 1 != 0 ? 'bi-dash': 'bi-trash'}"></i>
-										</button>
-
-										<input type="hidden" name="id" value="${linea.producto.id}">
-
-										<input id="cantidad" readonly type="text" pattern="\d+"
-											class="form-control text-center" value="${linea.cantidad}"
-											min="1">
-
-										<button id="mas" class="btn btn-outline-secondary"
-											type="submit" name="cantidad" value="1">
-											<i class="bi bi-plus-lg"></i>
-										</button>
-									</form>
-								</td>
-								<td class="text-end d-none d-md-table-cell"><fmt:formatNumber
-										type="currency" value="${linea.subTotal}" /></td>
-								<td class="text-end d-none d-md-table-cell"><fmt:formatNumber
-										type="currency" value="${linea.iva}" /></td>
-								<td class="text-end fw-bold"><fmt:formatNumber
-										type="currency" value="${linea.total}" /></td>
-							</tr>
-						</c:forEach>
 					</tbody>
 
 					<tfoot class="table-secondary">
@@ -200,24 +165,21 @@
 							<td class="d-none d-md-table-cell"></td>
 							<td class="d-none d-md-table-cell"></td>
 							<td class="text-end">Subtotal</td>
-							<td class="text-end"><fmt:formatNumber type="currency"
-									value="${carrito.subTotal}" /></td>
+							<td class="text-end"></td>
 						</tr>
 						<tr>
 							<td colspan="3"></td>
 							<td class="d-none d-md-table-cell"></td>
 							<td class="d-none d-md-table-cell"></td>
 							<td class="text-end">IVA</td>
-							<td class="text-end"><fmt:formatNumber type="currency"
-									value="${carrito.iva}" /></td>
+							<td class="text-end"></td>
 						</tr>
 						<tr class="fw-bold">
 							<td colspan="3"></td>
 							<td class="d-none d-md-table-cell"></td>
 							<td class="d-none d-md-table-cell"></td>
 							<td class="text-end">Total</td>
-							<td class="text-end"><fmt:formatNumber type="currency"
-									value="${carrito.total}" /></td>
+							<td class="text-end"></td>
 						</tr>
 						<tr class="fw-bold">
 							<td colspan="3"></td>
