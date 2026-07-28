@@ -81,7 +81,7 @@ async function paginacion(e) {
     console.log(e);
     e.preventDefault();
 
-    const id = e.target.parentElement.parentElement.id;
+    const id = e.currentTarget.parentElement.id;
 
     console.log(id);
 
