@@ -1,4 +1,5 @@
-const URL = 'api/v1/productos';
+const URL_PRODUCTOS = 'api/v1/productos';
+const URL_FACTURAS = 'api/v1/facturas';
 
 let numeroPaginas;
 
@@ -9,6 +10,8 @@ let alerta;
 let pNumero, pInicio, pAnterior, pSiguiente, pFin;
 let fila;
 let carritoTbody, carritoSubtotal, carritoIva, carritoTotal;
+let facturaLineas, facturaSubtotal, facturaIva, facturaTotal;
+let facturaNumero, facturaFecha, facturaClienteNombre, facturaClienteNif;
 
 function euro(cantidad) {
     const fmt = new Intl.NumberFormat('es-ES', {
@@ -47,6 +50,7 @@ function eventosGlobales() {
 
     document.querySelector('#ver-carrito').addEventListener('click', carrito);
     document.querySelector('#vaciar-carrito').addEventListener('click', vaciarCarrito);
+    document.querySelector('#tramitar-pedido').addEventListener('click', tramitarPedido);
 }
 
 function variablesGlobales() {
@@ -64,6 +68,17 @@ function variablesGlobales() {
     carritoSubtotal = document.querySelector('#carrito tfoot tr:first-of-type td:last-of-type');
     carritoIva = document.querySelector('#carrito tfoot tr:nth-of-type(2) td:last-of-type');
     carritoTotal = document.querySelector('#carrito tfoot tr:nth-of-type(3) td:last-of-type');
+	
+	facturaNumero = document.querySelector('#factura-numero');
+	facturaFecha = document.querySelector('#factura-fecha');
+	facturaClienteNombre = document.querySelector('#factura-cliente-nombre');
+	facturaClienteNif = document.querySelector('#factura-cliente-nif');
+	
+	facturaLineas = document.querySelector('#factura-lineas');
+	facturaSubtotal = document.querySelector('#factura-subtotal');
+	facturaIva = document.querySelector('#factura-iva');
+	facturaTotal = document.querySelector('#factura-total');
+	
 }
 
 function masMenosCantidad() {
@@ -98,8 +113,8 @@ async function paginacion(e) {
 }
 
 async function actualizarListadoProductos() {
-    const respuesta = await fetch(`${URL}?pagina=${pagina}&texto=${texto}`);
-    const respuestaNumeroPaginas = await fetch(`${URL}/numero-paginas?texto=${texto}`);
+    const respuesta = await fetch(`${URL_PRODUCTOS}?pagina=${pagina}&texto=${texto}`);
+    const respuestaNumeroPaginas = await fetch(`${URL_PRODUCTOS}/numero-paginas?texto=${texto}`);
     const productos = await respuesta.json();
 
     numeroPaginas = await respuestaNumeroPaginas.json();
@@ -152,7 +167,7 @@ async function detalle(id) {
 
     console.log(id);
 
-    const respuesta = await fetch(`${URL}/${id}`);
+    const respuesta = await fetch(`${URL_PRODUCTOS}/${id}`);
     const producto = await respuesta.json();
 
     document.querySelector('#detalle img').src = `fotos/${producto.id}.jpg`;
@@ -245,7 +260,7 @@ async function anadirCarrito(e) {
     const id = Number(document.querySelector('[name=id]').value);
     const cantidad = Number(document.getElementById('cantidad').value);
 
-    const respuesta = await fetch(`${URL}/${id}`);
+    const respuesta = await fetch(`${URL_PRODUCTOS}/${id}`);
     const producto = await respuesta.json();
 
     anadirProductoACarrito(producto, cantidad);
@@ -322,7 +337,67 @@ window.eliminarProductoDelCarrito = function(id) {
     guardarCarrito(carrito);
 }
 
-
+async function tramitarPedido() {
+	const idClienteFactura = 2;
+	const carritoFactura = {
+		lineas: obtenerCarrito()
+	};
+	
+	console.log(idClienteFactura, JSON.stringify(carritoFactura));
+	
+	const respuesta = await fetch(`${URL_FACTURAS}?idCliente=${idClienteFactura}`, {
+		method: 'POST',
+		body: JSON.stringify(carritoFactura),
+		header: {
+			'Content-Type': 'application/json',
+		}
+	});
+	
+	const factura = await respuesta.json();
+	
+	console.log(factura);
+	
+	// Rellenar datos básicos de la factura
+	facturaNumero.textContent = factura.numero;
+	facturaFecha.textContent = `${factura.fecha.day}/${factura.fecha.month}/${factura.fecha.year}`;
+	facturaClienteNombre.textContent = `${factura.cliente.nombre} ${factura.cliente.apellidos}`;
+	facturaClienteNif.textContent = factura.cliente.nif;
+	
+	// Rellenar líneas de la factura
+	facturaLineas.innerHTML = '';
+	let subtotal = 0, iva = 0, total = 0;
+	
+	for (const linea of factura.lineas) {
+		const lineaSubtotal = (linea.producto.precio * linea.cantidad) * (1.0 - 0.21);
+		const lineaIva = linea.producto.precio * linea.cantidad * 0.21;
+		const lineaTotal = linea.producto.precio * linea.cantidad;
+		
+		subtotal += lineaSubtotal;
+		iva += lineaIva;
+		total += lineaTotal;
+		
+		const tr = document.createElement('tr');
+		tr.className = 'align-middle';
+		
+		tr.innerHTML = `
+			<td>${linea.producto.nombre}</td>
+			<td class="text-end">${euro(linea.producto.precio)}</td>
+			<td class="text-center">${linea.cantidad}</td>
+			<td class="text-end d-none d-md-table-cell">${euro(lineaSubtotal)}</td>
+			<td class="text-end d-none d-md-table-cell">${euro(lineaIva)}</td>
+			<td class="text-end fw-bold">${euro(lineaTotal)}</td>
+		`;
+		
+		facturaLineas.appendChild(tr);
+	}
+	
+	// Rellenar totales
+	facturaSubtotal.textContent = euro(subtotal);
+	facturaIva.textContent = euro(iva);
+	facturaTotal.textContent = euro(total);
+	
+	mostrar('factura');
+}
 
 
 

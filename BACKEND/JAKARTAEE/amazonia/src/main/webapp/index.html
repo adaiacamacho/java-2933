@@ -37,8 +37,8 @@
 					<button class="btn btn-outline-light" type="submit">Buscar</button>
 				</form>
 				<ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-					<li class="nav-item"><a id="ver-carrito" class="nav-link" href="#"><i
-							class="bi bi-cart"></i></a></li>
+					<li class="nav-item"><a id="ver-carrito" class="nav-link"
+						href="#"><i class="bi bi-cart"></i></a></li>
 
 					<li class="nav-item administrador"><a class="nav-link"
 						href="admin/listado">Administración</a></li>
@@ -185,13 +185,110 @@
 							<td colspan="3"></td>
 							<td class="d-none d-md-table-cell"></td>
 							<td class="d-none d-md-table-cell"></td>
-							<td class="text-end"><button id="vaciar-carrito" class="btn btn-danger">Vaciar carrito</button></td>
-							<td class="text-end"><button id="tramitar-pedido" class="btn btn-primary">Tramitar pedido</button></td>
+							<td class="text-end"><button id="vaciar-carrito"
+									class="btn btn-danger">Vaciar carrito</button></td>
+							<td class="text-end"><button id="tramitar-pedido"
+									class="btn btn-primary">Tramitar pedido</button></td>
 						</tr>
 
 					</tfoot>
 
 				</table>
+			</div>
+		</section>
+
+		<section id="factura">
+			<h2>Factura</h2>
+
+			<div class="row row-cols-md-2 mb-5">
+				<div class="col">
+					<h3 class="col">Factura número: <span id="factura-numero">${factura.numero}</span></h3>
+					<div class="card">
+						<div class="card-body">
+							<h5 class="card-title">Emisor</h5>
+							<h6 class="card-subtitle mb-2 text-body-secondary">Amazonia</h6>
+							<h6 class="card-subtitle mb-2 text-body-secondary">CIF:
+								B91234567</h6>
+							<p class="card-text">C/Su calle n.25</p>
+							<p class="card-text">C.P.: 12345</p>
+							<p class="card-text">Madrid</p>
+						</div>
+					</div>
+				</div>
+
+				<div class="col">
+					<h3 class="col">Fecha: <span id="factura-fecha">${factura.fecha}</span></h3>
+					<div class="card">
+						<div class="card-body">
+							<h5 class="card-title">Factura a</h5>
+							<h6 class="card-subtitle mb-2 text-body-secondary" id="factura-cliente-nombre">${factura.cliente.nombre}</h6>
+							<h6 class="card-subtitle mb-2 text-body-secondary">NIF:
+								<span id="factura-cliente-nif">${factura.cliente.nif}</span></h6>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="table-responsive">
+				<div class="card">
+					<div class="card-body">
+						<table class="table table-borderless">
+							<thead>
+								<tr>
+									<th>Nombre</th>
+									<th class="text-end">Precio</th>
+									<th class="text-center">Cantidad</th>
+									<th class="text-end d-none d-md-table-cell">Subtotal</th>
+									<th class="text-end d-none d-md-table-cell">IVA</th>
+									<th class="text-end">Total</th>
+								</tr>
+							</thead>
+
+							<tbody id="factura-lineas">
+								<c:forEach items="${factura.lineas}" var="l">
+									<tr class="align-middle">
+										<td>${l.producto.nombre}</td>
+										<td class="text-end"><fmt:formatNumber type="currency"
+												value="${l.producto.precio}" /></td>
+										<td class="text-center">${l.cantidad}</td>
+										<td class="text-end d-none d-md-table-cell"><fmt:formatNumber
+												type="currency" value="${l.subTotal}" /></td>
+										<td class="text-end d-none d-md-table-cell"><fmt:formatNumber
+												type="currency" value="${l.iva}" /></td>
+										<td class="text-end fw-bold"><fmt:formatNumber
+												type="currency" value="${l.total}" /></td>
+									</tr>
+								</c:forEach>
+							</tbody>
+
+							<tfoot>
+								<tr>
+									<td colspan="2"></td>
+									<td class="d-none d-md-table-cell"></td>
+									<td class="d-none d-md-table-cell"></td>
+									<td class="text-end">Subtotal</td>
+									<td class="text-end" id="factura-subtotal">${factura.subTotal}</td>
+								</tr>
+								<tr>
+									<td colspan="2"></td>
+									<td class="d-none d-md-table-cell"></td>
+									<td class="d-none d-md-table-cell"></td>
+									<td class="text-end">IVA</td>
+									<td class="text-end" id="factura-iva">${factura.iva}</td>
+								</tr>
+								<tr class="fw-bold">
+									<td colspan="2"></td>
+									<td class="d-none d-md-table-cell"></td>
+									<td class="d-none d-md-table-cell"></td>
+									<td class="text-end">Total</td>
+									<td class="text-end" id="factura-total">${factura.total}</td>
+								</tr>
+
+							</tfoot>
+
+						</table>
+					</div>
+				</div>
 			</div>
 		</section>
 	</main>
