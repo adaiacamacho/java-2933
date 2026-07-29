@@ -288,7 +288,12 @@ function anadirProductoACarrito(producto, cantidad) {
 
     if (lineaExistente) {
         lineaExistente.cantidad += cantidad;
-        carrito = carritoOriginal;
+
+        if (lineaExistente.cantidad <= 0) {
+            carrito = carritoOriginal.filter(linea => linea.producto.id !== producto.id);
+        } else {
+            carrito = carritoOriginal;
+        }
     } else {
         carrito = [...carritoOriginal, { producto, cantidad: Number(cantidad) }];
     }
