@@ -174,7 +174,7 @@ function listado(e) {
     mostrar('listado');
 }
 
-function carrito() {
+window.carrito = function() {
     const lineas = obtenerCarrito();
 
     let subtotal = 0, iva = 0, total = 0;
@@ -194,8 +194,8 @@ function carrito() {
         tr.className = 'align-middle';
 
         tr.innerHTML = `
-			<td><a href="carrito/borrar?id=${linea.producto.id}"><i
-					class="text-danger bi bi-trash"></i></a></td>
+			<td><button class="btn" onclick="eliminarProductoDelCarrito(${linea.producto.id}); carrito()"><i
+					class="text-danger bi bi-trash"></i></button></td>
 			<td>${linea.producto.nombre}</td>
 			<td class="text-end">${euro(linea.producto.precio)}</td>
 			<td class="text-center">
@@ -280,7 +280,7 @@ function guardarCarrito(carrito) {
     return carrito;
 }
 
-function anadirProductoACarrito(producto, cantidad) {
+window.anadirProductoACarrito = function(producto, cantidad) {
     let carrito;
     const carritoOriginal = obtenerCarrito();
 
@@ -316,8 +316,11 @@ window.gestionarCantidadCarrito = function(that) {
     carrito();
 }
 
-
-
+window.eliminarProductoDelCarrito = function(id) {
+    const carritoOriginal = obtenerCarrito();
+    const carrito = carritoOriginal.filter(linea => linea.producto.id !== id);
+    guardarCarrito(carrito);
+}
 
 
 
