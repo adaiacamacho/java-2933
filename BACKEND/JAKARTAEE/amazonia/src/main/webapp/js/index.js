@@ -44,9 +44,9 @@ function eventosGlobales() {
     }
 
     document.querySelector('#anadir-carrito').addEventListener('submit', anadirCarrito);
-	
-	document.querySelector('#ver-carrito').addEventListener('click', carrito);
-	document.querySelector('#vaciar-carrito').addEventListener('click', vaciarCarrito);
+
+    document.querySelector('#ver-carrito').addEventListener('click', carrito);
+    document.querySelector('#vaciar-carrito').addEventListener('click', vaciarCarrito);
 }
 
 function variablesGlobales() {
@@ -160,8 +160,8 @@ async function detalle(id) {
     document.querySelector('#detalle .card-text:first-of-type').textContent = `${producto.descripcion ?? ''}`;
     document.querySelector('#detalle small').textContent = `${euro(producto.precio)}`;
     document.querySelector('#detalle input[type=hidden]').value = `${producto.id}`;
-	
-	document.querySelector('#cantidad').value = 1;
+
+    document.querySelector('#cantidad').value = 1;
 
     mostrar('detalle');
 }
@@ -179,8 +179,8 @@ function carrito() {
 
     let subtotal = 0, iva = 0, total = 0;
 
-	carritoTbody.innerHTML = '';
-	
+    carritoTbody.innerHTML = '';
+
     for (const linea of lineas) {
         const lineaSubtotal = (linea.producto.precio * linea.cantidad) * (1.0 - 0.21);
         const lineaIva = linea.producto.precio * linea.cantidad * 0.21;
@@ -282,33 +282,33 @@ function guardarCarrito(carrito) {
 
 function anadirProductoACarrito(producto, cantidad) {
     let carrito;
-	const carritoOriginal = obtenerCarrito();
+    const carritoOriginal = obtenerCarrito();
 
     const lineaExistente = carritoOriginal.find(linea => linea.producto.id === producto.id);
 
     if (lineaExistente) {
-		lineaExistente.cantidad += cantidad;
-		carrito = carritoOriginal;
+        lineaExistente.cantidad += cantidad;
+        carrito = carritoOriginal;
     } else {
         carrito = [...carritoOriginal, { producto, cantidad: Number(cantidad) }];
     }
 
-	guardarCarrito(carrito);
+    guardarCarrito(carrito);
 }
 
 function vaciarCarrito() {
-	localStorage.removeItem('carrito');
-	
-	listado();
+    localStorage.removeItem('carrito');
+
+    listado();
 }
 
 window.gestionarCantidadCarrito = function(that) {
-	const id = that.parentElement.dataset.id;
-	const cantidad = that.parentElement.children[1].value;
-	const esMenos = that.classList.contains('menos');
-	const esMas = that.classList.contains('mas');
-	
-	console.log(id, cantidad, esMenos, esMas);
+    const id = Number(that.parentElement.dataset.id);
+    const esMenos = that.classList.contains('menos');
+
+    anadirProductoACarrito({ id }, esMenos ? -1 : 1);
+
+    carrito();
 }
 
 
