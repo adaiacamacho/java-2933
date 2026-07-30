@@ -13,6 +13,7 @@ let fila;
 let carritoTbody, carritoSubtotal, carritoIva, carritoTotal;
 let facturaLineas, facturaSubtotal, facturaIva, facturaTotal;
 let facturaNumero, facturaFecha, facturaClienteNombre, facturaClienteNif;
+let adminListadoTbody, adminForm, adminFormTitle, adminFormCancelar;
 
 function euro(cantidad) {
     const fmt = new Intl.NumberFormat('es-ES', {
@@ -59,6 +60,34 @@ function eventosGlobales() {
 
     // Manejo del formulario de login por AJAX
     document.querySelector('#formulario-login').addEventListener('submit', loginAjax);
+
+    // Enlaces y formularios administrativos (AJAX)
+    const verAdmin = document.querySelector('#ver-admin');
+    verAdmin && verAdmin.addEventListener('click', (e) => {
+        e.preventDefault();
+        adminListado();
+        mostrar('admin-listado');
+    });
+
+    // botón nuevo desde el listado admin (se añade dinámicamente en la tabla)
+    document.addEventListener('click', (e) => {
+        if (e.target && (e.target.id === 'admin-nuevo' || e.target.closest('#admin-nuevo'))) {
+            e.preventDefault();
+            adminMostrarFormulario(true);
+        }
+    });
+
+    // formulario admin (submit y cancelar)
+    if (adminForm) {
+        adminForm.addEventListener('submit', adminGuardarProducto);
+    }
+
+    if (adminFormCancelar) {
+        adminFormCancelar.addEventListener('click', (e) => {
+            e.preventDefault();
+            mostrar('admin-listado');
+        });
+    }
 }
 
 async function loginAjax(e) {
@@ -122,6 +151,12 @@ function variablesGlobales() {
     facturaSubtotal = document.querySelector('#factura-subtotal');
     facturaIva = document.querySelector('#factura-iva');
     facturaTotal = document.querySelector('#factura-total');
+
+    // Admin (AJAX)
+    adminListadoTbody = document.querySelector('#admin-listado tbody');
+    adminForm = document.querySelector('#admin-formulario-form');
+    adminFormTitle = document.querySelector('#admin-form-title');
+    adminFormCancelar = document.querySelector('#admin-cancelar');
 
 }
 
@@ -442,6 +477,142 @@ async function tramitarPedido() {
 
     mostrar('factura');
 }
+
+/* ------------------ Funciones administrativas (AJAX) ------------------ */
+
+async function adminListado() {
+    try {
+        const respuesta = await fetch(`${URL_PRODUCTOS}?pagina=1&texto=`);
+        if (!respuesta.ok) throw new Error('Error al obtener productos');
+        const productos = await respuesta.json();
+
+        // Renderizar filas
+        if (!adminListadoTbody) return;
+        adminListadoTbody.innerHTML = '';
+
+        for (const p of productos) {
+            const tr = document.createElement('tr');
+            tr.className = 'align-middle';
+            tr.innerHTML = `
+                <th class="text-end">${p.id}</th>
+                <td>${p.nombre}</td>
+                <td class="text-end">${euro(p.precio)}</td>
+                <td>
+                    <button class="btn btn-sm btn-primary admin-edit" data-id="${p.id}"><i class="bi bi-pencil-fill"></i></button>
+                    <button class="btn btn-sm btn-danger admin-delete" data-id="${p.id}"><i class="bi bi-trash-fill"></i></button>
+                </td>
+            `;
+
+            adminListadoTbody.appendChild(tr);
+        }
+
+        // listeners botones editar/borrar
+        adminListadoTbody.querySelectorAll('.admin-edit').forEach(b => b.addEventListener('click', (e) => {
+            const id = e.currentTarget.dataset.id;
+            adminMostrarFormulario(false, id);
+        }));
+
+        adminListadoTbody.querySelectorAll('.admin-delete').forEach(b => b.addEventListener('click', (e) => {
+            const id = e.currentTarget.dataset.id;
+            adminBorrarProducto(id);
+        }));
+
+    } catch (err) {
+        console.error(err);
+        showAlert('No se pudo cargar el listado de productos', 'danger');
+    }
+}
+
+async function adminMostrarFormulario(nuevo = true, id) {
+    if (nuevo) {
+        adminFormTitle && (adminFormTitle.textContent = 'Nuevo producto');
+        adminForm && adminForm.reset();
+        document.querySelector('#admin-id').value = '';
+        mostrar('admin-formulario');
+        return;
+    }
+
+    try {
+        const respuesta = await fetch(`${URL_PRODUCTOS}/${id}`);
+        if (!respuesta.ok) throw new Error('Producto no encontrado');
+        const producto = await respuesta.json();
+
+        adminFormTitle && (adminFormTitle.textContent = `Editar producto ${producto.id}`);
+        document.querySelector('#admin-id').value = producto.id ?? '';
+        document.querySelector('#admin-nombre').value = producto.nombre ?? '';
+        document.querySelector('#admin-precio').value = producto.precio ?? '';
+        document.querySelector('#admin-descripcion').value = producto.descripcion ?? '';
+
+        mostrar('admin-formulario');
+    } catch (err) {
+        console.error(err);
+        showAlert('No se pudo cargar el producto', 'danger');
+    }
+}
+
+async function adminGuardarProducto(e) {
+    e && e.preventDefault();
+
+    const idVal = document.querySelector('#admin-id').value;
+    const nombre = document.querySelector('#admin-nombre').value;
+    const precio = parseFloat(document.querySelector('#admin-precio').value || 0);
+    const descripcion = document.querySelector('#admin-descripcion').value;
+
+    if (!nombre) { showAlert('El nombre es obligatorio', 'warning'); return; }
+    if (isNaN(precio) || precio <= 0) { showAlert('El precio debe ser mayor que 0', 'warning'); return; }
+
+    const producto = {
+        id: idVal ? Number(idVal) : null,
+        nombre,
+        precio,
+        descripcion
+    };
+
+    try {
+        const metodo = producto.id ? 'PUT' : 'POST';
+        const respuesta = await fetch(URL_PRODUCTOS, {
+            method: metodo,
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(producto)
+        });
+
+        if (!respuesta.ok) {
+            const texto = await respuesta.text();
+            throw new Error(texto || 'Error al guardar producto');
+        }
+
+        const guardado = await respuesta.json();
+        showAlert('Producto guardado correctamente', 'success');
+        adminListado();
+        mostrar('admin-listado');
+    } catch (err) {
+        console.error(err);
+        showAlert('Error al guardar el producto', 'danger');
+    }
+}
+
+async function adminBorrarProducto(id) {
+    if (!confirm('¿Seguro que desea borrar este producto?')) return;
+
+    try {
+        const respuesta = await fetch(`${URL_PRODUCTOS}/${id}`, { method: 'DELETE' });
+        if (!respuesta.ok) throw new Error('Error al borrar');
+        showAlert('Producto borrado', 'success');
+        adminListado();
+    } catch (err) {
+        console.error(err);
+        showAlert('No se pudo borrar el producto', 'danger');
+    }
+}
+
+function showAlert(text, type = 'info') {
+    if (!alerta) return;
+    alerta.className = `alert alert-${type} alert-dismissible fade show`;
+    alerta.textContent = text;
+    alerta.style.display = null;
+    setTimeout(() => { alerta.style.display = 'none'; }, 3000);
+}
+
 
 
 

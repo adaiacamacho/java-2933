@@ -40,8 +40,8 @@
 					<li class="nav-item"><a id="ver-carrito" class="nav-link"
 						href="#"><i class="bi bi-cart"></i></a></li>
 
-					<li class="nav-item administrador"><a class="nav-link"
-						href="admin/listado">Administración</a></li>
+					<li class="nav-item administrador"><a id="ver-admin" class="nav-link"
+						href="#">Administración</a></li>
 
 					<li class="nav-item autenticado"><a class="nav-link"
 						href="usuario"><i class="bi bi-person-fill"></i>
@@ -221,6 +221,76 @@
 					</div>
 				</div>
 
+			</form>
+		</section>
+
+		<!-- Sección administrativa: listado de productos por AJAX -->
+		<section id="admin-listado" style="display: none;">
+			<h2>Administración de productos</h2>
+			<table class="table table-hover table-striped table-bordered">
+				<caption>Listado de productos (AJAX)</caption>
+
+				<thead class="table-secondary">
+					<tr>
+						<th class="text-end">Id</th>
+						<th>Nombre</th>
+						<th class="text-end">Precio</th>
+						<th>OPCIONES</th>
+					</tr>
+				</thead>
+
+				<tbody>
+					<!-- Filas generadas por JS -->
+				</tbody>
+
+				<tfoot class="table-secondary">
+					<tr>
+						<td colspan="3"></td>
+						<td><button id="admin-nuevo" class="btn btn-sm btn-primary"><i class="bi bi-plus-lg"></i> Nuevo</button></td>
+					</tr>
+				</tfoot>
+			</table>
+		</section>
+
+		<!-- Sección administrativa: formulario por AJAX -->
+		<section id="admin-formulario" style="display: none;">
+			<h2 id="admin-form-title">Nuevo producto</h2>
+
+			<form id="admin-formulario-form">
+				<div class="row mb-3">
+					<label for="admin-id" class="col-sm-2 col-form-label">Id</label>
+					<div class="col-sm">
+						<input type="number" class="form-control" id="admin-id" name="id" value="">
+					</div>
+				</div>
+
+				<div class="row mb-3">
+					<label for="admin-nombre" class="col-sm-2 col-form-label">Nombre</label>
+					<div class="col-sm">
+						<input type="text" class="form-control" id="admin-nombre" name="nombre" value="">
+					</div>
+				</div>
+
+				<div class="row mb-3">
+					<label for="admin-precio" class="col-sm-2 col-form-label">Precio</label>
+					<div class="col-sm">
+						<input type="number" step=".01" class="form-control" id="admin-precio" name="precio" value="">
+					</div>
+				</div>
+
+				<div class="row mb-3">
+					<label for="admin-descripcion" class="col-sm-2 col-form-label">Descripción</label>
+					<div class="col-sm">
+						<textarea class="form-control" id="admin-descripcion" name="descripcion"></textarea>
+					</div>
+				</div>
+
+				<div class="row mb-3">
+					<div class="offset-sm-2 col-sm">
+						<button type="submit" class="btn btn-primary">Guardar</button>
+						<button id="admin-cancelar" type="button" class="btn btn-secondary">Cancelar</button>
+					</div>
+				</div>
 			</form>
 		</section>
 
