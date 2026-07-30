@@ -202,7 +202,9 @@
 
 			<div class="row row-cols-md-2 mb-5">
 				<div class="col">
-					<h3 class="col">Factura número: <span id="factura-numero">${factura.numero}</span></h3>
+					<h3 class="col">
+						Factura número: <span id="factura-numero">${factura.numero}</span>
+					</h3>
 					<div class="card">
 						<div class="card-body">
 							<h5 class="card-title">Emisor</h5>
@@ -217,13 +219,17 @@
 				</div>
 
 				<div class="col">
-					<h3 class="col">Fecha: <span id="factura-fecha">${factura.fecha}</span></h3>
+					<h3 class="col">
+						Fecha: <span id="factura-fecha">${factura.fecha}</span>
+					</h3>
 					<div class="card">
 						<div class="card-body">
 							<h5 class="card-title">Factura a</h5>
-							<h6 class="card-subtitle mb-2 text-body-secondary" id="factura-cliente-nombre">${factura.cliente.nombre}</h6>
-							<h6 class="card-subtitle mb-2 text-body-secondary">NIF:
-								<span id="factura-cliente-nif">${factura.cliente.nif}</span></h6>
+							<h6 class="card-subtitle mb-2 text-body-secondary"
+								id="factura-cliente-nombre">${factura.cliente.nombre}</h6>
+							<h6 class="card-subtitle mb-2 text-body-secondary">
+								NIF: <span id="factura-cliente-nif">${factura.cliente.nif}</span>
+							</h6>
 						</div>
 					</div>
 				</div>
@@ -245,20 +251,16 @@
 							</thead>
 
 							<tbody id="factura-lineas">
-								<c:forEach items="${factura.lineas}" var="l">
-									<tr class="align-middle">
-										<td>${l.producto.nombre}</td>
-										<td class="text-end"><fmt:formatNumber type="currency"
-												value="${l.producto.precio}" /></td>
-										<td class="text-center">${l.cantidad}</td>
-										<td class="text-end d-none d-md-table-cell"><fmt:formatNumber
-												type="currency" value="${l.subTotal}" /></td>
-										<td class="text-end d-none d-md-table-cell"><fmt:formatNumber
-												type="currency" value="${l.iva}" /></td>
-										<td class="text-end fw-bold"><fmt:formatNumber
-												type="currency" value="${l.total}" /></td>
-									</tr>
-								</c:forEach>
+
+								<tr class="align-middle">
+									<td>${l.producto.nombre}</td>
+									<td class="text-end">${l.producto.precio}</td>
+									<td class="text-center">${l.cantidad}</td>
+									<td class="text-end d-none d-md-table-cell">${l.subTotal}</td>
+									<td class="text-end d-none d-md-table-cell">${l.iva}</td>
+									<td class="text-end fw-bold">${l.total}</td>
+								</tr>
+
 							</tbody>
 
 							<tfoot>
