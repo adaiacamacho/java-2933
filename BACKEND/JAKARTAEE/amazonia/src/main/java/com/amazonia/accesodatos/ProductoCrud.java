@@ -86,7 +86,7 @@ public class ProductoCrud {
 
 			rs.next();
 
-			return (rs.getInt(1) / 3) + 1;
+			return (rs.getInt(1) + 1) / 3;
 		} catch (SQLException e) {
 			throw new RuntimeException("Error al consultar el número de páginas", e);
 		}
