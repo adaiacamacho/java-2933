@@ -1,6 +1,5 @@
 package com.ipartube.logicanegocio;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.logging.Logger;
 
@@ -18,8 +17,7 @@ public class AnonimoNegocio {
 
 	public static Video verDetalleVideo(Long id) {
 		log.info("Se ha pedido el detalle del video " + id);
-		
-		return new Video(1L, LocalDate.now(), "https://www.youtube.com/embed/fLexgOxsZu0", "Video de Bruno",
-				"Descripción del video");
+
+		return VideoCrud.obtenerPorId(id);
 	}
 }

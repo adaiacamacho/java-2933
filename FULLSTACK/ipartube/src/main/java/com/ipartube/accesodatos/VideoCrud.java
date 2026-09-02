@@ -3,6 +3,7 @@ package com.ipartube.accesodatos;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 
 import com.ipartube.dtos.Video;
@@ -25,5 +26,10 @@ public class VideoCrud {
 		} catch (SQLException e) {
 			throw new RuntimeException("Error al obtener los videos", e);
 		}
+	}
+
+	public static Video obtenerPorId(Long id) {
+		return new Video(1L, LocalDate.now(), "https://www.youtube.com/embed/fLexgOxsZu0", "Video de Bruno",
+				"Descripción del video");
 	}
 }
