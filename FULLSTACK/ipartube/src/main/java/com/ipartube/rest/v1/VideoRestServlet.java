@@ -9,6 +9,7 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonPrimitive;
 import com.google.gson.JsonSerializer;
+import com.ipartube.dtos.Video;
 import com.ipartube.logicanegocio.AnonimoNegocio;
 
 import jakarta.servlet.ServletException;
@@ -32,6 +33,27 @@ public class VideoRestServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		response.setContentType("application/json");
+
+		Long id = obtenerId(request);
+
+		if (id != null) {
+			response.getWriter().append(GSON.toJson(new Video(1L, LocalDate.now(),
+					"https://www.youtube.com/embed/fLexgOxsZu0", "Video de Bruno", "Descripción del video")));
+			return;
+		}
+
 		response.getWriter().append(GSON.toJson(AnonimoNegocio.listarVideos()));
+	}
+
+	private Long obtenerId(HttpServletRequest request) {
+		Long id = null;
+
+		String pathInfo = request.getPathInfo();
+
+		if (pathInfo != null && !pathInfo.equals("/")) {
+			id = Long.parseLong(pathInfo.substring(1));
+		}
+		
+		return id;
 	}
 }
