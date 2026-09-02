@@ -18,7 +18,7 @@
 <body class="h-100 d-flex flex-column">
 	<nav class="navbar navbar-expand-lg bg-dark" data-bs-theme="dark">
 		<div class="container-fluid">
-			<a class="navbar-brand" href="#">IparTube</a>
+			<a class="navbar-brand" href="javascript:listado()">IparTube</a>
 			<button class="navbar-toggler" type="button"
 				data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
 				aria-controls="navbarSupportedContent" aria-expanded="false"
@@ -27,7 +27,7 @@
 			</button>
 			<div class="collapse navbar-collapse" id="navbarSupportedContent">
 				<ul class="navbar-nav me-auto mb-2 mb-lg-0">
-					<li class="nav-item"><a class="nav-link" href="#">Principal</a></li>
+					<li class="nav-item"><a class="nav-link" href="javascript:listado()">Principal</a></li>
 				</ul>
 			</div>
 		</div>
@@ -44,16 +44,14 @@
 		<section id="detalle">
 			<div class="card offset-lg-2 col-lg-8">
 				<div class="ratio ratio-16x9 card-img-top">
-					<iframe src="${video.url}" title="${video.titulo}" allowfullscreen></iframe>
+					<iframe src="" title="" allowfullscreen></iframe>
 				</div>
 				<div class="card-body">
-					<h5 class="card-title">
-						${video.titulo}
-					</h5>
-					<p class="card-text">${video.descripcion}</p>
+					<h5 class="card-title"></h5>
+					<p class="card-text"></p>
 				</div>
 				<div class="card-footer">
-					<small class="text-body-secondary">${video.fecha}</small>
+					<small class="text-body-secondary"></small>
 				</div>
 			</div>
 		</section>
