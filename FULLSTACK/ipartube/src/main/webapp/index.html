@@ -34,11 +34,31 @@
 	</nav>
 
 	<main class="container my-5 flex-grow-1">
-		<div id="listado-videos" class="row row-cols-1 row-cols-md-3 g-4">
-			
-		</div>
+		<section id="listado">
+			<h2>Listado de videos</h2>
+			<div id="listado-videos" class="row row-cols-1 row-cols-md-3 g-4">
+
+			</div>
+		</section>
+
+		<section id="detalle">
+			<div class="card offset-lg-2 col-lg-8">
+				<div class="ratio ratio-16x9 card-img-top">
+					<iframe src="${video.url}" title="${video.titulo}" allowfullscreen></iframe>
+				</div>
+				<div class="card-body">
+					<h5 class="card-title">
+						${video.titulo}
+					</h5>
+					<p class="card-text">${video.descripcion}</p>
+				</div>
+				<div class="card-footer">
+					<small class="text-body-secondary">${video.fecha}</small>
+				</div>
+			</div>
+		</section>
 	</main>
-	
+
 	<footer class="text-bg-dark p-2">
 		<p>&copy;2026 Javier Lete</p>
 	</footer>
