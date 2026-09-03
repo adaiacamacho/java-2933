@@ -6,6 +6,8 @@ import java.util.logging.Logger;
 import com.ipartube.accesodatos.ComentarioCrud;
 import com.ipartube.accesodatos.VideoCrud;
 import com.ipartube.dtos.Comentario;
+import com.ipartube.dtos.ComentarioInsertar;
+import com.ipartube.dtos.ComentarioInsertarRespuesta;
 import com.ipartube.dtos.Video;
 
 public class AnonimoNegocio {
@@ -27,5 +29,9 @@ public class AnonimoNegocio {
 		log.info("Se ha pedido el listado de comentarios del video " + idVideo);
 		
 		return ComentarioCrud.obtenerTodosPorIdVideo(idVideo);
+	}
+
+	public static ComentarioInsertarRespuesta crearNuevoComentario(ComentarioInsertar comentarioInsertar) {
+		return ComentarioCrud.insertar(comentarioInsertar);
 	}
 }

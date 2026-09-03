@@ -1,9 +1,36 @@
-const URL = 'api/v1/videos/';
+const URL_VIDEOS = 'api/v1/videos/';
+const URL_COMENTARIOS = 'api/v1/comentarios/';
+
+let idVideo;
+
+const comentarioForm = document.querySelector('#detalle form');
+
+comentarioForm.addEventListener('submit', async (e) => {
+	e.preventDefault();
+	
+	const comentario = { 
+		usuario: comentarioForm.usuario.value, 
+		texto: comentarioForm.texto.value,
+		idVideo: idVideo 
+	};
+	
+	console.log(comentario);
+	
+	const respuesta = await fetch(URL_COMENTARIOS, {
+		method: 'POST',
+		body: JSON.stringify(comentario),
+		headers: { 'Content-type': 'application/json' },
+	});
+	
+	const comentarioRecibido = await respuesta.json();
+	
+	console.log(comentarioRecibido);
+});
 
 window.listado = async function() {
     const listadoVideos = document.querySelector('#listado-videos');
 
-    const respuesta = await fetch(URL);
+    const respuesta = await fetch(URL_VIDEOS);
     const videos = await respuesta.json();
 
     listadoVideos.innerHTML = '';
@@ -43,7 +70,9 @@ function mostrar(id) {
 }
 
 window.detalle = async function(id) {
-    const respuesta = await fetch(URL + id);
+	idVideo = id;
+	
+    const respuesta = await fetch(URL_VIDEOS + id);
     const video = await respuesta.json();
 
     document.querySelector('#detalle iframe').src = video.url; // 'https://www.youtube.com/embed/fLexgOxsZu0';
@@ -52,7 +81,7 @@ window.detalle = async function(id) {
     document.querySelector('#detalle .card-text').textContent = video.descripcion; // 'Bla bla bla';
     document.querySelector('#detalle .card-footer small').textContent = video.fecha; //'FECHA';
 
-    const respuestaComentarios = await fetch(`${URL}${id}/comentarios`);
+    const respuestaComentarios = await fetch(`${URL_VIDEOS}${id}/comentarios`);
     const comentarios = await respuestaComentarios.json();
 
     const ul = document.querySelector('#detalle ul');

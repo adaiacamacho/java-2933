@@ -56,21 +56,24 @@
 				</div>
 			</div>
 
-			<ul class="mt-4 list-group">
-				<li
-					class="list-group-item d-flex justify-content-between align-items-start py-4">
-					<div class="ms-2 w-100">
-						<div class="d-flex">
-							<div class="fw-bold me-auto">
-								<input id="comentario-nombre" class="form-control">
-							</div>
-							<span class="badge text-bg-primary rounded-pill align-self-baseline">2026-09-01
-								11:34</span>
+			<form
+				class="list-group-item d-flex justify-content-between align-items-start py-4 mt-4">
+				<div class="ms-2 w-100">
+					<div class="d-flex">
+						<div class="fw-bold me-auto">
+							<input name="usuario" class="form-control">
 						</div>
-						<textarea id="comentario-texto" class="form-control col"></textarea>
-						<button class="btn btn-primary">Enviar comentario</button>
+						<span class="badge text-bg-primary rounded-pill align-self-baseline">
+							<script>document.write(new Date().toISOString())</script>
+						</span>
 					</div>
-				</li>
+					<textarea name="texto" class="form-control col"></textarea>
+					<button class="btn btn-primary">Enviar comentario</button>
+				</div>
+			</form>
+
+			<ul class="mt-4 list-group">
+				
 			</ul>
 		</section>
 	</main>
