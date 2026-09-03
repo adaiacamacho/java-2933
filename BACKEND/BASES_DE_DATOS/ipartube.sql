@@ -23,7 +23,36 @@ SET @@SESSION.SQL_LOG_BIN= 0;
 -- GTID state at the beginning of the backup 
 --
 
-SET @@GLOBAL.GTID_PURGED=/*!80000 '+'*/ 'fefbe3dd-706f-11f1-963a-00155d9a6796:1-242';
+SET @@GLOBAL.GTID_PURGED=/*!80000 '+'*/ 'fefbe3dd-706f-11f1-963a-00155d9a6796:1-251';
+
+--
+-- Table structure for table `comentarios`
+--
+
+DROP TABLE IF EXISTS `comentarios`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `comentarios` (
+  `id` bigint NOT NULL AUTO_INCREMENT,
+  `fecha_hora` datetime NOT NULL,
+  `usuario` varchar(50) COLLATE utf8mb4_general_ci NOT NULL,
+  `texto` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `videos_id` bigint NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `fk_comentarios_videos_idx` (`videos_id`),
+  CONSTRAINT `fk_comentarios_videos` FOREIGN KEY (`videos_id`) REFERENCES `videos` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `comentarios`
+--
+
+LOCK TABLES `comentarios` WRITE;
+/*!40000 ALTER TABLE `comentarios` DISABLE KEYS */;
+INSERT INTO `comentarios` VALUES (1,'2026-09-02 11:02:00','Pepe','Está chulo el video',1),(2,'2026-09-02 15:32:00','Javier','Es un poco vago',1),(3,'2026-09-02 10:45:00','Pedro','¡Clones!',2),(4,'2026-09-02 12:32:00','Juan','Efectos de video',2);
+/*!40000 ALTER TABLE `comentarios` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
 -- Table structure for table `videos`
@@ -35,12 +64,12 @@ DROP TABLE IF EXISTS `videos`;
 CREATE TABLE `videos` (
   `id` bigint NOT NULL AUTO_INCREMENT,
   `fecha` date NOT NULL,
-  `url` varchar(255) NOT NULL,
-  `titulo` varchar(50) NOT NULL,
-  `descripcion` text,
+  `url` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `titulo` varchar(50) COLLATE utf8mb4_general_ci NOT NULL,
+  `descripcion` text COLLATE utf8mb4_general_ci,
   PRIMARY KEY (`id`),
   UNIQUE KEY `url_UNIQUE` (`url`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='	';
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='	';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -63,4 +92,4 @@ SET @@SESSION.SQL_LOG_BIN = @MYSQLDUMP_TEMP_LOG_BIN;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2026-09-01 10:40:09
+-- Dump completed on 2026-09-03  9:41:40

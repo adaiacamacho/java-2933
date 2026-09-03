@@ -6,8 +6,8 @@ window.listado = async function() {
     const respuesta = await fetch(URL);
     const videos = await respuesta.json();
 
-	listadoVideos.innerHTML = '';
-	
+    listadoVideos.innerHTML = '';
+
     for (const video of videos) {
         const card = document.createElement('div');
         card.className = 'col';
@@ -28,8 +28,8 @@ window.listado = async function() {
 
         listadoVideos.appendChild(card);
     }
-	
-	mostrar('listado');
+
+    mostrar('listado');
 }
 
 function mostrar(id) {
@@ -51,6 +51,33 @@ window.detalle = async function(id) {
     document.querySelector('#detalle .card-title').textContent = video.titulo; //'Video de Bruno Mars';
     document.querySelector('#detalle .card-text').textContent = video.descripcion; // 'Bla bla bla';
     document.querySelector('#detalle .card-footer small').textContent = video.fecha; //'FECHA';
+
+    const respuestaComentarios = await fetch(`${URL}${id}/comentarios`);
+    const comentarios = await respuestaComentarios.json();
+
+    const ul = document.querySelector('#detalle ul');
+
+    ul.innerHTML = '';
+
+    for (const comentario of comentarios) {
+        const li = document.createElement('li');
+
+        li.className = 'list-group-item d-flex justify-content-between align-items-start py-4';
+
+        li.innerHTML = `
+			<div class="ms-2 w-100">
+				<div class="d-flex">
+					<div class="fw-bold me-auto">
+						${comentario.usuario}
+					</div>
+					<span class="badge text-bg-primary rounded-pill align-self-baseline">${comentario.fechaHora}</span>
+				</div>
+				<p>${comentario.texto}</p>
+			</div>
+		`;
+
+        ul.appendChild(li);
+    }
 
     mostrar('detalle');
 }
