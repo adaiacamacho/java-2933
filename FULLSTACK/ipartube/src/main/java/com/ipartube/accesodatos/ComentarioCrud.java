@@ -13,7 +13,7 @@ import bibliotecas.accesodatos.BaseDeDatos;
 
 public class ComentarioCrud {
 	public static ArrayList<Comentario> obtenerTodosPorIdVideo(Long idVideo) {
-		try (PreparedStatement pst = BaseDeDatos.crearSentencia("SELECT * FROM comentarios WHERE videos_id=?")) {
+		try (PreparedStatement pst = BaseDeDatos.crearSentencia("SELECT * FROM vista_comentarios WHERE videos_id=?")) {
 			pst.setLong(1, idVideo);
 			ResultSet rs = pst.executeQuery();
 

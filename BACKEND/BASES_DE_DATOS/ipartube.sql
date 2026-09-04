@@ -23,7 +23,7 @@ SET @@SESSION.SQL_LOG_BIN= 0;
 -- GTID state at the beginning of the backup 
 --
 
-SET @@GLOBAL.GTID_PURGED=/*!80000 '+'*/ 'fefbe3dd-706f-11f1-963a-00155d9a6796:1-251';
+SET @@GLOBAL.GTID_PURGED=/*!80000 '+'*/ 'fefbe3dd-706f-11f1-963a-00155d9a6796:1-263';
 
 --
 -- Table structure for table `comentarios`
@@ -35,13 +35,15 @@ DROP TABLE IF EXISTS `comentarios`;
 CREATE TABLE `comentarios` (
   `id` bigint NOT NULL AUTO_INCREMENT,
   `fecha_hora` datetime NOT NULL,
-  `usuario` varchar(50) COLLATE utf8mb4_general_ci NOT NULL,
   `texto` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
   `videos_id` bigint NOT NULL,
+  `usuarios_id` bigint NOT NULL,
   PRIMARY KEY (`id`),
   KEY `fk_comentarios_videos_idx` (`videos_id`),
+  KEY `fk_comentarios_usuarios1_idx` (`usuarios_id`),
+  CONSTRAINT `fk_comentarios_usuarios1` FOREIGN KEY (`usuarios_id`) REFERENCES `usuarios` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   CONSTRAINT `fk_comentarios_videos` FOREIGN KEY (`videos_id`) REFERENCES `videos` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -50,8 +52,35 @@ CREATE TABLE `comentarios` (
 
 LOCK TABLES `comentarios` WRITE;
 /*!40000 ALTER TABLE `comentarios` DISABLE KEYS */;
-INSERT INTO `comentarios` VALUES (1,'2026-09-02 11:02:00','Pepe','Está chulo el video',1),(2,'2026-09-02 15:32:00','Javier','Es un poco vago',1),(3,'2026-09-02 10:45:00','Pedro','¡Clones!',2),(4,'2026-09-02 12:32:00','Juan','Efectos de video',2);
+INSERT INTO `comentarios` VALUES (1,'2026-09-02 11:02:00','Está chulo el video',1,1),(2,'2026-09-02 15:32:00','Es un poco vago',1,2),(3,'2026-09-02 10:45:00','¡Clones!',2,2),(4,'2026-09-02 12:32:00','Efectos de video',2,1),(5,'2026-09-03 10:50:30','¡Qué pasa colegas!',2,1);
 /*!40000 ALTER TABLE `comentarios` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `usuarios`
+--
+
+DROP TABLE IF EXISTS `usuarios`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `usuarios` (
+  `id` bigint NOT NULL AUTO_INCREMENT,
+  `nombre` varchar(50) COLLATE utf8mb4_general_ci NOT NULL,
+  `email` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `password` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `email_UNIQUE` (`email`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `usuarios`
+--
+
+LOCK TABLES `usuarios` WRITE;
+/*!40000 ALTER TABLE `usuarios` DISABLE KEYS */;
+INSERT INTO `usuarios` VALUES (1,'Javier','javier@email.net','javier'),(2,'Pepe','pepe@email.net','pepe');
+/*!40000 ALTER TABLE `usuarios` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -67,8 +96,11 @@ CREATE TABLE `videos` (
   `url` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
   `titulo` varchar(50) COLLATE utf8mb4_general_ci NOT NULL,
   `descripcion` text COLLATE utf8mb4_general_ci,
+  `usuarios_id` bigint NOT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `url_UNIQUE` (`url`)
+  UNIQUE KEY `url_UNIQUE` (`url`),
+  KEY `fk_videos_usuarios1_idx` (`usuarios_id`),
+  CONSTRAINT `fk_videos_usuarios1` FOREIGN KEY (`usuarios_id`) REFERENCES `usuarios` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='	';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -78,9 +110,51 @@ CREATE TABLE `videos` (
 
 LOCK TABLES `videos` WRITE;
 /*!40000 ALTER TABLE `videos` DISABLE KEYS */;
-INSERT INTO `videos` VALUES (1,'2026-09-01','https://www.youtube.com/embed/fLexgOxsZu0','Lazy Song','Bruno Mars haciendo el mono'),(2,'2026-08-01','https://www.youtube.com/embed/mrV8kK5t0V8','I Just Might','Bruno Mars en plan aerobic');
+INSERT INTO `videos` VALUES (1,'2026-09-01','https://www.youtube.com/embed/fLexgOxsZu0','Lazy Song','Bruno Mars haciendo el mono',1),(2,'2026-08-01','https://www.youtube.com/embed/mrV8kK5t0V8','I Just Might','Bruno Mars en plan aerobic',2);
 /*!40000 ALTER TABLE `videos` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Temporary view structure for view `vista_comentarios`
+--
+
+DROP TABLE IF EXISTS `vista_comentarios`;
+/*!50001 DROP VIEW IF EXISTS `vista_comentarios`*/;
+SET @saved_cs_client     = @@character_set_client;
+/*!50503 SET character_set_client = utf8mb4 */;
+/*!50001 CREATE VIEW `vista_comentarios` AS SELECT 
+ 1 AS `id`,
+ 1 AS `fecha_hora`,
+ 1 AS `texto`,
+ 1 AS `usuario`,
+ 1 AS `videos_id`*/;
+SET character_set_client = @saved_cs_client;
+
+--
+-- Dumping events for database 'ipartube'
+--
+
+--
+-- Dumping routines for database 'ipartube'
+--
+
+--
+-- Final view structure for view `vista_comentarios`
+--
+
+/*!50001 DROP VIEW IF EXISTS `vista_comentarios`*/;
+/*!50001 SET @saved_cs_client          = @@character_set_client */;
+/*!50001 SET @saved_cs_results         = @@character_set_results */;
+/*!50001 SET @saved_col_connection     = @@collation_connection */;
+/*!50001 SET character_set_client      = utf8mb4 */;
+/*!50001 SET character_set_results     = utf8mb4 */;
+/*!50001 SET collation_connection      = utf8mb4_0900_ai_ci */;
+/*!50001 CREATE ALGORITHM=UNDEFINED */
+/*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
+/*!50001 VIEW `vista_comentarios` AS select `c`.`id` AS `id`,`c`.`fecha_hora` AS `fecha_hora`,`c`.`texto` AS `texto`,`u`.`nombre` AS `usuario`,`c`.`videos_id` AS `videos_id` from (`comentarios` `c` join `usuarios` `u` on((`c`.`usuarios_id` = `u`.`id`))) */;
+/*!50001 SET character_set_client      = @saved_cs_client */;
+/*!50001 SET character_set_results     = @saved_cs_results */;
+/*!50001 SET collation_connection      = @saved_col_connection */;
 SET @@SESSION.SQL_LOG_BIN = @MYSQLDUMP_TEMP_LOG_BIN;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -92,4 +166,4 @@ SET @@SESSION.SQL_LOG_BIN = @MYSQLDUMP_TEMP_LOG_BIN;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2026-09-03  9:41:40
+-- Dump completed on 2026-09-04  8:50:37
