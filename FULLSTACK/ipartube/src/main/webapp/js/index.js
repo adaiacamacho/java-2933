@@ -9,7 +9,7 @@ comentarioForm.addEventListener('submit', async (e) => {
 	e.preventDefault();
 	
 	const comentario = { 
-		idUsuario: 1, 
+		idUsuario: 2, 
 		texto: comentarioForm.texto.value,
 		idVideo: idVideo 
 	};

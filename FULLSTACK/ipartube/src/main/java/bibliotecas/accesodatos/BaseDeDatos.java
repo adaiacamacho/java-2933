@@ -1,6 +1,7 @@
 package bibliotecas.accesodatos;
 
 import java.io.IOException;
+import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -38,6 +39,17 @@ public class BaseDeDatos {
 			PreparedStatement pst = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 
 			return pst;
+		} catch (SQLException e) {
+			throw new RuntimeException("No se ha podido conectar a la base de datos", e);
+		}
+	}
+	
+	public static CallableStatement crearProcedimiento(String sql) {
+		try {
+			Connection con = DriverManager.getConnection(JDBC_URL, JDBC_USER, JDBC_PASS);
+			CallableStatement cst = con.prepareCall(sql);
+
+			return cst;
 		} catch (SQLException e) {
 			throw new RuntimeException("No se ha podido conectar a la base de datos", e);
 		}

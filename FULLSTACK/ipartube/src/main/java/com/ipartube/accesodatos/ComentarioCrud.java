@@ -1,8 +1,10 @@
 package com.ipartube.accesodatos;
 
+import java.sql.CallableStatement;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Types;
 import java.util.ArrayList;
 
 import com.ipartube.dtos.Comentario;
@@ -28,28 +30,27 @@ public class ComentarioCrud {
 
 			return comentarios;
 		} catch (SQLException e) {
-			throw new RuntimeException("Error al obtener los videos", e);
+			throw new RuntimeException("Error al obtener los comentarios", e);
 		}
 	}
 
 	public static ComentarioInsertarRespuesta insertar(ComentarioInsertar comentarioInsertar) {
-		try (PreparedStatement pst = BaseDeDatos
-				.crearSentencia("INSERT INTO comentarios (fecha_hora, usuarios_id, texto, videos_id) VALUES (?,?,?,?)")) {
-			pst.setObject(1, comentarioInsertar.fechaHora());
-			pst.setLong(2, comentarioInsertar.idUsuario());
-			pst.setString(3, comentarioInsertar.texto());
-			pst.setLong(4, comentarioInsertar.idVideo());
+		try (CallableStatement cst = BaseDeDatos
+				.crearProcedimiento("call comentarios_insertar(?,?,?,?,?)")) {
+			cst.registerOutParameter(1, Types.BIGINT);
+			cst.setObject(2, comentarioInsertar.fechaHora());
+			cst.setString(3, comentarioInsertar.texto());
+			cst.setLong(4, comentarioInsertar.idVideo());
+			cst.setLong(5, comentarioInsertar.idUsuario());
 
-			pst.executeUpdate();
+			cst.executeUpdate();
 
-			ResultSet rs = pst.getGeneratedKeys();
-			rs.next();
-			Long id = rs.getLong(1);
+			Long id = cst.getLong(1);
 
 			return new ComentarioInsertarRespuesta(id, comentarioInsertar.fechaHora(), comentarioInsertar.idUsuario(),
 					comentarioInsertar.texto(), comentarioInsertar.idVideo());
 		} catch (SQLException e) {
-			throw new RuntimeException("Error al obtener los videos", e);
+			throw new RuntimeException("Error al añadir un nuevo comentario " + comentarioInsertar, e);
 		}
 	}
 }

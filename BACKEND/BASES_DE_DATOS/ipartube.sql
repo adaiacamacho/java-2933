@@ -1,4 +1,4 @@
-CREATE DATABASE  IF NOT EXISTS `ipartube` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
+CREATE DATABASE  IF NOT EXISTS `ipartube` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
 USE `ipartube`;
 -- MySQL dump 10.13  Distrib 9.7.1, for Win64 (x86_64)
 --
@@ -23,7 +23,7 @@ SET @@SESSION.SQL_LOG_BIN= 0;
 -- GTID state at the beginning of the backup 
 --
 
-SET @@GLOBAL.GTID_PURGED=/*!80000 '+'*/ 'fefbe3dd-706f-11f1-963a-00155d9a6796:1-263';
+SET @@GLOBAL.GTID_PURGED=/*!80000 '+'*/ 'fefbe3dd-706f-11f1-963a-00155d9a6796:1-274';
 
 --
 -- Table structure for table `comentarios`
@@ -43,7 +43,7 @@ CREATE TABLE `comentarios` (
   KEY `fk_comentarios_usuarios1_idx` (`usuarios_id`),
   CONSTRAINT `fk_comentarios_usuarios1` FOREIGN KEY (`usuarios_id`) REFERENCES `usuarios` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   CONSTRAINT `fk_comentarios_videos` FOREIGN KEY (`videos_id`) REFERENCES `videos` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -52,7 +52,7 @@ CREATE TABLE `comentarios` (
 
 LOCK TABLES `comentarios` WRITE;
 /*!40000 ALTER TABLE `comentarios` DISABLE KEYS */;
-INSERT INTO `comentarios` VALUES (1,'2026-09-02 11:02:00','Está chulo el video',1,1),(2,'2026-09-02 15:32:00','Es un poco vago',1,2),(3,'2026-09-02 10:45:00','¡Clones!',2,2),(4,'2026-09-02 12:32:00','Efectos de video',2,1),(5,'2026-09-03 10:50:30','¡Qué pasa colegas!',2,1);
+INSERT INTO `comentarios` VALUES (1,'2026-09-02 11:02:00','Está chulo el video',1,1),(2,'2026-09-02 15:32:00','Es un poco vago',1,2),(3,'2026-09-02 10:45:00','¡Clones!',2,2),(4,'2026-09-02 12:32:00','Efectos de video',2,1),(5,'2026-09-03 10:50:30','¡Qué pasa colegas!',2,1),(6,'2026-09-04 09:10:52','Este video está un poco verde',2,1),(7,'2026-09-04 09:18:45','Es una monada',1,1),(9,'2026-09-03 12:34:00','Prueba desde procedimiento almacenado',2,2),(10,'2026-09-04 09:57:02','Prueba con procedimiento almacenado',1,1),(11,'2026-09-04 10:11:26','Prueba con procedimiento almacenado',1,1),(12,'2026-09-04 10:12:04','Prueba nueva',1,1),(13,'2026-09-04 10:13:46','Jajajajajaja',2,2);
 /*!40000 ALTER TABLE `comentarios` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -137,6 +137,26 @@ SET character_set_client = @saved_cs_client;
 --
 -- Dumping routines for database 'ipartube'
 --
+/*!50003 DROP PROCEDURE IF EXISTS `comentarios_insertar` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb3 */ ;
+/*!50003 SET character_set_results = utf8mb3 */ ;
+/*!50003 SET collation_connection  = utf8mb3_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'NO_AUTO_VALUE_ON_ZERO' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `comentarios_insertar`(OUT p_id BIGINT, p_fecha_hora DATETIME, p_texto VARCHAR(255), p_videos_id BIGINT, p_usuarios_id BIGINT)
+BEGIN
+INSERT INTO comentarios (fecha_hora, usuarios_id, texto, videos_id) VALUES (p_fecha_hora,p_usuarios_id,p_texto,p_videos_id);
+SET p_id = LAST_INSERT_ID();
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
 
 --
 -- Final view structure for view `vista_comentarios`
@@ -146,12 +166,12 @@ SET character_set_client = @saved_cs_client;
 /*!50001 SET @saved_cs_client          = @@character_set_client */;
 /*!50001 SET @saved_cs_results         = @@character_set_results */;
 /*!50001 SET @saved_col_connection     = @@collation_connection */;
-/*!50001 SET character_set_client      = utf8mb4 */;
-/*!50001 SET character_set_results     = utf8mb4 */;
-/*!50001 SET collation_connection      = utf8mb4_0900_ai_ci */;
+/*!50001 SET character_set_client      = utf8mb3 */;
+/*!50001 SET character_set_results     = utf8mb3 */;
+/*!50001 SET collation_connection      = utf8mb3_general_ci */;
 /*!50001 CREATE ALGORITHM=UNDEFINED */
 /*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
-/*!50001 VIEW `vista_comentarios` AS select `c`.`id` AS `id`,`c`.`fecha_hora` AS `fecha_hora`,`c`.`texto` AS `texto`,`u`.`nombre` AS `usuario`,`c`.`videos_id` AS `videos_id` from (`comentarios` `c` join `usuarios` `u` on((`c`.`usuarios_id` = `u`.`id`))) */;
+/*!50001 VIEW `vista_comentarios` AS select `c`.`id` AS `id`,`c`.`fecha_hora` AS `fecha_hora`,`c`.`texto` AS `texto`,`u`.`nombre` AS `usuario`,`c`.`videos_id` AS `videos_id` from (`comentarios` `c` join `usuarios` `u` on((`c`.`usuarios_id` = `u`.`id`))) order by `c`.`fecha_hora` desc */;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
 /*!50001 SET collation_connection      = @saved_col_connection */;
@@ -166,4 +186,4 @@ SET @@SESSION.SQL_LOG_BIN = @MYSQLDUMP_TEMP_LOG_BIN;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2026-09-04  8:50:37
+-- Dump completed on 2026-09-04 10:17:26
