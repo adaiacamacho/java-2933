@@ -52,7 +52,7 @@ public class ComentarioRestServlet extends HttpServlet {
 
 		ComentarioPost comentarioPost = GSON.fromJson(request.getReader(), ComentarioPost.class);
 
-		ComentarioInsertar comentarioInsertar = new ComentarioInsertar(LocalDateTime.now(), comentarioPost.usuario(),
+		ComentarioInsertar comentarioInsertar = new ComentarioInsertar(LocalDateTime.now(), comentarioPost.idUsuario(),
 				comentarioPost.texto(), comentarioPost.idVideo());
 
 		ComentarioInsertarRespuesta comentarioInsertarRespuesta = AnonimoNegocio

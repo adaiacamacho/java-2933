@@ -34,9 +34,9 @@ public class ComentarioCrud {
 
 	public static ComentarioInsertarRespuesta insertar(ComentarioInsertar comentarioInsertar) {
 		try (PreparedStatement pst = BaseDeDatos
-				.crearSentencia("INSERT INTO comentarios (fecha_hora, usuario, texto, videos_id) VALUES (?,?,?,?)")) {
+				.crearSentencia("INSERT INTO comentarios (fecha_hora, usuarios_id, texto, videos_id) VALUES (?,?,?,?)")) {
 			pst.setObject(1, comentarioInsertar.fechaHora());
-			pst.setString(2, comentarioInsertar.usuario());
+			pst.setLong(2, comentarioInsertar.idUsuario());
 			pst.setString(3, comentarioInsertar.texto());
 			pst.setLong(4, comentarioInsertar.idVideo());
 
@@ -46,7 +46,7 @@ public class ComentarioCrud {
 			rs.next();
 			Long id = rs.getLong(1);
 
-			return new ComentarioInsertarRespuesta(id, comentarioInsertar.fechaHora(), comentarioInsertar.usuario(),
+			return new ComentarioInsertarRespuesta(id, comentarioInsertar.fechaHora(), comentarioInsertar.idUsuario(),
 					comentarioInsertar.texto(), comentarioInsertar.idVideo());
 		} catch (SQLException e) {
 			throw new RuntimeException("Error al obtener los videos", e);
