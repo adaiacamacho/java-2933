@@ -25,6 +25,8 @@ comentarioForm.addEventListener('submit', async (e) => {
 	const comentarioRecibido = await respuesta.json();
 	
 	console.log(comentarioRecibido);
+	
+	await rellenarComentariosVideo(idVideo);
 });
 
 window.listado = async function() {
@@ -72,15 +74,16 @@ function mostrar(id) {
 window.detalle = async function(id) {
 	idVideo = id;
 	
-    const respuesta = await fetch(URL_VIDEOS + id);
-    const video = await respuesta.json();
+    await rellenarDatosVideo(id); //'FECHA';
 
-    document.querySelector('#detalle iframe').src = video.url; // 'https://www.youtube.com/embed/fLexgOxsZu0';
-    document.querySelector('#detalle iframe').title = video.titulo; //'Video de Bruno Mars';
-    document.querySelector('#detalle .card-title').textContent = video.titulo; //'Video de Bruno Mars';
-    document.querySelector('#detalle .card-text').textContent = video.descripcion; // 'Bla bla bla';
-    document.querySelector('#detalle .card-footer small').textContent = video.fecha; //'FECHA';
+    await rellenarComentariosVideo(id);
 
+    mostrar('detalle');
+}
+
+window.detalle(2);
+
+async function rellenarComentariosVideo(id) {
     const respuestaComentarios = await fetch(`${URL_VIDEOS}${id}/comentarios`);
     const comentarios = await respuestaComentarios.json();
 
@@ -107,8 +110,15 @@ window.detalle = async function(id) {
 
         ul.appendChild(li);
     }
-
-    mostrar('detalle');
 }
 
-window.detalle(2);
+async function rellenarDatosVideo(id) {
+    const respuesta = await fetch(URL_VIDEOS + id);
+    const video = await respuesta.json();
+
+    document.querySelector('#detalle iframe').src = video.url; // 'https://www.youtube.com/embed/fLexgOxsZu0';
+    document.querySelector('#detalle iframe').title = video.titulo; //'Video de Bruno Mars';
+    document.querySelector('#detalle .card-title').textContent = video.titulo; //'Video de Bruno Mars';
+    document.querySelector('#detalle .card-text').textContent = video.descripcion; // 'Bla bla bla';
+    document.querySelector('#detalle .card-footer small').textContent = video.fecha;
+}
