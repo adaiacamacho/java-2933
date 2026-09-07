@@ -9,6 +9,8 @@ import com.ipartube.dtos.Comentario;
 import com.ipartube.dtos.ComentarioInsertar;
 import com.ipartube.dtos.ComentarioInsertarRespuesta;
 import com.ipartube.dtos.Video;
+import com.ipartube.dtos.VideoInsertar;
+import com.ipartube.dtos.VideoInsertarRespuesta;
 
 public class AnonimoNegocio {
 	private static final Logger log = Logger.getLogger(AnonimoNegocio.class.getName());
@@ -36,4 +38,12 @@ public class AnonimoNegocio {
 		
 		return ComentarioCrud.insertar(comentarioInsertar);
 	}
+	
+	public static VideoInsertarRespuesta crearNuevoVideo(VideoInsertar videoInsertar) {
+		log.info("Se va a insertar un nuevo video " + videoInsertar);
+		
+		return VideoCrud.insertar(videoInsertar);
+	}
+	
+	
 }

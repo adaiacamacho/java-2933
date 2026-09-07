@@ -6,27 +6,27 @@ let idVideo;
 const comentarioForm = document.querySelector('#detalle form');
 
 comentarioForm.addEventListener('submit', async (e) => {
-	e.preventDefault();
-	
-	const comentario = { 
-		idUsuario: 2, 
-		texto: comentarioForm.texto.value,
-		idVideo: idVideo 
-	};
-	
-	console.log(comentario);
-	
-	const respuesta = await fetch(URL_COMENTARIOS, {
-		method: 'POST',
-		body: JSON.stringify(comentario),
-		headers: { 'Content-type': 'application/json' },
-	});
-	
-	const comentarioRecibido = await respuesta.json();
-	
-	console.log(comentarioRecibido);
-	
-	await rellenarComentariosVideo(idVideo);
+    e.preventDefault();
+
+    const comentario = {
+        idUsuario: 2,
+        texto: comentarioForm.texto.value,
+        idVideo: idVideo
+    };
+
+    console.log(comentario);
+
+    const respuesta = await fetch(URL_COMENTARIOS, {
+        method: 'POST',
+        body: JSON.stringify(comentario),
+        headers: { 'Content-type': 'application/json' },
+    });
+
+    const comentarioRecibido = await respuesta.json();
+
+    console.log(comentarioRecibido);
+
+    await rellenarComentariosVideo(idVideo);
 });
 
 window.listado = async function() {
@@ -41,23 +41,77 @@ window.listado = async function() {
         const card = document.createElement('div');
         card.className = 'col';
         card.innerHTML = `	
-		<div class="card h-100">
-			<div class="ratio ratio-16x9 card-img-top">
-			  	<iframe src="${video.url}" title="${video.titulo}" allowfullscreen></iframe>
+			<div class="card h-100">
+				<div class="ratio ratio-16x9 card-img-top">
+				  	<iframe src="${video.url}" title="${video.titulo}" allowfullscreen></iframe>
+				</div>
+				<div class="card-body">
+					<h5 class="card-title"><a href="javascript:detalle(${video.id})">${video.titulo}</a></h5>
+					<p class="card-text">${video.descripcion}</p>
+				</div>
+				<div class="card-footer">
+					<small class="text-body-secondary">${video.fecha}</small>
+				</div>
 			</div>
-			<div class="card-body">
-				<h5 class="card-title"><a href="javascript:detalle(${video.id})">${video.titulo}</a></h5>
-				<p class="card-text">${video.descripcion}</p>
-			</div>
-			<div class="card-footer">
-				<small class="text-body-secondary">${video.fecha}</small>
-			</div>
-		</div>
-	`;
+		`;
 
         listadoVideos.appendChild(card);
     }
+	
+	const formularioVideo = document.createElement('div');
+	
+	formularioVideo.className = 'col';
+	
+	formularioVideo.innerHTML = `
+		<form class="card h-100">
+			<div class="ratio ratio-16x9 card-img-top">
+			  	<input name="url" type="url" class="form-control">
+			</div>
+			<div class="card-body">
+				<h5 class="card-title">
+					<input name="titulo" class="form-control">
+				</h5>
+				<p class="card-text">
+					<textarea name="descripcion" class="form-control"></textarea>
+				</p>
+				
+				<button class="btn btn-primary">Añadir Video</button>
+			</div>
+			<div class="card-footer">
+				<small class="text-body-secondary">${new Date().toISOString()}</small>
+			</div>
+		</form>`;
+	
+	listadoVideos.appendChild(formularioVideo)
 
+	const videoForm = document.querySelector('#listado form');
+
+	videoForm.addEventListener('submit', async (e) => {
+		e.preventDefault();
+
+	    const video = {
+	        url: videoForm.url.value,
+			titulo: videoForm.titulo.value,
+	        descripcion:videoForm.descripcion.value,
+	        idUsuario: 2,
+	    };
+
+	    console.log(video);
+
+	    const respuesta = await fetch(URL_VIDEOS, {
+	        method: 'POST',
+	        body: JSON.stringify(video),
+	        headers: { 'Content-type': 'application/json' },
+	    });
+
+	    const videoRecibido = await respuesta.json();
+
+	    console.log(videoRecibido);
+
+	    await listado();
+	});
+
+	
     mostrar('listado');
 }
 
@@ -72,16 +126,14 @@ function mostrar(id) {
 }
 
 window.detalle = async function(id) {
-	idVideo = id;
-	
+    idVideo = id;
+
     await rellenarDatosVideo(id); //'FECHA';
 
     await rellenarComentariosVideo(id);
 
     mostrar('detalle');
 }
-
-window.detalle(2);
 
 async function rellenarComentariosVideo(id) {
     const respuestaComentarios = await fetch(`${URL_VIDEOS}${id}/comentarios`);
@@ -122,3 +174,5 @@ async function rellenarDatosVideo(id) {
     document.querySelector('#detalle .card-text').textContent = video.descripcion; // 'Bla bla bla';
     document.querySelector('#detalle .card-footer small').textContent = video.fecha;
 }
+
+window.listado();

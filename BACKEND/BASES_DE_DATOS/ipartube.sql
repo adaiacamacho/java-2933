@@ -23,7 +23,7 @@ SET @@SESSION.SQL_LOG_BIN= 0;
 -- GTID state at the beginning of the backup 
 --
 
-SET @@GLOBAL.GTID_PURGED=/*!80000 '+'*/ 'fefbe3dd-706f-11f1-963a-00155d9a6796:1-291';
+SET @@GLOBAL.GTID_PURGED=/*!80000 '+'*/ 'fefbe3dd-706f-11f1-963a-00155d9a6796:1-296';
 
 --
 -- Table structure for table `comentarios`
@@ -101,7 +101,7 @@ CREATE TABLE `videos` (
   UNIQUE KEY `url_UNIQUE` (`url`),
   KEY `fk_videos_usuarios1_idx` (`usuarios_id`),
   CONSTRAINT `fk_videos_usuarios1` FOREIGN KEY (`usuarios_id`) REFERENCES `usuarios` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='	';
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='	';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -110,7 +110,7 @@ CREATE TABLE `videos` (
 
 LOCK TABLES `videos` WRITE;
 /*!40000 ALTER TABLE `videos` DISABLE KEYS */;
-INSERT INTO `videos` VALUES (1,'2026-09-01','https://www.youtube.com/embed/fLexgOxsZu0','Lazy Song','Bruno Mars haciendo el mono',1),(2,'2026-08-01','https://www.youtube.com/embed/mrV8kK5t0V8','I Just Might','Bruno Mars en plan aerobic',2),(3,'2026-09-03','https://www.youtube.com/embed/5ZCB1ty7qBU','Selección Rock',NULL,2);
+INSERT INTO `videos` VALUES (1,'2026-09-01','https://www.youtube.com/embed/fLexgOxsZu0','Lazy Song','Bruno Mars haciendo el mono',1),(2,'2026-08-01','https://www.youtube.com/embed/mrV8kK5t0V8','I Just Might','Bruno Mars en plan aerobic',2),(3,'2026-09-03','https://www.youtube.com/embed/5ZCB1ty7qBU','Selección Rock',NULL,2),(4,'2026-09-07','https://www.youtube.com/embed/hcWWCNi1cb4','Funk','Selección de funk',2);
 /*!40000 ALTER TABLE `videos` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
@@ -278,6 +278,56 @@ DELIMITER ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
 /*!50003 SET character_set_results = @saved_cs_results */ ;
 /*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `videos_insert` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `videos_insert`(OUT p_id BIGINT, OUT p_fecha DATE, IN p_url VARCHAR(255), IN p_titulo VARCHAR(50), IN p_descripcion VARCHAR(50), IN p_usuarios_id BIGINT)
+BEGIN
+SET p_fecha = CURDATE();
+
+INSERT INTO videos (fecha, url, titulo, descripcion, usuarios_id) 
+	VALUES (p_fecha, p_url, p_titulo, p_descripcion, p_usuarios_id);
+
+SET p_id = (SELECT LAST_INSERT_ID());
+
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `video_insert` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `video_insert`(OUT p_id BIGINT, OUT p_fecha DATE, IN p_url VARCHAR(255), IN p_titulo VARCHAR(50), IN p_descripcion VARCHAR(50), IN p_usuarios_id BIGINT)
+BEGIN
+SET p_fecha = CURDATE();
+
+INSERT INTO videos (fecha, url, titulo, descripcion, usuarios_id) 
+	VALUES (p_fecha, p_url, p_titulo, p_descripcion, p_usuarios_id);
+
+SET p_id = (SELECT LAST_INSERT_ID());
+
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
 
 --
 -- Final view structure for view `vista_comentarios`
@@ -307,4 +357,4 @@ SET @@SESSION.SQL_LOG_BIN = @MYSQLDUMP_TEMP_LOG_BIN;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2026-09-07  9:38:47
+-- Dump completed on 2026-09-07 10:48:25

@@ -11,6 +11,8 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonPrimitive;
 import com.google.gson.JsonSerializer;
+import com.ipartube.dtos.VideoInsertar;
+import com.ipartube.dtos.VideoInsertarRespuesta;
 import com.ipartube.logicanegocio.AnonimoNegocio;
 
 import jakarta.servlet.ServletException;
@@ -63,6 +65,17 @@ public class VideoRestServlet extends HttpServlet {
 		}
 
 		out.append(GSON.toJson(AnonimoNegocio.listarVideos()));
+	}
+
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		response.setContentType("application/json");
+
+		VideoInsertar videoInsertar = GSON.fromJson(request.getReader(), VideoInsertar.class);
+
+		VideoInsertarRespuesta videoInsertarRespuesta = AnonimoNegocio.crearNuevoVideo(videoInsertar);
+
+		response.getWriter().append(GSON.toJson(videoInsertarRespuesta));
 	}
 
 	private String[] obtenerPartes(HttpServletRequest request) {
