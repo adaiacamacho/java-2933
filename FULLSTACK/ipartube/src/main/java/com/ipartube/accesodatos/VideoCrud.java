@@ -7,20 +7,20 @@ import java.sql.SQLException;
 import java.sql.Types;
 import java.util.ArrayList;
 
-import com.ipartube.dtos.Video;
-import com.ipartube.dtos.VideoInsertar;
-import com.ipartube.dtos.VideoInsertarRespuesta;
+import com.ipartube.dtos.VideoDto;
+import com.ipartube.dtos.VideoInsertarDto;
+import com.ipartube.dtos.VideoInsertarRespuestaDto;
 
 import bibliotecas.accesodatos.BaseDeDatos;
 
 public class VideoCrud {
-	public static ArrayList<Video> obtenerTodos() {
+	public static ArrayList<VideoDto> obtenerTodos() {
 		try (PreparedStatement pst = BaseDeDatos.crearSentencia("SELECT * FROM videos");
 				ResultSet rs = pst.executeQuery()) {
-			ArrayList<Video> videos = new ArrayList<Video>();
+			ArrayList<VideoDto> videos = new ArrayList<VideoDto>();
 
 			while (rs.next()) {
-				Video video = new Video(rs.getLong("id"), rs.getDate("fecha").toLocalDate(), rs.getString("url"),
+				VideoDto video = new VideoDto(rs.getLong("id"), rs.getDate("fecha").toLocalDate(), rs.getString("url"),
 						rs.getString("titulo"), rs.getString("descripcion"));
 				videos.add(video);
 			}
@@ -31,16 +31,16 @@ public class VideoCrud {
 		}
 	}
 
-	public static Video obtenerPorId(Long id) {
+	public static VideoDto obtenerPorId(Long id) {
 		try (PreparedStatement pst = BaseDeDatos.crearSentencia("SELECT * FROM videos WHERE id=?")) {
 			pst.setLong(1, id);
 
 			ResultSet rs = pst.executeQuery();
 
-			Video video = null;
+			VideoDto video = null;
 
 			if (rs.next()) {
-				video = new Video(rs.getLong("id"), rs.getDate("fecha").toLocalDate(), rs.getString("url"),
+				video = new VideoDto(rs.getLong("id"), rs.getDate("fecha").toLocalDate(), rs.getString("url"),
 						rs.getString("titulo"), rs.getString("descripcion"));
 			}
 
@@ -50,7 +50,7 @@ public class VideoCrud {
 		}
 	}
 
-	public static VideoInsertarRespuesta insertar(VideoInsertar videoInsertar) {
+	public static VideoInsertarRespuestaDto insertar(VideoInsertarDto videoInsertar) {
 		try (CallableStatement cst = BaseDeDatos.crearProcedimiento("call videos_insert(?,?,?,?,?,?)")) {
 			cst.registerOutParameter(1, Types.BIGINT);
 			cst.registerOutParameter(2, Types.DATE);
@@ -62,7 +62,7 @@ public class VideoCrud {
 
 			cst.executeUpdate();
 
-			return new VideoInsertarRespuesta(cst.getLong(1), cst.getDate(2).toLocalDate(), videoInsertar.url(),
+			return new VideoInsertarRespuestaDto(cst.getLong(1), cst.getDate(2).toLocalDate(), videoInsertar.url(),
 					videoInsertar.titulo(), videoInsertar.descripcion(), videoInsertar.idUsuario());
 		} catch (SQLException e) {
 			throw new RuntimeException("Error al insertar el video " + videoInsertar, e);

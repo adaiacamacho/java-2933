@@ -10,9 +10,9 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonPrimitive;
 import com.google.gson.JsonSerializer;
-import com.ipartube.dtos.ComentarioInsertar;
-import com.ipartube.dtos.ComentarioInsertarRespuesta;
-import com.ipartube.dtos.ComentarioPost;
+import com.ipartube.dtos.ComentarioInsertarDto;
+import com.ipartube.dtos.ComentarioInsertarRespuestaDto;
+import com.ipartube.dtos.ComentarioPostDto;
 import com.ipartube.logicanegocio.AnonimoNegocio;
 
 import jakarta.servlet.ServletException;
@@ -50,12 +50,12 @@ public class ComentarioRestServlet extends HttpServlet {
 			throws ServletException, IOException {
 		response.setContentType("application/json");
 
-		ComentarioPost comentarioPost = GSON.fromJson(request.getReader(), ComentarioPost.class);
+		ComentarioPostDto comentarioPost = GSON.fromJson(request.getReader(), ComentarioPostDto.class);
 
-		ComentarioInsertar comentarioInsertar = new ComentarioInsertar(LocalDateTime.now(), comentarioPost.idUsuario(),
+		ComentarioInsertarDto comentarioInsertar = new ComentarioInsertarDto(LocalDateTime.now(), comentarioPost.idUsuario(),
 				comentarioPost.texto(), comentarioPost.idVideo());
 
-		ComentarioInsertarRespuesta comentarioInsertarRespuesta = AnonimoNegocio
+		ComentarioInsertarRespuestaDto comentarioInsertarRespuesta = AnonimoNegocio
 				.crearNuevoComentario(comentarioInsertar);
 
 		response.getWriter().append(GSON.toJson(comentarioInsertarRespuesta));

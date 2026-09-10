@@ -7,22 +7,22 @@ import java.sql.SQLException;
 import java.sql.Types;
 import java.util.ArrayList;
 
-import com.ipartube.dtos.Comentario;
-import com.ipartube.dtos.ComentarioInsertar;
-import com.ipartube.dtos.ComentarioInsertarRespuesta;
+import com.ipartube.dtos.ComentarioDto;
+import com.ipartube.dtos.ComentarioInsertarDto;
+import com.ipartube.dtos.ComentarioInsertarRespuestaDto;
 
 import bibliotecas.accesodatos.BaseDeDatos;
 
 public class ComentarioCrud {
-	public static ArrayList<Comentario> obtenerTodosPorIdVideo(Long idVideo) {
+	public static ArrayList<ComentarioDto> obtenerTodosPorIdVideo(Long idVideo) {
 		try (PreparedStatement pst = BaseDeDatos.crearSentencia("SELECT * FROM vista_comentarios WHERE videos_id=?")) {
 			pst.setLong(1, idVideo);
 			ResultSet rs = pst.executeQuery();
 
-			ArrayList<Comentario> comentarios = new ArrayList<Comentario>();
+			ArrayList<ComentarioDto> comentarios = new ArrayList<ComentarioDto>();
 
 			while (rs.next()) {
-				Comentario comentario = new Comentario(rs.getLong("id"),
+				ComentarioDto comentario = new ComentarioDto(rs.getLong("id"),
 						rs.getTimestamp("fecha_hora").toLocalDateTime(), rs.getString("usuario"),
 						rs.getString("texto"));
 				comentarios.add(comentario);
@@ -34,7 +34,7 @@ public class ComentarioCrud {
 		}
 	}
 
-	public static ComentarioInsertarRespuesta insertar(ComentarioInsertar comentarioInsertar) {
+	public static ComentarioInsertarRespuestaDto insertar(ComentarioInsertarDto comentarioInsertar) {
 		try (CallableStatement cst = BaseDeDatos
 				.crearProcedimiento("call comentarios_insertar(?,?,?,?,?)")) {
 			cst.registerOutParameter(1, Types.BIGINT);
@@ -47,7 +47,7 @@ public class ComentarioCrud {
 
 			Long id = cst.getLong(1);
 
-			return new ComentarioInsertarRespuesta(id, comentarioInsertar.fechaHora(), comentarioInsertar.idUsuario(),
+			return new ComentarioInsertarRespuestaDto(id, comentarioInsertar.fechaHora(), comentarioInsertar.idUsuario(),
 					comentarioInsertar.texto(), comentarioInsertar.idVideo());
 		} catch (SQLException e) {
 			throw new RuntimeException("Error al añadir un nuevo comentario " + comentarioInsertar, e);
