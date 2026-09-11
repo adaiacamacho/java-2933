@@ -8,8 +8,7 @@ import java.sql.Types;
 import java.util.ArrayList;
 
 import com.ipartube.dtos.ComentarioDto;
-import com.ipartube.dtos.ComentarioInsertarDto;
-import com.ipartube.dtos.ComentarioInsertarRespuestaDto;
+import com.ipartube.entidades.Comentario;
 
 import bibliotecas.accesodatos.BaseDeDatos;
 
@@ -34,23 +33,22 @@ public class ComentarioCrud {
 		}
 	}
 
-	public static ComentarioInsertarRespuestaDto insertar(ComentarioInsertarDto comentarioInsertar) {
+	public static Comentario insertar(Comentario comentario) {
 		try (CallableStatement cst = BaseDeDatos
 				.crearProcedimiento("call comentarios_insertar(?,?,?,?,?)")) {
 			cst.registerOutParameter(1, Types.BIGINT);
-			cst.setObject(2, comentarioInsertar.fechaHora());
-			cst.setString(3, comentarioInsertar.texto());
-			cst.setLong(4, comentarioInsertar.idVideo());
-			cst.setLong(5, comentarioInsertar.idUsuario());
+			cst.setObject(2, comentario.getFechaHora());
+			cst.setString(3, comentario.getTexto());
+			cst.setLong(4, comentario.getVideo().getId());
+			cst.setLong(5, comentario.getUsuario().getId());
 
 			cst.executeUpdate();
 
-			Long id = cst.getLong(1);
+			comentario.setId(cst.getLong(1));
 
-			return new ComentarioInsertarRespuestaDto(id, comentarioInsertar.fechaHora(), comentarioInsertar.idUsuario(),
-					comentarioInsertar.texto(), comentarioInsertar.idVideo());
+			return comentario;
 		} catch (SQLException e) {
-			throw new RuntimeException("Error al añadir un nuevo comentario " + comentarioInsertar, e);
+			throw new RuntimeException("Error al añadir un nuevo comentario " + comentario, e);
 		}
 	}
 }
