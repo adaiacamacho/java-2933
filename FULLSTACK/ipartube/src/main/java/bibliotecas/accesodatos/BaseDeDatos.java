@@ -27,9 +27,9 @@ public class BaseDeDatos {
 
 			Class.forName(JDBC_DRIVER);
 		} catch (ClassNotFoundException e) {
-			throw new RuntimeException("No se ha encontrado el driver", e);
+			throw new AccesoDatosException("No se ha encontrado el driver", e);
 		} catch (IOException e) {
-			throw new RuntimeException("No se ha podido abrir la configuración");
+			throw new AccesoDatosException("No se ha podido abrir la configuración");
 		}
 	}
 
@@ -40,7 +40,7 @@ public class BaseDeDatos {
 
 			return pst;
 		} catch (SQLException e) {
-			throw new RuntimeException("No se ha podido conectar a la base de datos", e);
+			throw new AccesoDatosException("No se ha podido conectar a la base de datos", e);
 		}
 	}
 	
@@ -51,7 +51,7 @@ public class BaseDeDatos {
 
 			return cst;
 		} catch (SQLException e) {
-			throw new RuntimeException("No se ha podido conectar a la base de datos", e);
+			throw new AccesoDatosException("No se ha podido conectar a la base de datos", e);
 		}
 	}
 }
