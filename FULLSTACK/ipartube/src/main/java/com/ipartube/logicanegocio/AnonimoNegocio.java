@@ -13,6 +13,7 @@ import com.ipartube.dtos.VideoInsertarDto;
 import com.ipartube.dtos.VideoInsertarRespuestaDto;
 import com.ipartube.entidades.Comentario;
 import com.ipartube.entidades.Usuario;
+import com.ipartube.entidades.UsuarioEmailPassword;
 import com.ipartube.entidades.Video;
 
 public class AnonimoNegocio {
@@ -53,7 +54,7 @@ public class AnonimoNegocio {
 	public static ComentarioInsertarRespuestaDto crearNuevoComentario(ComentarioInsertarDto comentarioInsertar) {
 		log.info("Se va a insertar un nuevo comentario " + comentarioInsertar);
 
-		Usuario usuario = new Usuario(comentarioInsertar.idUsuario());
+		Usuario usuario = new UsuarioEmailPassword(comentarioInsertar.idUsuario());
 		Video video = new Video(comentarioInsertar.idVideo(), null, null, null, null);
 		Comentario comentario = new Comentario(null, comentarioInsertar.fechaHora(), comentarioInsertar.texto(), video,
 				usuario);
@@ -69,7 +70,7 @@ public class AnonimoNegocio {
 		log.info("Se va a insertar un nuevo video " + videoInsertar);
 
 		Video video = VideoCrud.insertar(new Video(videoInsertar.url(), videoInsertar.titulo(),
-				videoInsertar.descripcion(), new Usuario(videoInsertar.idUsuario())));
+				videoInsertar.descripcion(), new UsuarioEmailPassword(videoInsertar.idUsuario())));
 
 		return new VideoInsertarRespuestaDto(video.getId(), video.getFecha(), video.getUrl(), video.getTitulo(),
 				video.getDescripcion(), videoInsertar.idUsuario());
