@@ -14,6 +14,7 @@ import com.ipartube.dtos.ComentarioInsertarDto;
 import com.ipartube.dtos.ComentarioInsertarRespuestaDto;
 import com.ipartube.dtos.ComentarioPostDto;
 import com.ipartube.logicanegocio.AnonimoNegocio;
+import com.ipartube.logicanegocio.AnonimoNegocioImpl;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -24,6 +25,8 @@ import jakarta.servlet.http.HttpServletResponse;
 @WebServlet("/api/v1/comentarios/*")
 public class ComentarioRestServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+
+	private static final AnonimoNegocio ANONIMO_NEGOCIO = new AnonimoNegocioImpl(); 
 
 	// @formatter:off
 	private static final JsonSerializer<LocalDate> SER_LOCAL_DATE = 
@@ -55,7 +58,7 @@ public class ComentarioRestServlet extends HttpServlet {
 		ComentarioInsertarDto comentarioInsertar = new ComentarioInsertarDto(LocalDateTime.now(), comentarioPost.idUsuario(),
 				comentarioPost.texto(), comentarioPost.idVideo());
 
-		ComentarioInsertarRespuestaDto comentarioInsertarRespuesta = AnonimoNegocio
+		ComentarioInsertarRespuestaDto comentarioInsertarRespuesta = ANONIMO_NEGOCIO
 				.crearNuevoComentario(comentarioInsertar);
 
 		response.getWriter().append(GSON.toJson(comentarioInsertarRespuesta));

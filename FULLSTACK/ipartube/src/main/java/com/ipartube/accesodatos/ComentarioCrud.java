@@ -10,10 +10,11 @@ import java.util.ArrayList;
 import com.ipartube.dtos.ComentarioDto;
 import com.ipartube.entidades.Comentario;
 
+import bibliotecas.accesodatos.AccesoDatosException;
 import bibliotecas.accesodatos.BaseDeDatos;
 
-public class ComentarioCrud {
-	public static ArrayList<ComentarioDto> obtenerTodosPorIdVideo(Long idVideo) {
+public class ComentarioCrud implements DaoComentario {
+	public ArrayList<ComentarioDto> obtenerTodosPorIdVideo(Long idVideo) {
 		try (PreparedStatement pst = BaseDeDatos.crearSentencia("SELECT * FROM vista_comentarios WHERE videos_id=?")) {
 			pst.setLong(1, idVideo);
 			ResultSet rs = pst.executeQuery();
@@ -33,7 +34,8 @@ public class ComentarioCrud {
 		}
 	}
 
-	public static Comentario insertar(Comentario comentario) {
+	@Override
+	public Comentario insertar(Comentario comentario) {
 		try (CallableStatement cst = BaseDeDatos
 				.crearProcedimiento("call comentarios_insertar(?,?,?,?,?)")) {
 			cst.registerOutParameter(1, Types.BIGINT);
@@ -50,5 +52,25 @@ public class ComentarioCrud {
 		} catch (SQLException e) {
 			throw new RuntimeException("Error al añadir un nuevo comentario " + comentario, e);
 		}
+	}
+
+	@Override
+	public ArrayList<Comentario> obtenerTodos() {
+		throw new AccesoDatosException("NO IMPLEMENTADO");
+	}
+
+	@Override
+	public Comentario obtenerPorId(Long id) {
+		throw new AccesoDatosException("NO IMPLEMENTADO");
+	}
+
+	@Override
+	public Comentario modificar(Comentario o) {
+		throw new AccesoDatosException("NO IMPLEMENTADO");
+	}
+
+	@Override
+	public void borrar(Long id) {
+		throw new AccesoDatosException("NO IMPLEMENTADO");
 	}
 }

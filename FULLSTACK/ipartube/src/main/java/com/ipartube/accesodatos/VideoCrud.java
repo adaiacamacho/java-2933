@@ -9,11 +9,13 @@ import java.util.ArrayList;
 
 import com.ipartube.entidades.Video;
 
+import bibliotecas.accesodatos.AccesoDatosException;
 import bibliotecas.accesodatos.BaseDeDatos;
 
-public class VideoCrud {
+public class VideoCrud implements DaoVideo {
 	// TODO: Añadir relación con Usuario
-	public static ArrayList<Video> obtenerTodos() {
+	@Override
+	public ArrayList<Video> obtenerTodos() {
 		try (PreparedStatement pst = BaseDeDatos.crearSentencia("SELECT * FROM videos");
 				ResultSet rs = pst.executeQuery()) {
 			ArrayList<Video> videos = new ArrayList<Video>();
@@ -31,7 +33,8 @@ public class VideoCrud {
 	}
 
 	// TODO: Añadir relación con Usuario
-	public static Video obtenerPorId(Long id) {
+	@Override
+	public Video obtenerPorId(Long id) {
 		try (PreparedStatement pst = BaseDeDatos.crearSentencia("SELECT * FROM videos WHERE id=?")) {
 			pst.setLong(1, id);
 
@@ -50,7 +53,8 @@ public class VideoCrud {
 		}
 	}
 
-	public static Video insertar(Video video) {
+	@Override
+	public Video insertar(Video video) {
 		try (CallableStatement cst = BaseDeDatos.crearProcedimiento("call videos_insert(?,?,?,?,?,?)")) {
 			cst.registerOutParameter(1, Types.BIGINT);
 			cst.registerOutParameter(2, Types.DATE);
@@ -69,5 +73,15 @@ public class VideoCrud {
 		} catch (SQLException e) {
 			throw new RuntimeException("Error al insertar el video " + video, e);
 		}
+	}
+
+	@Override
+	public Video modificar(Video o) {
+		throw new AccesoDatosException("NO IMPLEMENTADO");
+	}
+
+	@Override
+	public void borrar(Long id) {
+		throw new AccesoDatosException("NO IMPLEMENTADO");
 	}
 }

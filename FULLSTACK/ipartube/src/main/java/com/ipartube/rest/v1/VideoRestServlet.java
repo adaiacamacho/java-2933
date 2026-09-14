@@ -14,6 +14,7 @@ import com.google.gson.JsonSerializer;
 import com.ipartube.dtos.VideoInsertarDto;
 import com.ipartube.dtos.VideoInsertarRespuestaDto;
 import com.ipartube.logicanegocio.AnonimoNegocio;
+import com.ipartube.logicanegocio.AnonimoNegocioImpl;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -24,6 +25,8 @@ import jakarta.servlet.http.HttpServletResponse;
 @WebServlet("/api/v1/videos/*")
 public class VideoRestServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+	
+	private static final AnonimoNegocio ANONIMO_NEGOCIO = new AnonimoNegocioImpl(); 
 
 	// @formatter:off
 	private static final JsonSerializer<LocalDate> SER_LOCAL_DATE = 
@@ -56,15 +59,15 @@ public class VideoRestServlet extends HttpServlet {
 		PrintWriter out = response.getWriter();
 		if (id != null) {
 			if (partes.length == 2 && partes[1].equals("comentarios")) {
-				out.append(GSON.toJson(AnonimoNegocio.verComentariosVideo(id)));
+				out.append(GSON.toJson(ANONIMO_NEGOCIO.verComentariosVideo(id)));
 				return;
 			}
 
-			out.append(GSON.toJson(AnonimoNegocio.verDetalleVideo(id)));
+			out.append(GSON.toJson(ANONIMO_NEGOCIO.verDetalleVideo(id)));
 			return;
 		}
 
-		out.append(GSON.toJson(AnonimoNegocio.listarVideos()));
+		out.append(GSON.toJson(ANONIMO_NEGOCIO.listarVideos()));
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
@@ -73,7 +76,7 @@ public class VideoRestServlet extends HttpServlet {
 
 		VideoInsertarDto videoInsertar = GSON.fromJson(request.getReader(), VideoInsertarDto.class);
 
-		VideoInsertarRespuestaDto videoInsertarRespuesta = AnonimoNegocio.crearNuevoVideo(videoInsertar);
+		VideoInsertarRespuestaDto videoInsertarRespuesta = ANONIMO_NEGOCIO.crearNuevoVideo(videoInsertar);
 
 		response.getWriter().append(GSON.toJson(videoInsertarRespuesta));
 	}
