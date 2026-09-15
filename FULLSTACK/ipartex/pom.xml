@@ -8,6 +8,12 @@
 	<packaging>war</packaging>
 	<name>IparteX</name>
 	<description>Aplicación de mensajería pública</description>
+
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+	</properties>
+
 	<build>
 		<plugins>
 			<plugin>
