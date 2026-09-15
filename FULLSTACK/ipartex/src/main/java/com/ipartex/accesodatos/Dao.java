@@ -1,0 +1,25 @@
+package com.ipartex.accesodatos;
+
+import java.util.Optional;
+
+public interface Dao<T> {
+	default Iterable<T> obtenerTodos() {
+		throw new AccesoDatosException("NO IMPLEMENTADO");
+	}
+
+	default Optional<T> obtenerPorId(Long id) {
+		throw new AccesoDatosException("NO IMPLEMENTADO");
+	}
+
+	default T insertar(T objeto) {
+		throw new AccesoDatosException("NO IMPLEMENTADO");
+	}
+
+	default T modificar(T objeto) {
+		throw new AccesoDatosException("NO IMPLEMENTADO");
+	}
+
+	default void borrar(Long id) {
+		throw new AccesoDatosException("NO IMPLEMENTADO");
+	}
+}
