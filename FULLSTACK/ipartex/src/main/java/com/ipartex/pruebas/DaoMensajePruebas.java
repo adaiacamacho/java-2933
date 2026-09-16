@@ -3,12 +3,12 @@ package com.ipartex.pruebas;
 import java.time.LocalDateTime;
 
 import com.ipartex.accesodatos.DaoMensaje;
-import com.ipartex.accesodatos.arraylist.DaoMensajeArrayList;
+import com.ipartex.accesodatos.arraylist.DaoMensajeArrayListMejorada;
 import com.ipartex.entidades.Mensaje;
 
 public class DaoMensajePruebas {
 	public static void main(String[] args) {
-		DaoMensaje dao = new DaoMensajeArrayList();
+		DaoMensaje dao = new DaoMensajeArrayListMejorada();
 
 		dao.insertar(new Mensaje(null, "Pedro", "Hola a todos", LocalDateTime.now()));
 		dao.insertar(new Mensaje(null, "Juan", "Ya ha llegado el original", LocalDateTime.now()));
