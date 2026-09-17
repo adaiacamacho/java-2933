@@ -4,9 +4,10 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Optional;
 
-import com.ipartex.accesodatos.AccesoDatosException;
 import com.ipartex.accesodatos.DaoMensaje;
 import com.ipartex.entidades.Mensaje;
+
+import bibliotecas.accesodatos.AccesoDatosException;
 
 public class DaoMensajeArrayList implements DaoMensaje {
 	private ArrayList<Mensaje> mensajes = new ArrayList<>();

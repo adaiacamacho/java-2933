@@ -2,6 +2,8 @@ package com.ipartex.accesodatos;
 
 import java.util.Optional;
 
+import bibliotecas.accesodatos.AccesoDatosException;
+
 public interface Dao<T> {
 	default Iterable<T> obtenerTodos() {
 		throw new AccesoDatosException("NO IMPLEMENTADO");
