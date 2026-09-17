@@ -20,116 +20,88 @@ public class DaoMensajeSqlite implements DaoMensaje {
 	private static final String JDBC_USER = "";
 	private static final String JDBC_PASS = "";
 
-	@Override
-	public Iterable<Mensaje> obtenerTodos() {
+	private Collection<Mensaje> ejecutarConsultaSql(String sql, Object... args) {
 		try (Connection con = DriverManager.getConnection(JDBC_URL, JDBC_USER, JDBC_PASS);
-				PreparedStatement pst = con.prepareStatement("SELECT * FROM mensajes");
-				ResultSet rs = pst.executeQuery()) {
-			Collection<Mensaje> mensajes = new ArrayList<>();
+				PreparedStatement pst = con.prepareStatement(sql);) {
+			int i = 1;
 
-			while (rs.next()) {
-				Mensaje mensaje = new Mensaje(rs.getLong("id"), rs.getString("nombre"), rs.getString("texto"),
-						LocalDateTime.parse(rs.getString("fecha_hora")));
-				mensajes.add(mensaje);
+			for (Object arg : args) {
+				pst.setObject(i++, arg);
 			}
 
-			return mensajes;
-		} catch (SQLException e) {
-			throw new AccesoDatosException("Fallo en la operación de base de datos", e);
-		}
-	}
-
-	@Override
-	public Iterable<Mensaje> obtenerParaPantalla() {
-		try (Connection con = DriverManager.getConnection(JDBC_URL, JDBC_USER, JDBC_PASS);
-				PreparedStatement pst = con.prepareStatement("SELECT * FROM mensajes ORDER BY fecha_hora DESC");
-				ResultSet rs = pst.executeQuery()) {
 			Collection<Mensaje> mensajes = new ArrayList<>();
-
-			while (rs.next()) {
-				Mensaje mensaje = new Mensaje(rs.getLong("id"), rs.getString("nombre"), rs.getString("texto"),
-						LocalDateTime.parse(rs.getString("fecha_hora")));
-				mensajes.add(mensaje);
-			}
-
-			return mensajes;
-		} catch (SQLException e) {
-			throw new AccesoDatosException("Fallo en la operación de base de datos", e);
-		}
-	}
-
-	@Override
-	public Optional<Mensaje> obtenerPorId(Long id) {
-		try (Connection con = DriverManager.getConnection(JDBC_URL, JDBC_USER, JDBC_PASS);
-				PreparedStatement pst = con.prepareStatement("SELECT * FROM mensajes WHERE id=?");) {
-			pst.setLong(1, id);
 
 			ResultSet rs = pst.executeQuery();
 
+			while (rs.next()) {
+				Mensaje mensaje = new Mensaje(rs.getLong("id"), rs.getString("nombre"), rs.getString("texto"),
+						LocalDateTime.parse(rs.getString("fecha_hora")));
+				mensajes.add(mensaje);
+			}
+
+			return mensajes;
+		} catch (SQLException e) {
+			throw new AccesoDatosException("Fallo en la operación de base de datos", e);
+		}
+	}
+
+	private Optional<Long> ejecutarCambioSql(String sql, Object... args) {
+		try (Connection con = DriverManager.getConnection(JDBC_URL, JDBC_USER, JDBC_PASS);
+				PreparedStatement pst = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);) {
+			int i = 1;
+
+			for (Object arg : args) {
+				pst.setObject(i++, arg);
+			}
+
+			pst.executeUpdate();
+
+			ResultSet rs = pst.getGeneratedKeys();
+
 			if (rs.next()) {
-				return Optional.of(new Mensaje(rs.getLong("id"), rs.getString("nombre"), rs.getString("texto"),
-						LocalDateTime.parse(rs.getString("fecha_hora"))));
+				return Optional.of(rs.getLong(1));
 			}
 
 			return Optional.empty();
 		} catch (SQLException e) {
 			throw new AccesoDatosException("Fallo en la operación de base de datos", e);
 		}
+	}
 
+	@Override
+	public Iterable<Mensaje> obtenerTodos() {
+		return ejecutarConsultaSql("SELECT * FROM mensajes");
+	}
+
+	@Override
+	public Iterable<Mensaje> obtenerParaPantalla() {
+		return ejecutarConsultaSql("SELECT * FROM mensajes ORDER BY fecha_hora DESC");
+	}
+
+	@Override
+	public Optional<Mensaje> obtenerPorId(Long id) {
+		return ejecutarConsultaSql("SELECT * FROM mensajes WHERE id=?", id).stream().findFirst();
 	}
 
 	@Override
 	public Mensaje insertar(Mensaje mensaje) {
-		try (Connection con = DriverManager.getConnection(JDBC_URL, JDBC_USER, JDBC_PASS);
-				PreparedStatement pst = con.prepareStatement(
-						"INSERT INTO mensajes (nombre, texto, fecha_hora) VALUES (?,?,?)",
-						Statement.RETURN_GENERATED_KEYS);) {
-			pst.setString(1, mensaje.getNombre());
-			pst.setString(2, mensaje.getTexto());
-			pst.setString(3, mensaje.getFechaHora().toString());
+		mensaje.setId(ejecutarCambioSql("INSERT INTO mensajes (nombre, texto, fecha_hora) VALUES (?,?,?)",
+				mensaje.getNombre(), mensaje.getTexto(), mensaje.getFechaHora().toString()).get());
 
-			pst.executeUpdate();
-
-			ResultSet rs = pst.getGeneratedKeys();
-
-			rs.next();
-
-			mensaje.setId(rs.getLong(1));
-
-			return mensaje;
-		} catch (SQLException e) {
-			throw new AccesoDatosException("Fallo en la operación de base de datos", e);
-		}
+		return mensaje;
 	}
 
 	@Override
 	public Mensaje modificar(Mensaje mensaje) {
-		try (Connection con = DriverManager.getConnection(JDBC_URL, JDBC_USER, JDBC_PASS);
-				PreparedStatement pst = con
-						.prepareStatement("UPDATE mensajes SET nombre=?, texto=?, fecha_hora=? WHERE id=?");) {
-			pst.setString(1, mensaje.getNombre());
-			pst.setString(2, mensaje.getTexto());
-			pst.setString(3, mensaje.getFechaHora().toString());
-			pst.setLong(4, mensaje.getId());
+		ejecutarCambioSql("UPDATE mensajes SET nombre=?, texto=?, fecha_hora=? WHERE id=?", mensaje.getNombre(),
+				mensaje.getTexto(), mensaje.getFechaHora().toString(), mensaje.getId());
 
-			pst.executeUpdate();
-
-			return mensaje;
-		} catch (SQLException e) {
-			throw new AccesoDatosException("Fallo en la operación de base de datos", e);
-		}
+		return mensaje;
 	}
 
 	@Override
 	public void borrar(Long id) {
-		try (Connection con = DriverManager.getConnection(JDBC_URL, JDBC_USER, JDBC_PASS);
-				PreparedStatement pst = con.prepareStatement("DELETE FROM mensajes WHERE id=?");) {
-			pst.setLong(1, id);
-
-			pst.executeUpdate();
-		} catch (SQLException e) {
-			throw new AccesoDatosException("Fallo en la operación de base de datos", e);
-		}
+		ejecutarCambioSql("DELETE FROM mensajes WHERE id=?", id);
 	}
 
 }
