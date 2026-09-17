@@ -10,10 +10,11 @@ import com.ipartex.entidades.Mensaje;
 
 import bibliotecas.accesodatos.AccesoDatosException;
 import bibliotecas.accesodatos.JdbcHelper;
-import bibliotecas.accesodatos.JdbcHelperImpl;
+import bibliotecas.inyecciondependencias.ContenedorInyeccionDependencias;
 
 public class DaoMensajeSqlite implements DaoMensaje {
-	private JdbcHelper<Mensaje> jdbc = new JdbcHelperImpl<>();
+	@SuppressWarnings("unchecked")
+	private JdbcHelper<Mensaje> jdbc = (JdbcHelper<Mensaje>) ContenedorInyeccionDependencias.obtenerObjeto("jdbc.helper");
 
 	private static Mensaje mapper(ResultSet rs) {
 		try {

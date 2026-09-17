@@ -3,12 +3,13 @@ package com.ipartex.pruebas;
 import java.time.LocalDateTime;
 
 import com.ipartex.accesodatos.DaoMensaje;
-import com.ipartex.accesodatos.sqlite.DaoMensajeSqlite;
 import com.ipartex.entidades.Mensaje;
+
+import bibliotecas.inyecciondependencias.ContenedorInyeccionDependencias;
 
 public class DaoMensajePruebas {
 	public static void main(String[] args) {
-		DaoMensaje dao = new DaoMensajeSqlite();
+		DaoMensaje dao = (DaoMensaje) ContenedorInyeccionDependencias.obtenerObjeto("dao.mensaje");
 
 		dao.insertar(new Mensaje(null, "Pedro", "Hola a todos", LocalDateTime.now()));
 		dao.insertar(new Mensaje(null, "Juan", "Ya ha llegado el original", LocalDateTime.now()));
