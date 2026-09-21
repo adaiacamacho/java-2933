@@ -3,9 +3,8 @@ package bibliotecas.controladorfrontal;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Map;
+import java.util.function.Function;
 import java.util.logging.Logger;
-
-import com.ipartex.logicanegocio.AnonimoNegocio;
 
 import bibliotecas.inyecciondependencias.ContenedorInyeccionDependencias;
 import bibliotecas.json.JsonHelper;
@@ -42,25 +41,19 @@ public class ControladorFrontal extends HttpServlet {
 		EntradaControladorFrontal entrada = new EntradaControladorFrontal(metodo, ruta, argumentos);
 
 		// 4. EJECUTAR LÓGICA DE NEGOCIO
+		@SuppressWarnings("unchecked")
+		Function<EntradaControladorFrontal, Object> procesador = (Function<EntradaControladorFrontal, Object>) ContenedorInyeccionDependencias
+				.obtenerObjeto(metodo + ruta);
 
-		Object resultado = switch (metodo) {
-		case "GET" -> switch (ruta) {
-		case "/api/v2/mensajes" -> NEGOCIO.listarMensajes();
-		default -> throw new RuntimeException();
-		};
-		default -> throw new RuntimeException();
-		};
+		Object resultado = procesador.apply(entrada);
 
 		// 5. EMPAQUETAR INFORMACIÓN PARA LA SIGUIENTE VISTA
 		String json = JSON.objetoAJson(resultado);
-		
+
 		// 6. DEVOLVER EL RESULTADO EN JSON AL CLIENTE
 		response.setContentType("application/json");
 		response.getWriter().append(json);
 
 		// super.service(request, response);
 	}
-
-	private static final AnonimoNegocio NEGOCIO = (AnonimoNegocio) ContenedorInyeccionDependencias
-			.obtenerObjeto("negocio.anonimo");
 }
