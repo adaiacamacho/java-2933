@@ -3,10 +3,24 @@ package com.ipartex.entidades;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+
+@Entity
+@Table(name = "mensajes")
 public class Mensaje {
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
+	
 	private String nombre;
 	private String texto;
+	
+	@Column(name = "fecha_hora")
 	private LocalDateTime fechaHora;
 
 	public Mensaje(Long id, String nombre, String texto, LocalDateTime fechaHora) {
