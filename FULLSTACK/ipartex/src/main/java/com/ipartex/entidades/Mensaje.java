@@ -16,6 +16,11 @@ public class Mensaje {
 		this.texto = texto;
 		this.fechaHora = fechaHora;
 	}
+	
+	// NECESARIO PARA JACKSON (conversión de/hacia JSON) EN LOS SERVICIOS REST DE JERSEY
+	public Mensaje() {
+		
+	}
 
 	public Long getId() {
 		return id;
