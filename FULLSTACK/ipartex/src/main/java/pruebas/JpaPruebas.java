@@ -3,6 +3,7 @@ package pruebas;
 import java.time.LocalDateTime;
 
 import com.ipartex.entidades.Mensaje;
+import com.ipartex.entidades.Usuario;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
@@ -26,6 +27,16 @@ public class JpaPruebas {
 
 		for (Mensaje mensaje : mensajes) {
 			System.out.println(mensaje);
+		}
+		
+		em.persist(new Usuario(null, "user1", "us1@gmail.com", "1234"));
+		em.persist(new Usuario(null, "user2", "us2@hotmail.com", "7890"));
+		em.persist(new Usuario(null, "user3", "us3@yahoo.com", "5555"));
+		
+		Iterable<Usuario> usuarios= em.createQuery("from Usuario", Usuario.class).getResultList();
+		
+		for(Usuario usuario:usuarios) {
+			System.out.println(usuario);
 		}
 	}
 }
