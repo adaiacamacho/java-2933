@@ -12,20 +12,29 @@ import jakarta.persistence.Persistence;
 public class JpaPruebas {
 
 	public static void main(String[] args) {
-		EntityManagerFactory emf = Persistence.createEntityManagerFactory("com.ipartex.entidades");
-		EntityManager em = emf.createEntityManager();
-		EntityTransaction t = em.getTransaction();
+		EntityTransaction t = null;
+		
+		try (EntityManagerFactory emf = Persistence.createEntityManagerFactory("com.ipartex.entidades");
+				EntityManager em = emf.createEntityManager()) {
+			t = em.getTransaction();
 
-		t.begin();
+			t.begin();
 
-		em.persist(new Mensaje(null, "Javier", "Hola desde JPA", LocalDateTime.now()));
-		em.persist(new Mensaje(null, "Pedro", "Qué tal", LocalDateTime.now()));
-		em.persist(new Mensaje(null, "Juan", "Pues yo bien", LocalDateTime.now()));
+			em.persist(new Mensaje(null, "Javier", "Hola desde JPA", LocalDateTime.now()));
+			em.persist(new Mensaje(null, "Pedro", "Qué tal", LocalDateTime.now()));
+			em.persist(new Mensaje(null, "Juan", "Pues yo bien", LocalDateTime.now()));
 
-		Iterable<Mensaje> mensajes = em.createQuery("from Mensaje", Mensaje.class).getResultList();
+			Iterable<Mensaje> mensajes = em.createQuery("from Mensaje", Mensaje.class).getResultList();
 
-		for (Mensaje mensaje : mensajes) {
-			System.out.println(mensaje);
+			for (Mensaje mensaje : mensajes) {
+				System.out.println(mensaje);
+			}
+
+			t.commit();
+		} catch (Exception e) {
+			if (t != null) {
+				t.rollback();
+			}
 		}
 	}
 }
