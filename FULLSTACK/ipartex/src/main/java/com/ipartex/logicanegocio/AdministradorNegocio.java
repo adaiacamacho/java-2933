@@ -9,6 +9,8 @@ public interface AdministradorNegocio {
 
 	Optional<Usuario> obtenerUsuarioPorId(Long id);
 
+	Optional<Usuario> obtenerUsuarioPorEmail(String email);
+
 	Usuario crearUsuario(Usuario usuario);
 
 	Usuario modificarUsuario(Usuario usuario);

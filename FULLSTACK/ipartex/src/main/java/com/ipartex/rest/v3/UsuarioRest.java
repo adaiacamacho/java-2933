@@ -14,6 +14,7 @@ import jakarta.ws.rs.POST;
 import jakarta.ws.rs.PUT;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.PathParam;
+import jakarta.ws.rs.QueryParam;
 import jakarta.ws.rs.core.Response;
 
 @Path("/usuarios")
@@ -33,6 +34,18 @@ public class UsuarioRest {
 
 		if (usuario.isEmpty()) {
 			throw new NotFoundException("Usuario con id=" + id + " no encontrado");
+		}
+
+		return usuario.get();
+	}
+	
+	@GET
+	@Path("buscar/por-email")
+	public Usuario getUsuarioPorEmail(@QueryParam("email") String email) {
+		Optional<Usuario> usuario = NEGOCIO.obtenerUsuarioPorEmail(email);
+
+		if (usuario.isEmpty()) {
+			throw new NotFoundException("Usuario con email=" + email + " no encontrado");
 		}
 
 		return usuario.get();

@@ -29,6 +29,13 @@ public class AdministradorNegocioImpl implements AdministradorNegocio {
 	}
 
 	@Override
+	public Optional<Usuario> obtenerUsuarioPorEmail(String email) {
+		log.info("Se ha pedido un usuario por email " + email);
+		
+		return DAO_USUARIO.obtenerPorEmail(email);
+	}
+
+	@Override
 	public Usuario crearUsuario(Usuario usuario) {
 		log.info("Se va a crear un usuario " + usuario);
 

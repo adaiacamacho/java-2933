@@ -62,6 +62,31 @@ public class DaoUsuarioJpa implements DaoUsuario {
 	}
 
 	@Override
+	public Optional<Usuario> obtenerPorEmail(String email) {
+		EntityTransaction t = null;
+
+		try (EntityManager em = EMF.createEntityManager()) {
+			t = em.getTransaction();
+
+			t.begin();
+
+			Optional<Usuario> usuario = Optional
+					.ofNullable(em.createQuery("from Usuario u where u.email = :email", Usuario.class)
+							.setParameter("email", email).getSingleResultOrNull());
+
+			t.commit();
+
+			return usuario;
+		} catch (Exception e) {
+			if (t != null) {
+				t.rollback();
+			}
+
+			throw new AccesoDatosException("Error en la operación de persistencia", e);
+		}
+	}
+
+	@Override
 	public Usuario insertar(Usuario usuario) {
 		EntityTransaction t = null;
 
