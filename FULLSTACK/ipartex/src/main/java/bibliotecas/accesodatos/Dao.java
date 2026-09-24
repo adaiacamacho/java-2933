@@ -1,8 +1,6 @@
-package com.ipartex.accesodatos;
+package bibliotecas.accesodatos;
 
 import java.util.Optional;
-
-import bibliotecas.accesodatos.AccesoDatosException;
 
 public interface Dao<T> {
 	default Iterable<T> obtenerTodos() {
