@@ -37,7 +37,17 @@ async function actualizarListadoMensajes() {
     for (const mensaje of mensajes) {
         const li = document.createElement('li');
 
-        li.innerHTML = `${mensaje.nombre} (${mensaje.fechaHora}): ${mensaje.texto}`;
+		li.className = 'card my-4';
+		
+        li.innerHTML = `
+		  <div class="card-body">
+		  	<h5>${mensaje.nombre}</h5>
+		  	<p class="card-text">${mensaje.texto}</p>
+		  </div>
+		  <div class="card-footer">
+		    <small class="text-body-secondary">${mensaje.fechaHora}</small>
+		  </div>
+		`;
 
         ul.appendChild(li);
     }
