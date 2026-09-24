@@ -2,6 +2,8 @@ const URL_MENSAJES = 'api/v3/mensajes';
 
 const form = document.querySelector('form');
 
+setInterval(actualizarListadoMensajes, 1000);
+
 form.addEventListener('submit', async e => {
 	e.preventDefault();
 	
@@ -18,13 +20,13 @@ form.addEventListener('submit', async e => {
 		},
 	});
 	
+	console.log(respuesta);
+	
 	actualizarListadoMensajes();
 	
 	form.texto.value = '';
 	form.texto.focus();
 });
-
-await actualizarListadoMensajes();
 
 async function actualizarListadoMensajes() {
     const respuesta = await fetch(URL_MENSAJES);
