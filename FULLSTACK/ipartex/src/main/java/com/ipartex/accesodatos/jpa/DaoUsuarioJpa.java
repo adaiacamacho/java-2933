@@ -1,156 +1,54 @@
 package com.ipartex.accesodatos.jpa;
 
-import java.util.List;
 import java.util.Optional;
 
 import com.ipartex.accesodatos.DaoUsuario;
 import com.ipartex.entidades.Usuario;
 
-import bibliotecas.accesodatos.AccesoDatosException;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.EntityManagerFactory;
-import jakarta.persistence.EntityTransaction;
-import jakarta.persistence.Persistence;
+import bibliotecas.accesodatos.JpaHelper;
+import bibliotecas.inyecciondependencias.ContenedorInyeccionDependencias;
 
 public class DaoUsuarioJpa implements DaoUsuario {
-	private static final EntityManagerFactory EMF = Persistence.createEntityManagerFactory("com.ipartex.entidades");
+	private static final JpaHelper jpa = (JpaHelper) ContenedorInyeccionDependencias.obtenerObjeto("jpa.helper");
 
 	@Override
 	public Iterable<Usuario> obtenerTodos() {
-		EntityTransaction t = null;
-
-		try (EntityManager em = EMF.createEntityManager()) {
-			t = em.getTransaction();
-
-			t.begin();
-
-			List<Usuario> usuarios = em.createQuery("from Usuario", Usuario.class).getResultList();
-
-			t.commit();
-
-			return usuarios;
-		} catch (Exception e) {
-			if (t != null) {
-				t.rollback();
-			}
-
-			throw new AccesoDatosException("Error en la operación de persistencia", e);
-		}
+		return jpa.ejecutarJpa(em -> em.createQuery("from Usuario", Usuario.class).getResultList());
 	}
 
 	@Override
 	public Optional<Usuario> obtenerPorId(Long id) {
-		EntityTransaction t = null;
-
-		try (EntityManager em = EMF.createEntityManager()) {
-			t = em.getTransaction();
-
-			t.begin();
-
-			Optional<Usuario> usuario = Optional.ofNullable(em.find(Usuario.class, id));
-
-			t.commit();
-
-			return usuario;
-		} catch (Exception e) {
-			if (t != null) {
-				t.rollback();
-			}
-
-			throw new AccesoDatosException("Error en la operación de persistencia", e);
-		}
+		return jpa.ejecutarJpa(em -> Optional.ofNullable(em.find(Usuario.class, id)));
 	}
 
 	@Override
 	public Optional<Usuario> obtenerPorEmail(String email) {
-		EntityTransaction t = null;
-
-		try (EntityManager em = EMF.createEntityManager()) {
-			t = em.getTransaction();
-
-			t.begin();
-
-			Optional<Usuario> usuario = Optional
-					.ofNullable(em.createQuery("from Usuario u where u.email = :email", Usuario.class)
-							.setParameter("email", email).getSingleResultOrNull());
-
-			t.commit();
-
-			return usuario;
-		} catch (Exception e) {
-			if (t != null) {
-				t.rollback();
-			}
-
-			throw new AccesoDatosException("Error en la operación de persistencia", e);
-		}
+		return jpa.ejecutarJpa(
+				em -> Optional.ofNullable(em.createQuery("from Usuario u where u.email = :email", Usuario.class)
+						.setParameter("email", email).getSingleResultOrNull()));
 	}
 
 	@Override
 	public Usuario insertar(Usuario usuario) {
-		EntityTransaction t = null;
-
-		try (EntityManager em = EMF.createEntityManager()) {
-			t = em.getTransaction();
-
-			t.begin();
-
+		return jpa.ejecutarJpa(em -> {
 			em.persist(usuario);
-
-			t.commit();
-
 			return usuario;
-		} catch (Exception e) {
-			if (t != null) {
-				t.rollback();
-			}
-
-			throw new AccesoDatosException("Error en la operación de persistencia", e);
-		}
+		});
 	}
 
 	@Override
 	public Usuario modificar(Usuario usuario) {
-		EntityTransaction t = null;
-
-		try (EntityManager em = EMF.createEntityManager()) {
-			t = em.getTransaction();
-
-			t.begin();
-
+		return jpa.ejecutarJpa(em -> {
 			em.merge(usuario);
-
-			t.commit();
-
 			return usuario;
-		} catch (Exception e) {
-			if (t != null) {
-				t.rollback();
-			}
-
-			throw new AccesoDatosException("Error en la operación de persistencia", e);
-		}
+		});
 	}
 
 	@Override
 	public void borrar(Long id) {
-		EntityTransaction t = null;
-
-		try (EntityManager em = EMF.createEntityManager()) {
-			t = em.getTransaction();
-
-			t.begin();
-
+		jpa.ejecutarJpa(em -> {
 			em.remove(em.find(Usuario.class, id));
-
-			t.commit();
-		} catch (Exception e) {
-			if (t != null) {
-				t.rollback();
-			}
-
-			throw new AccesoDatosException("Error en la operación de persistencia", e);
-		}
+			return null;
+		});
 	}
-
 }
