@@ -19,7 +19,7 @@ public class JpaHelperImpl implements JpaHelper {
 
 			UNIDAD_PERSISTENCIA = props.getProperty("jpa.unidadpersistencia");
 		} catch (IOException e) {
-			throw new AccesoDatosException("No se ha podido abrir la configuración");
+			throw new AccesoDatosException("No se ha podido abrir la configuración", e);
 		}
 	}
 

@@ -10,11 +10,12 @@ import bibliotecas.accesodatos.JdbcHelperImpl;
 
 public class ContenedorInyeccionDependencias {
 	private static final Properties props = new Properties();
+	
 	static {
 		try {
 			props.load(JdbcHelperImpl.class.getClassLoader().getResourceAsStream("aplicacion.properties"));
 		} catch (IOException e) {
-			throw new AccesoDatosException("No se ha podido abrir la configuración");
+			throw new AccesoDatosException("No se ha podido abrir la configuración", e);
 		}
 	}
 
