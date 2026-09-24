@@ -70,6 +70,10 @@ public class Mensaje {
 	public void setFechaHora(LocalDateTime fechaHora) {
 		this.fechaHora = fechaHora;
 	}
+	
+	public String getNombre() {
+		return usuario.getNombre();
+	}
 
 	@Override
 	public int hashCode() {
