@@ -8,6 +8,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -17,16 +18,18 @@ public class Mensaje {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
-	private String nombre;
+	@ManyToOne
+	private Usuario usuario;
+	
 	private String texto;
 	
 	@Column(name = "fecha_hora")
 	private LocalDateTime fechaHora;
 
-	public Mensaje(Long id, String nombre, String texto, LocalDateTime fechaHora) {
+	public Mensaje(Long id, Usuario usuario, String texto, LocalDateTime fechaHora) {
 		super();
 		this.id = id;
-		this.nombre = nombre;
+		this.usuario = usuario;
 		this.texto = texto;
 		this.fechaHora = fechaHora;
 	}
@@ -44,12 +47,12 @@ public class Mensaje {
 		this.id = id;
 	}
 
-	public String getNombre() {
-		return nombre;
+	public Usuario getUsuario() {
+		return usuario;
 	}
 
-	public void setNombre(String nombre) {
-		this.nombre = nombre;
+	public void setUsuario(Usuario usuario) {
+		this.usuario = usuario;
 	}
 
 	public String getTexto() {
@@ -70,7 +73,7 @@ public class Mensaje {
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(fechaHora, id, nombre, texto);
+		return Objects.hash(fechaHora, id, usuario, texto);
 	}
 
 	@Override
@@ -83,12 +86,12 @@ public class Mensaje {
 			return false;
 		Mensaje other = (Mensaje) obj;
 		return Objects.equals(fechaHora, other.fechaHora) && Objects.equals(id, other.id)
-				&& Objects.equals(nombre, other.nombre) && Objects.equals(texto, other.texto);
+				&& Objects.equals(usuario, other.usuario) && Objects.equals(texto, other.texto);
 	}
 
 	@Override
 	public String toString() {
-		return String.format("Mensaje [id=%s, nombre=%s, texto=%s, fechaHora=%s]", id, nombre, texto, fechaHora);
+		return String.format("Mensaje [id=%s, usuario=%s, texto=%s, fechaHora=%s]", id, usuario, texto, fechaHora);
 	}
 
 }
