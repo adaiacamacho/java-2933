@@ -1,8 +1,19 @@
 package com.ipartube.entidades;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonProperty.Access;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
+
+@Entity
+@Table(name = "usuariosUserPass")
 public class UsuarioUsuarioPassword extends Usuario {
 	// 1. VARIABLES DE INSTANCIA
+	@Column(unique = true)
 	private String usuario;
+	@JsonProperty(access = Access.WRITE_ONLY)
 	private String password;
 
 	// 3. CONSTRUCTORES
@@ -12,7 +23,7 @@ public class UsuarioUsuarioPassword extends Usuario {
 		setUsuario(usuario);
 		setPassword(password);
 	}
-
+	
 	public UsuarioUsuarioPassword(Long id) {
 		this(id, null, null, null);
 	}
