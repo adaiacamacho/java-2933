@@ -1,14 +1,21 @@
 const URL_MENSAJES = 'api/v3/mensajes';
+const URL_USUARIOS = 'api/v3/usuarios';
 
 const form = document.querySelector('form');
 
-setInterval(actualizarListadoMensajes, 1000);
+// Actualización automática de mensajes cada segundo
+// setInterval(actualizarListadoMensajes, 1000);
+
+actualizarListadoMensajes();
+actualizarDesplegableUsuarios();
 
 form.addEventListener('submit', async e => {
 	e.preventDefault();
 	
 	const mensaje = {
-		nombre: form.nombre.value,
+		usuario: {
+			id: form['id-usuario'].value
+		},
 		texto: form.texto.value
 	};
 	
@@ -52,5 +59,22 @@ async function actualizarListadoMensajes() {
 		`;
 
         ul.appendChild(li);
+    }
+}
+
+async function actualizarDesplegableUsuarios() {
+    const respuesta = await fetch(URL_USUARIOS);
+    const usuarios = await respuesta.json();
+
+    const select = document.querySelector('select');
+
+    for (const usuario of usuarios) {
+        const option = document.createElement('option');
+
+		option.value = usuario.id;
+		
+		option.innerText = usuario.nombre;
+
+        select.appendChild(option);
     }
 }
