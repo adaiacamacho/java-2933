@@ -33,6 +33,13 @@ public class AnonimoNegocioImpl implements AnonimoNegocio {
 	}
 
 	@Override
+	public Iterable<Mensaje> buscarMensajesPorFechaMinima(LocalDateTime fechaMinima) {
+		log.info("El usuario busca los mensajes desde " + fechaMinima);
+		
+		return DAO_MENSAJE.obtenerMensajesPorFechaMinima(fechaMinima);
+	}
+
+	@Override
 	public Mensaje nuevoMensaje(Mensaje mensaje) {
 		log.info("El usuario inserta el mensaje " + mensaje);
 		

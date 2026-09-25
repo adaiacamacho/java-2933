@@ -1,5 +1,6 @@
 package com.ipartex.logicanegocio;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 import com.ipartex.entidades.Mensaje;
@@ -8,6 +9,7 @@ import com.ipartex.entidades.Usuario;
 public interface AnonimoNegocio {
 	Iterable<Mensaje> listarMensajes();
 	Optional<Mensaje> buscarMensajePorId(Long id);
+	Iterable<Mensaje> buscarMensajesPorFechaMinima(LocalDateTime fechaMinima);
 
 	Mensaje nuevoMensaje(Mensaje mensaje);
 	Mensaje editarMensaje(Mensaje mensaje);
