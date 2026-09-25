@@ -1,19 +1,16 @@
 package com.ipartube.logicanegocio;
 
-import java.util.ArrayList;
+import java.util.Optional;
 
-import com.ipartube.dtos.ComentarioDto;
-import com.ipartube.dtos.ComentarioInsertarDto;
-import com.ipartube.dtos.ComentarioInsertarRespuestaDto;
-import com.ipartube.dtos.VideoDto;
-import com.ipartube.dtos.VideoInsertarDto;
-import com.ipartube.dtos.VideoInsertarRespuestaDto;
+import com.ipartube.entidades.Comentario;
+import com.ipartube.entidades.Video;
 
 public interface AnonimoNegocio {
-	public ArrayList<VideoDto> listarVideos();
-	public VideoDto verDetalleVideo(Long id);
-	public VideoInsertarRespuestaDto crearNuevoVideo(VideoInsertarDto videoInsertar);
+	public Iterable<Video> listarVideos();
+	public Optional<Video> verDetalleVideo(Long id);
+	public Video crearNuevoVideo(Video video);
 	
-	public ArrayList<ComentarioDto> verComentariosVideo(Long idVideo);
-	public ComentarioInsertarRespuestaDto crearNuevoComentario(ComentarioInsertarDto comentarioInsertar);
+	public Iterable<Comentario> verComentariosVideo(Long idVideo);
+	public Comentario crearNuevoComentario(Comentario comentario);
+
 }
