@@ -1,12 +1,25 @@
 package bibliotecas.accesodatos;
 
-import java.util.ArrayList;
+import java.util.Optional;
 
 public interface Dao<T> {
-	ArrayList<T> obtenerTodos();
-	T obtenerPorId(Long id);
-	
-	T insertar(T o);
-	T modificar(T o);
-	void borrar(Long id);
+	default Iterable<T> obtenerTodos() {
+		throw new AccesoDatosException("NO IMPLEMENTADO");
+	};
+
+	default Optional<T> obtenerPorId(Long id) {
+		throw new AccesoDatosException("NO IMPLEMENTADO");
+	};
+
+	default T insertar(T o) {
+		throw new AccesoDatosException("NO IMPLEMENTADO");
+	};
+
+	default T modificar(T o) {
+		throw new AccesoDatosException("NO IMPLEMENTADO");
+	};
+
+	default void borrar(Long id) {
+		throw new AccesoDatosException("NO IMPLEMENTADO");
+	};
 }
