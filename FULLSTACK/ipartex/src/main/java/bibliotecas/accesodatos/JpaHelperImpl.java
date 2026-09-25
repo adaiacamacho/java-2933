@@ -11,7 +11,7 @@ import jakarta.persistence.Persistence;
 
 public class JpaHelperImpl implements JpaHelper {
 	private static final String UNIDAD_PERSISTENCIA;
-	
+
 	static {
 		try {
 			Properties props = new Properties();
@@ -27,24 +27,24 @@ public class JpaHelperImpl implements JpaHelper {
 
 	@Override
 	public <T> T ejecutarJpa(Function<EntityManager, T> sentencias) {
-		EntityTransaction t = null;
-
 		try (EntityManager em = EMF.createEntityManager()) {
-			t = em.getTransaction();
+			EntityTransaction t = em.getTransaction();
 
-			t.begin();
+			try {
+				t.begin();
 
-			T resultado = sentencias.apply(em);
+				T resultado = sentencias.apply(em);
 
-			t.commit();
+				t.commit();
 
-			return resultado;
-		} catch (Exception e) {
-			if (t != null) {
-				t.rollback();
+				return resultado;
+			} catch (Exception e) {
+				if (t != null && t.isActive()) {
+					t.rollback();
+				}
+
+				throw new AccesoDatosException("Error en la operación de persistencia", e);
 			}
-
-			throw new AccesoDatosException("Error en la operación de persistencia", e);
 		}
 	}
 }
