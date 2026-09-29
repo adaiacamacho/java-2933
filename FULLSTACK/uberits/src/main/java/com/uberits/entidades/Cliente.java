@@ -1,5 +1,7 @@
 package com.uberits.entidades;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Objects;
 
 import jakarta.persistence.Column;
@@ -7,97 +9,117 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "clientes")
 public class Cliente {
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
-	
-	@Column(unique = true)
-	private String nif;
-	
-	private String nombre;
-	private String telefono;
-	private String direccion;
 
-	public Cliente(Long id, String nif, String nombre, String telefono, String direccion) {
-		super();
-		this.id = id;
-		this.nif = nif;
-		this.nombre = nombre;
-		this.telefono = telefono;
-		this.direccion = direccion;
-	}
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-	public Cliente() {
-	}
+    @Column(unique = true, nullable = false)
+    private String nif;
 
-	public Long getId() {
-		return id;
-	}
+    private String nombre;
+    private String telefono;
+    private String direccion;
 
-	public void setId(Long id) {
-		this.id = id;
-	}
+    @OneToMany(mappedBy = "cliente")
+    private Collection<Pedido> pedidos = new ArrayList<>();
 
-	public String getNif() {
-		return nif;
-	}
+    @OneToOne(mappedBy = "cliente")
+    private Usuario usuario;
 
-	public void setNif(String nif) {
-		this.nif = nif;
-	}
+    public Cliente() {
+    }
 
-	public String getNombre() {
-		return nombre;
-	}
+    public Cliente(Long id, String nif, String nombre, String telefono, String direccion) {
+        this.id = id;
+        this.nif = nif;
+        this.nombre = nombre;
+        this.telefono = telefono;
+        this.direccion = direccion;
+    }
 
-	public void setNombre(String nombre) {
-		this.nombre = nombre;
-	}
+    public Long getId() {
+        return id;
+    }
 
-	public String getTelefono() {
-		return telefono;
-	}
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-	public void setTelefono(String telefono) {
-		this.telefono = telefono;
-	}
+    public String getNif() {
+        return nif;
+    }
 
-	public String getDireccion() {
-		return direccion;
-	}
+    public void setNif(String nif) {
+        this.nif = nif;
+    }
 
-	public void setDireccion(String direccion) {
-		this.direccion = direccion;
-	}
+    public String getNombre() {
+        return nombre;
+    }
 
-	@Override
-	public int hashCode() {
-		return Objects.hash(direccion, id, nif, nombre, telefono);
-	}
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
 
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Cliente other = (Cliente) obj;
-		return Objects.equals(direccion, other.direccion) && Objects.equals(id, other.id)
-				&& Objects.equals(nif, other.nif) && Objects.equals(nombre, other.nombre)
-				&& Objects.equals(telefono, other.telefono);
-	}
+    public String getTelefono() {
+        return telefono;
+    }
 
-	@Override
-	public String toString() {
-		return String.format("Cliente [id=%s, nif=%s, nombre=%s, telefono=%s, direccion=%s]", id, nif, nombre, telefono,
-				direccion);
-	}
+    public void setTelefono(String telefono) {
+        this.telefono = telefono;
+    }
 
+    public String getDireccion() {
+        return direccion;
+    }
+
+    public void setDireccion(String direccion) {
+        this.direccion = direccion;
+    }
+
+    public Collection<Pedido> getPedidos() {
+        return pedidos;
+    }
+
+    public void setPedidos(Collection<Pedido> pedidos) {
+        this.pedidos = pedidos;
+    }
+
+    public Usuario getUsuario() {
+        return usuario;
+    }
+
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+
+        Cliente other = (Cliente) obj;
+        return Objects.equals(id, other.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
+
+    @Override
+    public String toString() {
+        return String.format(
+            "Cliente [id=%s, nif=%s, nombre=%s, telefono=%s, direccion=%s]",
+            id, nif, nombre, telefono, direccion
+        );
+    }
 }

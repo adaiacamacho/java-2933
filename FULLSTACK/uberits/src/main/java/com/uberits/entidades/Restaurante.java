@@ -1,5 +1,6 @@
 package com.uberits.entidades;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Objects;
 
@@ -7,6 +8,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
@@ -14,82 +17,90 @@ import jakarta.persistence.Table;
 @Entity
 @Table(name = "restaurantes")
 public class Restaurante {
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
-	private String nombre;
 
-	@ManyToMany
-	private Collection<TipoComida> tiposComida;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-	@OneToMany
-	private Collection<Plato> platos;
+    private String nombre;
 
-	public Restaurante(Long id, String nombre, Collection<TipoComida> tiposComida, Collection<Plato> platos) {
-		super();
-		this.id = id;
-		this.nombre = nombre;
-		this.tiposComida = tiposComida;
-		this.platos = platos;
-	}
+    @ManyToMany
+    @JoinTable(
+        name = "restaurante_tipo_comida",
+        joinColumns = @JoinColumn(name = "restaurante_id"),
+        inverseJoinColumns = @JoinColumn(name = "tipo_comida_id")
+    )
+    private Collection<TipoComida> tiposComida = new ArrayList<>();
 
-	public Restaurante() {
-	}
+    @OneToMany(mappedBy = "restaurante")
+    private Collection<Plato> platos = new ArrayList<>();
 
-	public Long getId() {
-		return id;
-	}
+    public Restaurante() {
+    }
 
-	public void setId(Long id) {
-		this.id = id;
-	}
+    public Restaurante(
+        Long id,
+        String nombre,
+        Collection<TipoComida> tiposComida,
+        Collection<Plato> platos
+    ) {
+        this.id = id;
+        this.nombre = nombre;
+        this.tiposComida = tiposComida;
+        this.platos = platos;
+    }
 
-	public String getNombre() {
-		return nombre;
-	}
+    public Long getId() {
+        return id;
+    }
 
-	public void setNombre(String nombre) {
-		this.nombre = nombre;
-	}
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-	public Collection<TipoComida> getTiposComida() {
-		return tiposComida;
-	}
+    public String getNombre() {
+        return nombre;
+    }
 
-	public void setTiposComida(Collection<TipoComida> tiposComida) {
-		this.tiposComida = tiposComida;
-	}
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
 
-	public Collection<Plato> getPlato() {
-		return platos;
-	}
+    public Collection<TipoComida> getTiposComida() {
+        return tiposComida;
+    }
 
-	public void setPlato(Collection<Plato> platos) {
-		this.platos = platos;
-	}
+    public void setTiposComida(Collection<TipoComida> tiposComida) {
+        this.tiposComida = tiposComida;
+    }
 
-	@Override
-	public int hashCode() {
-		return Objects.hash(id, nombre, platos, tiposComida);
-	}
+    public Collection<Plato> getPlatos() {
+        return platos;
+    }
 
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Restaurante other = (Restaurante) obj;
-		return Objects.equals(id, other.id) && Objects.equals(nombre, other.nombre)
-				&& Objects.equals(platos, other.platos) && Objects.equals(tiposComida, other.tiposComida);
-	}
+    public void setPlatos(Collection<Plato> platos) {
+        this.platos = platos;
+    }
 
-	@Override
-	public String toString() {
-		return String.format("Restaurante [id=%s, nombre=%s, tiposComida=%s, plato=%s]", id, nombre, tiposComida,
-				platos);
-	}
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
 
+        Restaurante other = (Restaurante) obj;
+        return Objects.equals(id, other.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
+
+    @Override
+    public String toString() {
+        return String.format(
+            "Restaurante [id=%s, nombre=%s]",
+            id, nombre
+        );
+    }
 }

@@ -11,56 +11,56 @@ import jakarta.persistence.Table;
 @Entity
 @Table(name = "tipos_comida")
 public class TipoComida {
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
-	private String nombre;
 
-	public TipoComida(Long id, String nombre) {
-		super();
-		this.id = id;
-		this.nombre = nombre;
-	}
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-	public TipoComida() {
-	}
+    private String nombre;
 
-	public Long getId() {
-		return id;
-	}
+    public TipoComida() {
+    }
 
-	public void setId(Long id) {
-		this.id = id;
-	}
+    public TipoComida(Long id, String nombre) {
+        this.id = id;
+        this.nombre = nombre;
+    }
 
-	public String getNombre() {
-		return nombre;
-	}
+    public Long getId() {
+        return id;
+    }
 
-	public void setNombre(String nombre) {
-		this.nombre = nombre;
-	}
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-	@Override
-	public int hashCode() {
-		return Objects.hash(id, nombre);
-	}
+    public String getNombre() {
+        return nombre;
+    }
 
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		TipoComida other = (TipoComida) obj;
-		return Objects.equals(id, other.id) && Objects.equals(nombre, other.nombre);
-	}
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
 
-	@Override
-	public String toString() {
-		return String.format("TipoComida [id=%s, nombre=%s]", id, nombre);
-	}
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
 
+        TipoComida other = (TipoComida) obj;
+        return Objects.equals(id, other.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
+
+    @Override
+    public String toString() {
+        return String.format(
+            "TipoComida [id=%s, nombre=%s]",
+            id, nombre
+        );
+    }
 }
