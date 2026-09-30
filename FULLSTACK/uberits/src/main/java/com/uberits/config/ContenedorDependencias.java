@@ -7,8 +7,12 @@ import com.uberits.accesodatos.DaoPlato;
 import com.uberits.accesodatos.DaoRestaurante;
 import com.uberits.accesodatos.DaoTipoComida;
 import com.uberits.accesodatos.DaoUsuario;
+import com.uberits.logicanegocio.AdministradorNegocio;
 import com.uberits.logicanegocio.AnonimoNegocio;
+import com.uberits.logicanegocio.UsuarioNegocio;
+import com.uberits.logicanegocio.impl.AdministradorNegocioImpl;
 import com.uberits.logicanegocio.impl.AnonimoNegocioImpl;
+import com.uberits.logicanegocio.impl.UsuarioNegocioImpl;
 
 import bibliotecas.inyecciondependencias.ContenedorInyeccionDependencias;
 
@@ -27,4 +31,6 @@ public class ContenedorDependencias {
 			DaoPedidoLinea.class);
 	
 	public static AnonimoNegocio ANONIMO_NEGOCIO = new AnonimoNegocioImpl(DAO_USUARIO);
+	public static UsuarioNegocio USUARIO_NEGOCIO = new UsuarioNegocioImpl(DAO_RESTAURANTE, DAO_PEDIDO);
+	public static AdministradorNegocio ADMINISTRADOR_NEGOCIO = new AdministradorNegocioImpl(DAO_RESTAURANTE);
 }
