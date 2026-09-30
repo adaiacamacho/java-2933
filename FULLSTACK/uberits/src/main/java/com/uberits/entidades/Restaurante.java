@@ -13,6 +13,8 @@ import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 
 @Entity
 @Table(name = "restaurantes")
@@ -22,6 +24,8 @@ public class Restaurante {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotBlank
+    @Size(max = 30)
     private String nombre;
 
     @ManyToMany
@@ -40,14 +44,10 @@ public class Restaurante {
 
     public Restaurante(
         Long id,
-        String nombre,
-        Collection<TipoComida> tiposComida,
-        Collection<Plato> platos
+        String nombre
     ) {
         this.id = id;
         this.nombre = nombre;
-        this.tiposComida = tiposComida;
-        this.platos = platos;
     }
 
     public Long getId() {

@@ -10,9 +10,14 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.Lob;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 
 @Entity
 @Table(name = "platos")
@@ -22,12 +27,21 @@ public class Plato {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotBlank
+    @Size(max = 20)
     private String nombre;
+    
+    @NotNull
+    @Min(0)
     private BigDecimal precio;
+    
+    @Size(max = 2000)
+    @Lob
     private String descripcion;
 
+    @NotNull
     @ManyToOne
-    @JoinColumn(name = "restaurante_id", nullable = false)
+    @JoinColumn(name = "restaurante_id")
     private Restaurante restaurante;
 
     @OneToMany(mappedBy = "plato")

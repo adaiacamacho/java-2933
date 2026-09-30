@@ -1,11 +1,13 @@
 package com.uberits.entidades;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Objects;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -13,6 +15,8 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "pedidos")
@@ -22,14 +26,19 @@ public class Pedido {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotNull
+    private LocalDateTime fechaHora = LocalDateTime.now();
+    
+    @NotNull
     @ManyToOne
-    @JoinColumn(name = "cliente_id", nullable = false)
+    @JoinColumn(name = "cliente_id")
     private Cliente cliente;
 
     @OneToMany(
         mappedBy = "pedido",
         cascade = CascadeType.ALL,
-        orphanRemoval = true
+        orphanRemoval = true,
+        fetch = FetchType.EAGER
     )
     private Collection<Linea> lineas = new ArrayList<>();
 
@@ -96,14 +105,18 @@ public class Pedido {
         @GeneratedValue(strategy = GenerationType.IDENTITY)
         private Long id;
 
+        @NotNull
         @ManyToOne
-        @JoinColumn(name = "pedido_id", nullable = false)
+        @JoinColumn(name = "pedido_id")
         private Pedido pedido;
 
+        @NotNull
         @ManyToOne
-        @JoinColumn(name = "plato_id", nullable = false)
+        @JoinColumn(name = "plato_id")
         private Plato plato;
 
+        @NotNull
+        @Min(0)
         private Integer cantidad;
 
         public Linea() {
