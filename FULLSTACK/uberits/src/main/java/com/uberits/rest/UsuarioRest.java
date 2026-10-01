@@ -1,10 +1,13 @@
 package com.uberits.rest;
 
-import static com.uberits.config.ContenedorDependencias.*;
+import static com.uberits.config.ContenedorDependencias.ADMINISTRADOR_NEGOCIO;
+import static com.uberits.config.ContenedorDependencias.ANONIMO_NEGOCIO;
 
 import java.net.URI;
 import java.util.Optional;
 
+import com.uberits.dtos.UsuarioEntrada;
+import com.uberits.dtos.UsuarioSalida;
 import com.uberits.entidades.Usuario;
 
 import jakarta.validation.Valid;
@@ -44,8 +47,8 @@ public class UsuarioRest {
 
 	@POST
 	@Path("autenticacion")
-	public Usuario autenticarse(Usuario usuario) {
-		Optional<Usuario> usuarioAutenticado = ANONIMO_NEGOCIO.autenticarse(usuario);
+	public UsuarioSalida autenticarse(UsuarioEntrada usuario) {
+		Optional<UsuarioSalida> usuarioAutenticado = ANONIMO_NEGOCIO.autenticarse(usuario);
 
 		if (usuarioAutenticado.isEmpty()) {
 			throw new NotAuthorizedException("Credenciales incorrectas");
