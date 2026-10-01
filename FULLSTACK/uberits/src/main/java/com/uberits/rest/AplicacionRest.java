@@ -9,6 +9,8 @@ public class AplicacionRest extends ResourceConfig {
 
     public AplicacionRest() {
     	packages("com.uberits");
-        register(JacksonConfig.class);
+        
+    	register(JacksonConfig.class);
+        register(org.glassfish.jersey.server.validation.ValidationFeature.class);
     }
 }
