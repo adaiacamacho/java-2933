@@ -24,7 +24,7 @@ public class UsuarioRest {
 	@Path("{id}")
 	public Usuario getUsuario(@PathParam("id") Long id) {
 		// TODO: Usar lógica de negocio de administrador y NO saltar directamente al DAO
-		Optional<Usuario> usuario = DAO_USUARIO.obtenerPorId(id);
+		Optional<Usuario> usuario = ADMINISTRADOR_NEGOCIO.obtenerPorId(id);
 
 		if (usuario.isEmpty()) {
 			throw new NotFoundException();
