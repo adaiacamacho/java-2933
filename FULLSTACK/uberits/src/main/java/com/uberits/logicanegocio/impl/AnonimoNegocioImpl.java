@@ -6,15 +6,21 @@ import com.uberits.accesodatos.DaoUsuario;
 import com.uberits.entidades.Usuario;
 import com.uberits.logicanegocio.AnonimoNegocio;
 
+import bibliotecas.validaciones.Validador;
+
 public class AnonimoNegocioImpl implements AnonimoNegocio {
 	private DaoUsuario daoUsuario;
+	private Validador validador;
 
-	public AnonimoNegocioImpl(DaoUsuario daoUsuario) {
+	public AnonimoNegocioImpl(DaoUsuario daoUsuario, Validador validador) {
 		this.daoUsuario = daoUsuario;
+		this.validador = validador;
 	}
 
 	@Override
 	public Usuario registrarse(Usuario usuario) {
+		validador.validar(usuario);
+		
 		return daoUsuario.insertar(usuario);
 	}
 
