@@ -3,6 +3,8 @@ package com.uberits.logicanegocio.impl;
 import java.util.Optional;
 
 import com.uberits.accesodatos.DaoUsuario;
+import com.uberits.dtos.UsuarioEntrada;
+import com.uberits.dtos.UsuarioSalida;
 import com.uberits.entidades.Usuario;
 import com.uberits.logicanegocio.AnonimoNegocio;
 
@@ -25,14 +27,16 @@ public class AnonimoNegocioImpl implements AnonimoNegocio {
 	}
 
 	@Override
-	public Optional<Usuario> autenticarse(Usuario usuario) {
-		Optional<Usuario> usuarioEmail = daoUsuario.buscarPorEmail(usuario.getEmail());
+	public Optional<UsuarioSalida> autenticarse(UsuarioEntrada usuario) {
+		validador.validar(usuario);
+		Optional<Usuario> usuarioEmail = daoUsuario.buscarPorEmail(usuario.email());
 
-		if (usuarioEmail.isEmpty() || !usuarioEmail.get().getPassword().equals(usuario.getPassword())) {
+		if (usuarioEmail.isEmpty() || !usuarioEmail.get().getPassword().equals(usuario.password())) {
 			return Optional.empty();
 		}
-
-		return usuarioEmail;
+		Usuario userDatos=usuarioEmail.get();
+		UsuarioSalida usuarioSalida=new UsuarioSalida(userDatos.getId(), userDatos.getNombre(), userDatos.getEmail(), userDatos.getCliente().getId());
+		return Optional.ofNullable(usuarioSalida);
 	}
 
 }

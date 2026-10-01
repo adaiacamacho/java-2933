@@ -7,13 +7,12 @@ import com.uberits.accesodatos.DaoPedido;
 import com.uberits.accesodatos.DaoRestaurante;
 import com.uberits.entidades.Pedido;
 import com.uberits.entidades.Restaurante;
-import com.uberits.logicanegocio.AdministradorNegocio;
 import com.uberits.logicanegocio.UsuarioNegocio;
 
 import bibliotecas.validaciones.Validador;
 
 public class UsuarioNegocioImpl implements UsuarioNegocio{
-	private static final Logger log = Logger.getLogger(AdministradorNegocio.class.getName());
+	private static final Logger log = Logger.getLogger(UsuarioNegocio.class.getName());
 	private DaoRestaurante daoRestaurante;
 	private DaoPedido daoPedido;
 	private Validador validador;
