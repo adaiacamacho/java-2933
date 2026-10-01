@@ -11,6 +11,7 @@ import com.uberits.logicanegocio.AnonimoNegocio;
 import com.uberits.logicanegocio.impl.AnonimoNegocioImpl;
 
 import bibliotecas.inyecciondependencias.ContenedorInyeccionDependencias;
+import bibliotecas.validaciones.Validador;
 
 public class ContenedorDependencias {
 	public static DaoUsuario DAO_USUARIO = ContenedorInyeccionDependencias.obtenerObjeto("dao.usuario",
@@ -26,5 +27,8 @@ public class ContenedorDependencias {
 	public static DaoPedidoLinea DAO_PEDIDO_LINEA = ContenedorInyeccionDependencias.obtenerObjeto("dao.pedidolinea",
 			DaoPedidoLinea.class);
 	
-	public static AnonimoNegocio ANONIMO_NEGOCIO = new AnonimoNegocioImpl(DAO_USUARIO);
+	public static Validador VALIDADOR = ContenedorInyeccionDependencias.obtenerObjeto("validador", Validador.class);
+
+	public static AnonimoNegocio ANONIMO_NEGOCIO = new AnonimoNegocioImpl(DAO_USUARIO, VALIDADOR);
+	
 }
