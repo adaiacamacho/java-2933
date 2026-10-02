@@ -7,7 +7,6 @@ import java.util.Optional;
 
 import com.uberits.entidades.Usuario;
 
-import jakarta.validation.Valid;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.NotAuthorizedException;
 import jakarta.ws.rs.NotFoundException;
@@ -34,7 +33,7 @@ public class UsuarioRest {
 	}
 
 	@POST
-	public Response registrarUsuario(@Valid Usuario usuario, @Context UriInfo uriInfo) {
+	public Response registrarUsuario(Usuario usuario, @Context UriInfo uriInfo) {
 		Usuario usuarioRegistrado = ANONIMO_NEGOCIO.registrarse(usuario);
 
 		URI location = uriInfo.getAbsolutePathBuilder().path(usuarioRegistrado.getId().toString()).build();

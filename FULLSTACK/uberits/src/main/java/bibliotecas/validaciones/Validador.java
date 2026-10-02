@@ -1,5 +1,5 @@
 package bibliotecas.validaciones;
 
 public interface Validador {
-	<T> void validar(T objeto);
+	<T> void validar(T objeto, Class<T> clase);
 }

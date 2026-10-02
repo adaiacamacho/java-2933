@@ -12,6 +12,7 @@ import com.uberits.logicanegocio.impl.AnonimoNegocioImpl;
 
 import bibliotecas.inyecciondependencias.ContenedorInyeccionDependencias;
 import bibliotecas.validaciones.Validador;
+import bibliotecas.validaciones.ValidadorErroresMapper;
 
 public class ContenedorDependencias {
 	public static DaoUsuario DAO_USUARIO = ContenedorInyeccionDependencias.obtenerObjeto("dao.usuario",
@@ -28,6 +29,7 @@ public class ContenedorDependencias {
 			DaoPedidoLinea.class);
 	
 	public static Validador VALIDADOR = ContenedorInyeccionDependencias.obtenerObjeto("validador", Validador.class);
+	public static ValidadorErroresMapper VALIDADOR_MAPPER = ContenedorInyeccionDependencias.obtenerObjeto("validador.mapper", ValidadorErroresMapper.class);
 
 	public static AnonimoNegocio ANONIMO_NEGOCIO = new AnonimoNegocioImpl(DAO_USUARIO, VALIDADOR);
 	

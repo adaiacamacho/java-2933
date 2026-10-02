@@ -19,7 +19,7 @@ public class AnonimoNegocioImpl implements AnonimoNegocio {
 
 	@Override
 	public Usuario registrarse(Usuario usuario) {
-		validador.validar(usuario);
+		validador.validar(usuario, Usuario.class);
 		
 		return daoUsuario.insertar(usuario);
 	}

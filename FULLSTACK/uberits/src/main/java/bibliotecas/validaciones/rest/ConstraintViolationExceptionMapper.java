@@ -1,14 +1,15 @@
-package com.uberits.rest;
+package bibliotecas.validaciones.rest;
+
+import static com.uberits.config.ContenedorDependencias.*;
 
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
+import java.util.Set;
 
-import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.ext.ExceptionMapper;
-import jakarta.ws.rs.ext.Provider;
+import jakarta.ws.rs.ext.Provider;;
 
 @Provider
 public class ConstraintViolationExceptionMapper
@@ -17,16 +18,7 @@ public class ConstraintViolationExceptionMapper
     @Override
     public Response toResponse(ConstraintViolationException exception) {
 
-        Map<String, List<String>> errors =
-                exception.getConstraintViolations()
-                        .stream()
-                        .collect(Collectors.groupingBy(
-                                violation -> violation.getPropertyPath().toString(),
-                                Collectors.mapping(
-                                        ConstraintViolation::getMessage,
-                                        Collectors.toList()
-                                )
-                        ));
+        Map<String, List<String>> errors = VALIDADOR_MAPPER.mapear(exception.getConstraintViolations(), Set.class);
 
         ProblemResponse response = new ProblemResponse(
                 "https://example.com/problems/validation-error",

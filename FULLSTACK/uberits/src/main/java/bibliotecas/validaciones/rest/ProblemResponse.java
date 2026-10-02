@@ -1,4 +1,4 @@
-package com.uberits.rest;
+package bibliotecas.validaciones.rest;
 
 import java.util.List;
 import java.util.Map;
