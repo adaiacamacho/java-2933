@@ -3,7 +3,9 @@ package bibliotecas.accesodatos;
 import java.util.Optional;
 
 import bibliotecas.inyecciondependencias.ContenedorInyeccionDependencias;
+import lombok.RequiredArgsConstructor;
 
+@RequiredArgsConstructor
 public class DaoJpa<T> implements Dao<T> {
 	protected static JpaHelper JPA;
 	
@@ -16,10 +18,6 @@ public class DaoJpa<T> implements Dao<T> {
 	}
 	
 	private final Class<T> tipo;
-
-    public DaoJpa(Class<T> tipo) {
-        this.tipo = tipo;
-    }
 	
 	@Override
 	public Iterable<T> obtenerTodos() {

@@ -7,11 +7,15 @@ import com.uberits.entidades.Usuario;
 public class PruebaAnonimoNegocio {
 	public static void main(String[] args) {
 //		System.out.println(ANONIMO_NEGOCIO.registrarse(new Usuario()));
-		System.out.println(ANONIMO_NEGOCIO.registrarse(new Usuario(null, "Javier", "javier@email.net", "javier", null)));
-		System.out.println(ANONIMO_NEGOCIO.registrarse(new Usuario(null, "Pepe", "pepe@email.net", "pepe", null)));
+		System.out.println(ANONIMO_NEGOCIO
+				.registrarse(Usuario.builder().nombre("Javier").email("javier@email.net").password("javier").build()));
+		System.out.println(ANONIMO_NEGOCIO
+				.registrarse(Usuario.builder().nombre("Pepe").email("pepe@email.net").password("pepe").build()));
 
-		System.out.println(ANONIMO_NEGOCIO.autenticarse(new Usuario(null, null, "javier@email.net", "javier", null)));
+		System.out.println(
+				ANONIMO_NEGOCIO.autenticarse(Usuario.builder().email("javier@email.net").password("javier").build()));
 
-		System.out.println(ANONIMO_NEGOCIO.autenticarse(new Usuario(null, null, "javier@email.net", "javie", null)));
+		System.out.println(
+				ANONIMO_NEGOCIO.autenticarse(Usuario.builder().email("javier@email.net").password("javie").build()));
 	}
 }

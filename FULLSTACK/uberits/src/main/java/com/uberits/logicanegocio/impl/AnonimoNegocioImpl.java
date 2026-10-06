@@ -7,18 +7,19 @@ import com.uberits.entidades.Usuario;
 import com.uberits.logicanegocio.AnonimoNegocio;
 
 import bibliotecas.validaciones.Validador;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.java.Log;
 
+@Log
+@RequiredArgsConstructor
 public class AnonimoNegocioImpl implements AnonimoNegocio {
-	private DaoUsuario daoUsuario;
-	private Validador validador;
-
-	public AnonimoNegocioImpl(DaoUsuario daoUsuario, Validador validador) {
-		this.daoUsuario = daoUsuario;
-		this.validador = validador;
-	}
+	private final DaoUsuario daoUsuario;
+	private final Validador validador;
 
 	@Override
 	public Usuario registrarse(Usuario usuario) {
+		log.info("Se ha registrado un nuevo usuario");
+		
 		validador.validar(usuario, Usuario.class);
 		
 		return daoUsuario.insertar(usuario);
