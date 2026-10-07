@@ -3,7 +3,6 @@ package com.uberits.uberitspring.pruebas;
 import java.util.List;
 
 import org.springframework.boot.CommandLineRunner;
-import org.springframework.stereotype.Component;
 
 import com.uberits.uberitspring.entidades.Usuario;
 import com.uberits.uberitspring.repositorios.UsuarioRepository;
@@ -12,7 +11,7 @@ import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 
-@Component
+//@Component
 public class RepositoriosPruebas implements CommandLineRunner {
 	private final UsuarioRepository usuarioRepository;
 
