@@ -2,17 +2,19 @@ package com.uberits.uberitspring.pruebas;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
 import com.uberits.uberitspring.entidades.Usuario;
 import com.uberits.uberitspring.repositorios.UsuarioRepository;
 
+import lombok.RequiredArgsConstructor;
+
+@RequiredArgsConstructor
+
 @Component
 public class RepositoriosPruebas implements CommandLineRunner {
-	@Autowired
-	private UsuarioRepository usuarioRepository;
+	private final UsuarioRepository usuarioRepository;
 
 	@Override
 	public void run(String... args) throws Exception {
