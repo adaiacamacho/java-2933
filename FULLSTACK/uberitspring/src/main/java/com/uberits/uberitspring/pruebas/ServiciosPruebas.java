@@ -16,8 +16,6 @@ public class ServiciosPruebas implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) throws Exception {
-		System.out.println("INICIO");
-
 //		var usuarioErroneo = Usuario.builder().build();
 		
 //		System.out.println(anonimoService.registrarse(usuarioErroneo));

@@ -17,8 +17,6 @@ public class RepositoriosPruebas implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) throws Exception {
-		System.out.println("INICIO");
-
 		var javier = Usuario.builder().nombre("Javier").email("javier@email.net").password("javier").build();
 		var pepe = Usuario.builder().nombre("Pepe").email("pepe@email.net").password("pepe").build();
 		
