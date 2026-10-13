@@ -20,9 +20,9 @@ public class ServiciosPruebas implements CommandLineRunner {
 		
 //		System.out.println(anonimoService.registrarse(usuarioErroneo));
 		
-		var javier = Usuario.builder().nombre("Javier").email("javier@email.net").password("javier").build();
+		var juan = Usuario.builder().nombre("Juan").email("juan@email.net").password("javier").build();
 		
-		System.out.println(anonimoService.registrarse(javier));
+		System.out.println(anonimoService.registrarse(juan));
 	}
 
 }

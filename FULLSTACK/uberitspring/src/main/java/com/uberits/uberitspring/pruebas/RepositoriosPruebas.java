@@ -3,17 +3,24 @@ package com.uberits.uberitspring.pruebas;
 import java.util.List;
 
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.stereotype.Component;
 
+import com.uberits.uberitspring.entidades.Restaurante;
+import com.uberits.uberitspring.entidades.TipoComida;
 import com.uberits.uberitspring.entidades.Usuario;
+import com.uberits.uberitspring.repositorios.RestauranteRepository;
+import com.uberits.uberitspring.repositorios.TipoComidaRepository;
 import com.uberits.uberitspring.repositorios.UsuarioRepository;
 
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 
-//@Component
+@Component
 public class RepositoriosPruebas implements CommandLineRunner {
 	private final UsuarioRepository usuarioRepository;
+	private final RestauranteRepository restauranteRepository;
+	private final TipoComidaRepository tipoComidaRepository;
 
 	@Override
 	public void run(String... args) throws Exception {
@@ -27,6 +34,15 @@ public class RepositoriosPruebas implements CommandLineRunner {
 		}
 		
 		System.out.println(usuarioRepository.findByEmail("javier@email.net"));
+		
+		var americana = TipoComida.builder().nombre("Americana").build();
+		var italiana = TipoComida.builder().nombre("Italiana").build();
+		
+		tipoComidaRepository.saveAll(List.of(americana, italiana));
+		
+		var teleBurger = Restaurante.builder().nombre("Tele Burger").tiposComida(List.of(americana, italiana)).build();
+		
+		restauranteRepository.save(teleBurger);
 	}
 
 }

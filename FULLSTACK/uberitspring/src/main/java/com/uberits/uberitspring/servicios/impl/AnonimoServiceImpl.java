@@ -1,14 +1,16 @@
 package com.uberits.uberitspring.servicios.impl;
 
 import java.util.Collection;
-import java.util.List;
 import java.util.Optional;
+import java.util.stream.StreamSupport;
 
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
 import com.uberits.uberitspring.dtos.RestauranteListadoDto;
+import com.uberits.uberitspring.entidades.Restaurante;
 import com.uberits.uberitspring.entidades.Usuario;
+import com.uberits.uberitspring.repositorios.RestauranteRepository;
 import com.uberits.uberitspring.repositorios.UsuarioRepository;
 import com.uberits.uberitspring.servicios.AnonimoService;
 
@@ -24,6 +26,7 @@ import lombok.extern.java.Log;
 @Service
 public class AnonimoServiceImpl implements AnonimoService {
 	private final UsuarioRepository usuarioRepository;
+	private final RestauranteRepository restauranteRepository;
 
 	@Override
 	public Usuario registrarse(@Valid Usuario usuario) {
@@ -45,10 +48,11 @@ public class AnonimoServiceImpl implements AnonimoService {
 
 	@Override
 	public Collection<RestauranteListadoDto> listadoRestaurantes() {
-		return List.of(
-				RestauranteListadoDto.builder().nombre("Burger Mediterranean")
-						.tiposComida(List.of("Americana", "Mediterranea")).build(),
-				RestauranteListadoDto.builder().nombre("Pizza TV").tiposComida(List.of("Italiana")).build());
+		return StreamSupport.stream(restauranteRepository.findAll().spliterator(), false).map(this::aDto).toList();
 	}
 
+	private RestauranteListadoDto aDto(Restaurante restaurante) {
+		return RestauranteListadoDto.builder().nombre(restaurante.getNombre())
+				.tiposComida(restaurante.getTiposComida().stream().map(tc -> tc.getNombre()).toList()).build();
+	}
 }
