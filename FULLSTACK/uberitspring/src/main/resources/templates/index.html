@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="https://www.thymeleaf.org">
+<html lang="es" xmlns:th="https://www.thymeleaf.org">
 <head>
 <meta charset="UTF-8">
 <title>UberitSpring</title>
@@ -19,9 +19,13 @@
 	</thead>
 	
 	<tbody>
-		<tr>
-			<th>TeleBurger</th>
-			<td>Americana</td>
+		<tr th:each="restaurante: ${restaurantes}">
+			<th th:text="${restaurante.nombre}">TeleBurger</th>
+			<td>
+				<ul th:each="tipoComida: ${restaurante.tiposComida}">
+					<li th:text="${tipoComida}">Americana</li>
+				</ul>
+			</td>
 		</tr>
 	</tbody>
 </table>
