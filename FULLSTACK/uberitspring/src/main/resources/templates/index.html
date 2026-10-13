@@ -22,8 +22,8 @@
 		<tr th:each="restaurante: ${restaurantes}">
 			<th th:text="${restaurante.nombre}">TeleBurger</th>
 			<td>
-				<ul th:each="tipoComida: ${restaurante.tiposComida}">
-					<li th:text="${tipoComida}">Americana</li>
+				<ul>
+					<li th:each="tipoComida: ${restaurante.tiposComida}" th:text="${tipoComida}">Americana</li>
 				</ul>
 			</td>
 		</tr>
