@@ -6,6 +6,7 @@ import java.util.Optional;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
+import com.uberits.uberitspring.dtos.RestauranteDetalleDto;
 import com.uberits.uberitspring.dtos.RestauranteListadoDto;
 import com.uberits.uberitspring.dtos.UsuarioAutenticarEntradaDto;
 import com.uberits.uberitspring.dtos.UsuarioAutenticarSalidaDto;
@@ -57,5 +58,10 @@ public class AnonimoServiceImpl implements AnonimoService {
 	@Override
 	public Collection<RestauranteListadoDto> listadoRestaurantes() {
 		return restauranteMapper.aDto(restauranteRepository.findAll());
+	}
+
+	@Override
+	public Optional<RestauranteDetalleDto> verRestaurante(Long id) {
+		return restauranteMapper.aDtoDetalle(restauranteRepository.findById(id));
 	}
 }
