@@ -3,7 +3,7 @@ package com.uberits.uberitspring.pruebas;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
-import com.uberits.uberitspring.entidades.Usuario;
+import com.uberits.uberitspring.dtos.UsuarioRegistrarEntradaDto;
 import com.uberits.uberitspring.servicios.AnonimoService;
 
 import lombok.RequiredArgsConstructor;
@@ -17,11 +17,12 @@ public class ServiciosPruebas implements CommandLineRunner {
 	@Override
 	public void run(String... args) throws Exception {
 //		var usuarioErroneo = Usuario.builder().build();
-		
+
 //		System.out.println(anonimoService.registrarse(usuarioErroneo));
-		
-		var juan = Usuario.builder().nombre("Juan").email("juan@email.net").password("javier").build();
-		
+
+		var juan = UsuarioRegistrarEntradaDto.builder().nombre("Juan").email("juan@email.net").password("javier")
+				.build();
+
 		System.out.println(anonimoService.registrarse(juan));
 	}
 

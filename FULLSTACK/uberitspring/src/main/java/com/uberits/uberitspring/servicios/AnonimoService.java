@@ -4,12 +4,15 @@ import java.util.Collection;
 import java.util.Optional;
 
 import com.uberits.uberitspring.dtos.RestauranteListadoDto;
-import com.uberits.uberitspring.entidades.Usuario;
+import com.uberits.uberitspring.dtos.UsuarioAutenticarEntradaDto;
+import com.uberits.uberitspring.dtos.UsuarioAutenticarSalidaDto;
+import com.uberits.uberitspring.dtos.UsuarioRegistrarEntradaDto;
+import com.uberits.uberitspring.dtos.UsuarioRegistrarSalidaDto;
 
 import jakarta.validation.Valid;
 
 public interface AnonimoService {
-	Usuario registrarse(@Valid Usuario usuario);
-	Optional<Usuario> autenticarse(Usuario usuario);
+	UsuarioRegistrarSalidaDto registrarse(@Valid UsuarioRegistrarEntradaDto usuario);
+	Optional<UsuarioAutenticarSalidaDto> autenticarse(UsuarioAutenticarEntradaDto usuario);
 	Collection<RestauranteListadoDto> listadoRestaurantes();
 }

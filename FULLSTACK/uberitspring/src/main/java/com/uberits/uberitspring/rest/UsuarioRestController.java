@@ -12,7 +12,6 @@ import com.uberits.uberitspring.dtos.UsuarioAutenticarEntradaDto;
 import com.uberits.uberitspring.dtos.UsuarioAutenticarSalidaDto;
 import com.uberits.uberitspring.dtos.UsuarioRegistrarEntradaDto;
 import com.uberits.uberitspring.dtos.UsuarioRegistrarSalidaDto;
-import com.uberits.uberitspring.entidades.Usuario;
 import com.uberits.uberitspring.servicios.AnonimoService;
 
 import jakarta.validation.Valid;
@@ -27,27 +26,18 @@ public class UsuarioRestController {
 
 	@PostMapping("autenticar")
 	public UsuarioAutenticarSalidaDto autenticar(@Valid @RequestBody UsuarioAutenticarEntradaDto usuarioDto) {
-		var usuario = Usuario.builder().email(usuarioDto.email()).password(usuarioDto.password()).build();
-
-		var usuarioAutenticado = anonimoService.autenticarse(usuario);
+		var usuarioAutenticado = anonimoService.autenticarse(usuarioDto);
 
 		if (usuarioAutenticado.isEmpty()) {
 			throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
 		}
 
-		return UsuarioAutenticarSalidaDto.builder().email(usuarioAutenticado.get().getEmail())
-				.nombre(usuarioAutenticado.get().getNombre()).build();
+		return usuarioAutenticado.get();
 	}
 
 	@PostMapping("registrar")
 	@ResponseStatus(HttpStatus.CREATED)
 	public UsuarioRegistrarSalidaDto registrar(@Valid @RequestBody UsuarioRegistrarEntradaDto usuarioDto) {
-		var usuario = Usuario.builder().nombre(usuarioDto.nombre()).email(usuarioDto.email())
-				.password(usuarioDto.password()).build();
-
-		var usuarioRegistrado = anonimoService.registrarse(usuario);
-
-		return UsuarioRegistrarSalidaDto.builder().id(usuarioRegistrado.getId()).nombre(usuarioRegistrado.getNombre())
-				.email(usuarioRegistrado.getEmail()).build();
+		return anonimoService.registrarse(usuarioDto);
 	}
 }
