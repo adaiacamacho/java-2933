@@ -2,7 +2,6 @@ package com.uberits.uberitspring.servicios.impl;
 
 import java.util.Collection;
 import java.util.Optional;
-import java.util.stream.StreamSupport;
 
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
@@ -12,8 +11,9 @@ import com.uberits.uberitspring.dtos.UsuarioAutenticarEntradaDto;
 import com.uberits.uberitspring.dtos.UsuarioAutenticarSalidaDto;
 import com.uberits.uberitspring.dtos.UsuarioRegistrarEntradaDto;
 import com.uberits.uberitspring.dtos.UsuarioRegistrarSalidaDto;
-import com.uberits.uberitspring.entidades.Restaurante;
 import com.uberits.uberitspring.entidades.Usuario;
+import com.uberits.uberitspring.mappers.RestauranteMapper;
+import com.uberits.uberitspring.mappers.UsuarioMapper;
 import com.uberits.uberitspring.repositorios.RestauranteRepository;
 import com.uberits.uberitspring.repositorios.UsuarioRepository;
 import com.uberits.uberitspring.servicios.AnonimoService;
@@ -31,41 +31,31 @@ import lombok.extern.java.Log;
 public class AnonimoServiceImpl implements AnonimoService {
 	private final UsuarioRepository usuarioRepository;
 	private final RestauranteRepository restauranteRepository;
+	private final UsuarioMapper usuarioMapper;
+	private final RestauranteMapper restauranteMapper;
 
 	@Override
 	public UsuarioRegistrarSalidaDto registrarse(@Valid UsuarioRegistrarEntradaDto usuarioDto) {
-		var usuario = Usuario.builder().nombre(usuarioDto.nombre()).email(usuarioDto.email())
-				.password(usuarioDto.password()).build();
-
 		log.info("Se ha registrado un nuevo usuario");
 
-		var usuarioRegistrado = usuarioRepository.save(usuario);
+		var usuarioRegistrado = usuarioRepository.save(usuarioMapper.aEntidad(usuarioDto));
 
-		return UsuarioRegistrarSalidaDto.builder().id(usuarioRegistrado.getId()).nombre(usuarioRegistrado.getNombre())
-				.email(usuarioRegistrado.getEmail()).build();
+		return usuarioMapper.aDtoRegistro(usuarioRegistrado);
 	}
 
 	@Override
 	public Optional<UsuarioAutenticarSalidaDto> autenticarse(UsuarioAutenticarEntradaDto usuarioDto) {
-		var usuario = Usuario.builder().email(usuarioDto.email()).password(usuarioDto.password()).build();
+		Optional<Usuario> usuarioEmail = usuarioRepository.findByEmail(usuarioDto.email());
 
-		Optional<Usuario> usuarioEmail = usuarioRepository.findByEmail(usuario.getEmail());
-
-		if (usuarioEmail.isEmpty() || !usuarioEmail.get().getPassword().equals(usuario.getPassword())) {
+		if (usuarioEmail.isEmpty() || !usuarioEmail.get().getPassword().equals(usuarioDto.password())) {
 			return Optional.empty();
 		}
 
-		return Optional.of(UsuarioAutenticarSalidaDto.builder().email(usuarioEmail.get().getEmail())
-				.nombre(usuarioEmail.get().getNombre()).build());
+		return Optional.of(usuarioMapper.aDtoAutenticacion(usuarioEmail.get()));
 	}
 
 	@Override
 	public Collection<RestauranteListadoDto> listadoRestaurantes() {
-		return StreamSupport.stream(restauranteRepository.findAll().spliterator(), false).map(this::aDto).toList();
-	}
-
-	private RestauranteListadoDto aDto(Restaurante restaurante) {
-		return RestauranteListadoDto.builder().nombre(restaurante.getNombre())
-				.tiposComida(restaurante.getTiposComida().stream().map(tc -> tc.getNombre()).toList()).build();
+		return restauranteMapper.aDto(restauranteRepository.findAll());
 	}
 }
