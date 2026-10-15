@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html th:replace="~{_global :: plantilla(~{::title}, ~{::main})}"
+	xmlns:th="https://www.thymeleaf.org">
+<title>UberitSpring</title>
+<main class="container">
+	<form action="index.html" th:action="@{/registro}" th:method="post" th:object="${usuarioFormModel}">
+		<div class="row mb-3">
+			<label for="nombre" class="col-sm-2 col-form-label">Nombre</label>
+			<div class="col-sm">
+				<input type="text" class="form-control" th:field="*{nombre}">
+			</div>
+		</div>
+		<div class="row mb-3">
+			<label for="email" class="col-sm-2 col-form-label">Email</label>
+			<div class="col-sm">
+				<input type="email" class="form-control" th:field="*{email}">
+			</div>
+		</div>
+		<div class="row mb-3">
+			<label for="password" class="col-sm-2 col-form-label">Contraseña</label>
+			<div class="col-sm">
+				<input type="password" class="form-control" th:field="*{password}">
+			</div>
+		</div>
+		<div class="row mb-3">
+			<div class="offset-sm-2 col-sm">
+				<button type="submit" class="btn btn-primary">Registrarme</button>
+			</div>
+		</div>
+	</form>
+</main>
+</html>

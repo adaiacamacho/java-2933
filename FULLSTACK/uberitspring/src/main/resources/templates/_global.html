@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html class="h-100" lang="es" th:fragment="plantilla (titulo, contenido)"
+<html class="h-100" lang="es"
+	th:fragment="plantilla (titulo, contenido)"
 	xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="utf-8">
@@ -23,7 +24,12 @@
 			</button>
 			<div class="collapse navbar-collapse" id="navbarSupportedContent">
 				<ul class="navbar-nav me-auto mb-2 mb-sm-0">
-					<li class="nav-item"><a class="nav-link" href="#" th:href="@{/}">Principal</a></li>
+					<li class="nav-item"><a class="nav-link" href="#"
+						th:href="@{/}">Principal</a></li>
+				</ul>
+				<ul class="navbar-nav mb-2 mb-sm-0">
+					<li class="nav-item"><a class="nav-link" href="#"
+						th:href="@{/registro}">Registrarme</a></li>
 				</ul>
 			</div>
 		</div>
@@ -33,7 +39,8 @@
 		<p>Layout content</p>
 	</main>
 
-	<footer class="p-2 text-bg-dark mt-auto"> &copy;2026 Javier Lete </footer>
+	<footer class="p-2 text-bg-dark mt-auto"> &copy;2026 Javier
+		Lete </footer>
 
 	<script
 		src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
