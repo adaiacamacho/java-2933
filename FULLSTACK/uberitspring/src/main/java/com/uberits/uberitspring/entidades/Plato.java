@@ -1,8 +1,6 @@
 package com.uberits.uberitspring.entidades;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Collection;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -11,7 +9,6 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.Lob;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
@@ -53,8 +50,4 @@ public class Plato {
     @ManyToOne
     @JoinColumn(name = "restaurante_id")
     private Restaurante restaurante;
-
-    @Builder.Default
-    @OneToMany(mappedBy = "plato")
-    private Collection<Pedido.Linea> lineas = new ArrayList<>();
 }
