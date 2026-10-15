@@ -1,45 +1,37 @@
 <!DOCTYPE html>
-<html lang="es" xmlns:th="https://www.thymeleaf.org">
-<head>
-<meta charset="UTF-8">
-<title>UberitSpring</title>
-</head>
-<body>
+<html th:replace="~{_global :: plantilla(~{::title}, ~{::main})}"
+	xmlns:th="https://www.thymeleaf.org">
+<title>UberitSpring: Restaurante</title>
+<main>
+	<dl>
+		<dt>Nombre</dt>
+		<dd th:text="${restaurante.nombre}">NOMBRE_RESTAURANTE</dd>
+		<dt>Tipos de comida</dt>
+		<dd>
+			<ul>
+				<li th:each="tipoComida: ${restaurante.tiposComida}"
+					th:text="${tipoComida}">TIPO1</li>
+			</ul>
+		</dd>
+	</dl>
 
-<h1>UberitSpring</h1>
+	<table>
+		<caption>Platos</caption>
 
-<!--/* <p th:text="${restaurante}"></p> */-->
+		<thead>
+			<tr>
+				<th>Nombre</th>
+				<th>Descripción</th>
+				<th>Precio</th>
+			</tr>
+		</thead>
 
-<dl>
-	<dt>Nombre</dt>
-	<dd th:text="${restaurante.nombre}">NOMBRE_RESTAURANTE</dd>
-	<dt>Tipos de comida</dt>
-	<dd>
-		<ul>
-			<li th:each="tipoComida: ${restaurante.tiposComida}" th:text="${tipoComida}">TIPO1</li>
-		</ul>
-	</dd>
-</dl>
-
-<table>
-	<caption>Platos</caption>
-	
-	<thead>
-		<tr>
-			<th>Nombre</th>
-			<th>Descripción</th>
-			<th>Precio</th>
-		</tr>
-	</thead>
-	
-	<tbody>
-		<tr th:each="plato: ${restaurante.platos}" th:object="${plato}">
-			<th th:text="*{nombre}">COMIDA</th>
-			<td th:text="*{descripcion}">DESCRIPCION</td>
-			<td th:text="*{precio}">PRECIO</td>
-		</tr>
-	</tbody>
-</table>
-
-</body>
-</html>
+		<tbody>
+			<tr th:each="plato: ${restaurante.platos}" th:object="${plato}">
+				<th th:text="*{nombre}">COMIDA</th>
+				<td th:text="*{descripcion}">DESCRIPCION</td>
+				<td th:text="*{precio}">PRECIO</td>
+			</tr>
+		</tbody>
+	</table>
+</main>

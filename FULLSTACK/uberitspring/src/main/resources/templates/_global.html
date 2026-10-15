@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="es" th:fragment="plantilla (titulo, contenido)" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title th:replace="${titulo}">UberitSpring</title>
+</head>
+<body>
+    <h1>UBERITSPRING</h1>
+    <main th:replace="${contenido}">
+        <p>Layout content</p>
+    </main>
+    <footer>
+        &copy;2026 Javier Lete
+    </footer>
+</body>
+</html>

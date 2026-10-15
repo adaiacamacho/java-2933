@@ -1,36 +1,31 @@
 <!DOCTYPE html>
-<html lang="es" xmlns:th="https://www.thymeleaf.org">
-<head>
-<meta charset="UTF-8">
-<title>UberitSpring</title>
-</head>
-<body>
+<html th:replace="~{_global :: plantilla(~{::title}, ~{::main})}"
+	xmlns:th="https://www.thymeleaf.org">
+<title>UberitSpring: Listado</title>
+<main>
+	<table>
+		<caption>Restaurantes</caption>
 
-<h1>UberitSpring</h1>
+		<thead>
+			<tr>
+				<th>Nombre</th>
+				<th>Tipo de comida</th>
+			</tr>
+		</thead>
 
-<table>
-	<caption>Restaurantes</caption>
-	
-	<thead>
-		<tr>
-			<th>Nombre</th>
-			<th>Tipo de comida</th>
-		</tr>
-	</thead>
-	
-	<tbody>
-		<tr th:each="restaurante: ${restaurantes}">
-			<th>
-				<a th:text="${restaurante.nombre}" th:href="@{/{id}(id=${restaurante.id})}" href="restaurante.html">TeleBurger</a>
-			</th>
-			<td>
-				<ul>
-					<li th:each="tipoComida: ${restaurante.tiposComida}" th:text="${tipoComida}">Americana</li>
-				</ul>
-			</td>
-		</tr>
-	</tbody>
-</table>
-
-</body>
+		<tbody>
+			<tr th:each="restaurante: ${restaurantes}">
+				<th><a th:text="${restaurante.nombre}"
+					th:href="@{/{id}(id=${restaurante.id})}" href="restaurante.html">TeleBurger</a>
+				</th>
+				<td>
+					<ul>
+						<li th:each="tipoComida: ${restaurante.tiposComida}"
+							th:text="${tipoComida}">Americana</li>
+					</ul>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+</main>
 </html>
