@@ -9,6 +9,7 @@ import com.uberits.uberitspring.dtos.RestauranteDetalleDto;
 import com.uberits.uberitspring.dtos.RestauranteListadoDto;
 import com.uberits.uberitspring.entidades.Restaurante;
 import com.uberits.uberitspring.entidades.TipoComida;
+import com.uberits.uberitspring.modelos.RestauranteViewModel;
 
 @Mapper(componentModel = "spring")
 public interface RestauranteMapper {
@@ -26,4 +27,6 @@ public interface RestauranteMapper {
 	default Optional<RestauranteDetalleDto> aDtoDetalle(Optional<Restaurante> restaurante) {
         return restaurante.map(this::aDtoDetalle);
     }
+
+	Collection<RestauranteViewModel> aViewModel(Collection<RestauranteListadoDto> listadoRestaurantes);
 }

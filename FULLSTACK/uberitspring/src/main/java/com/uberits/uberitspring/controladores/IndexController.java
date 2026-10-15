@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.uberits.uberitspring.modelos.RestauranteViewModel;
+import com.uberits.uberitspring.mappers.RestauranteMapper;
 import com.uberits.uberitspring.servicios.AnonimoService;
 
 import lombok.RequiredArgsConstructor;
@@ -17,12 +17,11 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/")
 public class IndexController {
 	private final AnonimoService anonimoService;
+	private final RestauranteMapper restauranteMapper;
 
 	@GetMapping
 	public String index(Model modelo) {
-		Iterable<RestauranteViewModel> restaurantes = anonimoService.listadoRestaurantes().stream()
-				.map(dto -> RestauranteViewModel.builder().nombre(dto.nombre()).tiposComida(dto.tiposComida()).build())
-				.toList();
+		var restaurantes = restauranteMapper.aViewModel(anonimoService.listadoRestaurantes());
 
 		modelo.addAttribute("restaurantes", restaurantes);
 

@@ -3,6 +3,6 @@ package com.uberits.uberitspring.modelos;
 import lombok.Builder;
 
 @Builder
-public record RestauranteViewModel(String nombre, Iterable<String> tiposComida) {
+public record RestauranteViewModel(Long id, String nombre, Iterable<String> tiposComida) {
 
 }
