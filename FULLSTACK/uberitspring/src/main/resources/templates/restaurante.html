@@ -2,27 +2,28 @@
 <html th:replace="~{_global :: plantilla(~{::title}, ~{::main})}"
 	xmlns:th="https://www.thymeleaf.org">
 <title>UberitSpring: Restaurante</title>
-<main>
-	<dl>
-		<dt>Nombre</dt>
-		<dd th:text="${restaurante.nombre}">NOMBRE_RESTAURANTE</dd>
-		<dt>Tipos de comida</dt>
-		<dd>
-			<ul>
+<main class="container">
+	<div class="card mb-5">
+		<img src="https://picsum.photos/400/100" height="100" class="card-img-top"
+			alt="...">
+		<div class="card-body">
+			<h5 class="card-title" th:text="${restaurante.nombre}">Card
+				title</h5>
+			<ul class="card-text">
 				<li th:each="tipoComida: ${restaurante.tiposComida}"
 					th:text="${tipoComida}">TIPO1</li>
 			</ul>
-		</dd>
-	</dl>
+		</div>
+	</div>
 
-	<table>
+	<table class="table">
 		<caption>Platos</caption>
 
 		<thead>
 			<tr>
 				<th>Nombre</th>
 				<th>Descripción</th>
-				<th>Precio</th>
+				<th class="text-end">Precio</th>
 			</tr>
 		</thead>
 
@@ -30,7 +31,7 @@
 			<tr th:each="plato: ${restaurante.platos}" th:object="${plato}">
 				<th th:text="*{nombre}">COMIDA</th>
 				<td th:text="*{descripcion}">DESCRIPCION</td>
-				<td th:text="*{precio}">PRECIO</td>
+				<td class="text-end" th:text="*{precio}">PRECIO</td>
 			</tr>
 		</tbody>
 	</table>
