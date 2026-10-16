@@ -16,7 +16,7 @@
 		<tbody>
 			<tr th:each="restaurante: ${restaurantes}">
 				<th><a th:text="${restaurante.nombre}"
-					th:href="@{/{id}(id=${restaurante.id})}" href="restaurante.html">TeleBurger</a>
+					th:href="@{/restaurante/{id}(id=${restaurante.id})}" href="restaurante.html">TeleBurger</a>
 				</th>
 				<td>
 					<ul>

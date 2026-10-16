@@ -36,7 +36,7 @@ public class IndexController {
 		return "index";
 	}
 
-	@GetMapping("{id}")
+	@GetMapping("restaurante/{id}")
 	public String restaurante(@PathVariable Long id, Model modelo) {
 		var restaurante = anonimoService.verRestaurante(id);
 
