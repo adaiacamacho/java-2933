@@ -13,7 +13,7 @@
 	crossorigin="anonymous">
 </head>
 <body class="h-100 d-flex flex-column">
-	<nav class="navbar navbar-expand-sm bg-dark mb-4" data-bs-theme="dark">
+	<nav class="navbar navbar-expand-sm bg-dark" data-bs-theme="dark">
 		<div class="container-fluid">
 			<a class="navbar-brand" href="#">UberitSpring</a>
 			<button class="navbar-toggler" type="button"
@@ -35,9 +35,18 @@
 		</div>
 	</nav>
 
-	<main th:replace="${contenido}">
-		<p>Layout content</p>
-	</main>
+	<div th:if="${alerta}" class="alert alert-dismissible fade show"
+		th:classappend="${'alert-' + alerta.nivel}" role="alert">
+		<span th:text="${alerta.mensaje}">MENSAJE</span>
+		<button type="button" class="btn-close" data-bs-dismiss="alert"
+			aria-label="Close"></button>
+	</div>
+
+	<div class="my-5">
+		<main th:replace="${contenido}">
+			<p>Layout content</p>
+		</main>
+	</div>
 
 	<footer class="p-2 text-bg-dark mt-auto"> &copy;2026 Javier
 		Lete </footer>
