@@ -29,7 +29,7 @@ class WebSecurityConfig {
 		// @formatter:off
 		http
 			.authorizeHttpRequests(requests -> requests
-				.requestMatchers("/").permitAll()
+				.requestMatchers("/", "/registro").permitAll()
 				.anyRequest().authenticated()
 			)
 			.formLogin(form -> form
