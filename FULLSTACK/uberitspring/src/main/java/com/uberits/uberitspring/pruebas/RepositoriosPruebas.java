@@ -28,8 +28,8 @@ public class RepositoriosPruebas implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) throws Exception {
-		var javier = Usuario.builder().nombre("Javier").email("javier@email.net").password("javier").build();
-		var pepe = Usuario.builder().nombre("Pepe").email("pepe@email.net").password("pepe").build();
+		var javier = Usuario.builder().nombre("Javier").email("javier@email.net").password("{noop}javier").build();
+		var pepe = Usuario.builder().nombre("Pepe").email("pepe@email.net").password("{noop}pepe").build();
 		
 		usuarioRepository.saveAll(List.of(javier, pepe));
 		

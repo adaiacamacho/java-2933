@@ -7,8 +7,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.LogoutConfigurer;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.provisioning.JdbcUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
@@ -19,23 +17,22 @@ class WebSecurityConfig {
 	// AUTENTICACIÓN
 	@Bean
 	UserDetailsService userDetailsService(DataSource dataSource) {
-		UserDetails javier = User.withUsername("javier@email.net").password("{noop}javier").roles("ADMINISTRADOR").build();
-		UserDetails pepe = User.withUsername("pepe@email.net").password("{noop}pepe").roles("USUARIO").build();
-
 		var jdbc = new JdbcUserDetailsManager(dataSource);
 
-		jdbc.deleteUser(javier.getUsername());
-		jdbc.deleteUser(pepe.getUsername());
+		jdbc.setUsersByUsernameQuery("""
+				SELECT email,password,'true' AS enabled 
+				FROM usuarios 
+				WHERE email = ?
+				""");
+		jdbc.setAuthoritiesByUsernameQuery("""
+				SELECT email, CASE
+				  WHEN email = 'javier@email.net' THEN 'ROLE_ADMINISTRADOR'
+				  ELSE 'ROLE_USUARIO'
+				END As authority FROM uberitspring.usuarios
+				WHERE email = ?
+				""");
 		
-		if (!jdbc.userExists(javier.getUsername())) {
-			jdbc.createUser(javier);
-		}
-
-		if (!jdbc.userExists(pepe.getUsername())) {
-			jdbc.createUser(pepe);
-		}
-
-		return jdbc; // new InMemoryUserDetailsManager(javier, pepe);
+		return jdbc;
 	}
 
 	// AUTORIZACIÓN
