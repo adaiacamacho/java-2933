@@ -20,7 +20,7 @@ public class ServiciosPruebas implements CommandLineRunner {
 
 //		System.out.println(anonimoService.registrarse(usuarioErroneo));
 
-		var juan = UsuarioRegistrarEntradaDto.builder().nombre("Juan").email("juan@email.net").password("{noop}juan")
+		var juan = UsuarioRegistrarEntradaDto.builder().nombre("Juan").email("juan@email.net").password("juan")
 				.build();
 
 		System.out.println(anonimoService.registrarse(juan));

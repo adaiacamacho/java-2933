@@ -3,6 +3,7 @@ package com.uberits.uberitspring.servicios.impl;
 import java.util.Collection;
 import java.util.Optional;
 
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
@@ -34,12 +35,17 @@ public class AnonimoServiceImpl implements AnonimoService {
 	private final RestauranteRepository restauranteRepository;
 	private final UsuarioMapper usuarioMapper;
 	private final RestauranteMapper restauranteMapper;
+	private final PasswordEncoder passwordEncoder;
 
 	@Override
 	public UsuarioRegistrarSalidaDto registrarse(@Valid UsuarioRegistrarEntradaDto usuarioDto) {
 		log.info("Se ha registrado un nuevo usuario");
 
-		var usuarioRegistrado = usuarioRepository.save(usuarioMapper.aEntidad(usuarioDto));
+		Usuario usuario = usuarioMapper.aEntidad(usuarioDto);
+		
+		usuario.setPassword(passwordEncoder.encode(usuario.getPassword()));
+		
+		var usuarioRegistrado = usuarioRepository.save(usuario);
 
 		return usuarioMapper.aDtoRegistro(usuarioRegistrado);
 	}
