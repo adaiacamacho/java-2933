@@ -16,10 +16,10 @@
 		</thead>
 		
 		<tbody>
-			<tr>
-				<th>1</th>
-				<td>La Traviata</td>
-				<td>Italiana, Mediterránea</td>
+			<tr th:each="restaurante: ${restaurantes}" th:object="${restaurante}">
+				<th th:text="*{id}">1</th>
+				<td th:text="*{nombre}">La Traviata</td>
+				<td th:text="*{tiposComida}">Italiana, Mediterránea</td>
 				<td>
 					<a href="#" class="btn btn-sm btn-primary"><i class="bi bi-pencil-fill"></i></a>
 					<a href="#" class="btn btn-sm btn-danger"><i class="bi bi-trash-fill"></i></a>
