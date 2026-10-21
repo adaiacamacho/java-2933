@@ -24,6 +24,7 @@ class WebSecurityConfig {
 		// @formatter:off
 		http
 			.authorizeHttpRequests(requests -> requests
+				.requestMatchers("/admin/**").hasRole("ADMINISTRADOR")
 				.requestMatchers("/", "/registro").permitAll()
 				.anyRequest().authenticated()
 			)
