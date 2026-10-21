@@ -3,6 +3,7 @@ package com.uberits.uberitspring.mappers;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
+import com.uberits.uberitspring.config.UberitSpringUserDetails;
 import com.uberits.uberitspring.dtos.UsuarioAutenticarSalidaDto;
 import com.uberits.uberitspring.dtos.UsuarioRegistrarEntradaDto;
 import com.uberits.uberitspring.dtos.UsuarioRegistrarSalidaDto;
@@ -23,4 +24,7 @@ public interface UsuarioMapper {
 
 	@Valid
 	UsuarioRegistrarEntradaDto aDtoRegistro(@Valid UsuarioFormModel usuario);
+
+	@Mapping(target = "roles", expression = "java(new java.util.ArrayList<String>())")
+	UberitSpringUserDetails aUserDetails(Usuario usuario);
 }

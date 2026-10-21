@@ -1,16 +1,12 @@
 package com.uberits.uberitspring.config;
 
-import javax.sql.DataSource;
-
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.LogoutConfigurer;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.provisioning.JdbcUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
@@ -20,27 +16,6 @@ class WebSecurityConfig {
 	@Bean
 	PasswordEncoder passwordEncoder() {
 		return PasswordEncoderFactories.createDelegatingPasswordEncoder();
-	}
-	
-	// AUTENTICACIÓN
-	@Bean
-	UserDetailsService userDetailsService(DataSource dataSource) {
-		var jdbc = new JdbcUserDetailsManager(dataSource);
-
-		jdbc.setUsersByUsernameQuery("""
-				SELECT email,password,'true' AS enabled 
-				FROM usuarios 
-				WHERE email = ?
-				""");
-		jdbc.setAuthoritiesByUsernameQuery("""
-				SELECT email, CASE
-				  WHEN email = 'javier@email.net' THEN 'ROLE_ADMINISTRADOR'
-				  ELSE 'ROLE_USUARIO'
-				END As authority FROM uberitspring.usuarios
-				WHERE email = ?
-				""");
-		
-		return jdbc;
 	}
 
 	// AUTORIZACIÓN
