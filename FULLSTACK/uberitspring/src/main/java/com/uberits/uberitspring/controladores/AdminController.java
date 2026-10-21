@@ -5,7 +5,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.uberits.uberitspring.servicios.AnonimoService;
+import com.uberits.uberitspring.servicios.AdminService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -14,11 +14,11 @@ import lombok.RequiredArgsConstructor;
 @Controller
 @RequestMapping("/admin")
 public class AdminController {
-	private final AnonimoService anonimoService;
+	private final AdminService adminService;
 	
 	@GetMapping
 	public String index(Model modelo) {
-		modelo.addAttribute("restaurantes", anonimoService.listadoRestaurantes());
+		modelo.addAttribute("restaurantes", adminService.listadoRestaurantes());
 		
 		return "admin/index";
 	}
