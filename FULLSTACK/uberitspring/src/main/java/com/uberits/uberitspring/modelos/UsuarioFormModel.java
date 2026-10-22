@@ -15,12 +15,14 @@ import lombok.NoArgsConstructor;
 public class UsuarioFormModel {
 	@NotBlank
 	@Size(max = 20)
-	String nombre;
+	private String nombre;
+	
 	@NotBlank
 	@Size(max = 100)
 	@Email
-	String email;
+	private String email;
+	
 	@NotBlank
 	@Size(max = 100)
-	String password;
+	private String password;
 }
