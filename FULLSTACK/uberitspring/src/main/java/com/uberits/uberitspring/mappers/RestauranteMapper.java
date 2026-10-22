@@ -1,7 +1,9 @@
 package com.uberits.uberitspring.mappers;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -44,4 +46,16 @@ public interface RestauranteMapper {
 
 	@Mapping(ignore = true, target = "tiposComidaIds")
 	RestauranteSalidaDto aDto(Restaurante restauranteCreado);
+
+	@Mapping(target = "tiposComidaIds", source = "tiposComida") //al no poder hacerlo solo, usa directamente el metodo default
+	RestauranteFormModel aFormModel(Restaurante restaurante);
+	
+	default List<Long> mapTiposComidaToIds(Collection<TipoComida> tiposComida) {
+        if (tiposComida == null) {
+            return null; //si el restaurante no tiene tiposComida, devuelve null
+        }
+        return tiposComida.stream() 
+                .map(TipoComida::getId) //devuelve una lista de los ids, mapeando cada tipocomida
+                .collect(Collectors.toList());
+    }
 }
