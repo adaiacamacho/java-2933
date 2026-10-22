@@ -6,4 +6,6 @@ public interface AdminService {
 
 	Iterable<RestauranteListadoDto> listadoRestaurantes();
 
+	void borrarRestaurante(Long id);
+
 }

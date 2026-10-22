@@ -22,4 +22,11 @@ public class AdminController {
 		
 		return "admin/index";
 	}
+	
+	@GetMapping("restaurantes/borrar")
+	public String borrarRestaurante(Long id) {
+		adminService.borrarRestaurante(id);
+		
+		return "redirect:/admin";
+	}
 }

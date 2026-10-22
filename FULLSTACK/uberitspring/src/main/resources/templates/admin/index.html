@@ -22,7 +22,7 @@
 				<td th:text="*{tiposComida}">Italiana, Mediterránea</td>
 				<td>
 					<a href="#" class="btn btn-sm btn-primary"><i class="bi bi-pencil-fill"></i></a>
-					<a href="#" class="btn btn-sm btn-danger"><i class="bi bi-trash-fill"></i></a>
+					<a href="#" th:href="@{/admin/restaurantes/borrar(id=*{id})}" class="btn btn-sm btn-danger"><i class="bi bi-trash-fill"></i></a>
 				</td>
 			</tr>
 		</tbody>

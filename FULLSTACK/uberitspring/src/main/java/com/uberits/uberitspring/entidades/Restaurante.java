@@ -3,6 +3,7 @@ package com.uberits.uberitspring.entidades;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -51,6 +52,6 @@ public class Restaurante {
 
     @Builder.Default
     @ToString.Exclude
-    @OneToMany(mappedBy = "restaurante")
+    @OneToMany(mappedBy = "restaurante", cascade = CascadeType.REMOVE)
     private Collection<Plato> platos = new ArrayList<>();
 }

@@ -29,4 +29,11 @@ public class AdminServiceImpl implements AdminService {
 	public Collection<RestauranteListadoDto> listadoRestaurantes() {
 		return restauranteMapper.aDto(restauranteRepository.findAll());
 	}
+
+	@Override
+	public void borrarRestaurante(Long id) {
+		log.info("Borrando restaurante " + id);
+		
+		restauranteRepository.deleteById(id);
+	}
 }
