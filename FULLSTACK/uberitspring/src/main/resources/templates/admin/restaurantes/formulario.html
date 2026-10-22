@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html th:replace="~{_global :: plantilla(~{::title}, ~{::main})}"
+	xmlns:th="https://www.thymeleaf.org">
+<title>UberitSpring</title>
+<main class="container">
+	<form th:action="@{/admin/restaurantes/formulario}" th:method="post"
+		th:object="${restauranteFormModel}" novalidate>
+		<div class="row mb-3">
+			<label for="nombre" class="col-sm-2 col-form-label">Nombre</label>
+			<div class="col-sm">
+				<input type="text" required maxlength="20" class="form-control"
+					th:errorclass="is-invalid" th:field="*{nombre}">
+				<div class="invalid-feedback">El nombre debe estar rellenado y
+					tener como máximo 30 caracteres</div>
+			</div>
+		</div>
+
+		<fieldset class="row mb-3">
+			<legend class="col-form-label col-sm-2 pt-0">Tipos de comida</legend>
+			<div class="col-sm-10">
+				<div th:each="tipo: ${tiposComida}" class="form-check">
+					<input class="form-check-input" type="checkbox"
+						th:field="*{tiposComidaIds}" th:value="${tipo.id}"> <label
+						class="form-check-label" th:for="${#ids.prev('tiposComidaIds')}"
+						th:text="${tipo.nombre}">AMERICANA</label>
+				</div>
+			</div>
+		</fieldset>
+
+		<div class="row mb-3">
+			<div class="offset-sm-2 col-sm">
+				<button type="submit" class="btn btn-primary">Guardar</button>
+			</div>
+		</div>
+	</form>
+	<script>
+	// Example starter JavaScript for disabling form submissions if there are invalid fields
+	(() => {
+	  'use strict'
+
+	  // Fetch all the forms we want to apply custom Bootstrap validation styles to
+	  const forms = document.querySelectorAll('.needs-validation')
+
+	  // Loop over them and prevent submission
+	  Array.from(forms).forEach(form => {
+	    form.addEventListener('submit', event => {
+	      if (!form.checkValidity()) {
+	        event.preventDefault()
+	        event.stopPropagation()
+	        
+	        const div = document.createElement('div');
+	        
+	        div.className = "alert alert-danger alert-dismissible fade show";
+	        div.role = "alert";
+	        
+	        div.innerHTML = `
+	    		<span>Hay errores en los campos de usuario</span>
+	    		<button type="button" class="btn-close" data-bs-dismiss="alert"
+	    			aria-label="Close"></button>`;
+	    	
+	    	document.querySelector('body>nav').insertAdjacentElement("afterend", div);
+	      }
+
+	      form.classList.add('was-validated')
+	    }, false)
+	  })
+	})()
+	</script>
+</main>
+</html>

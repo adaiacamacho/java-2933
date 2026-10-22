@@ -4,12 +4,18 @@ import java.util.Collection;
 import java.util.Optional;
 
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 
 import com.uberits.uberitspring.dtos.RestauranteDetalleDto;
+import com.uberits.uberitspring.dtos.RestauranteEntradaDto;
 import com.uberits.uberitspring.dtos.RestauranteListadoDto;
+import com.uberits.uberitspring.dtos.RestauranteSalidaDto;
 import com.uberits.uberitspring.entidades.Restaurante;
 import com.uberits.uberitspring.entidades.TipoComida;
+import com.uberits.uberitspring.modelos.RestauranteFormModel;
 import com.uberits.uberitspring.modelos.RestauranteViewModel;
+
+import jakarta.validation.Valid;
 
 @Mapper(componentModel = "spring")
 public interface RestauranteMapper {
@@ -29,4 +35,13 @@ public interface RestauranteMapper {
     }
 
 	Collection<RestauranteViewModel> aViewModel(Collection<RestauranteListadoDto> listadoRestaurantes);
+
+	RestauranteEntradaDto aDto(@Valid RestauranteFormModel restauranteFormModel);
+
+	@Mapping(ignore = true, target = "tiposComida")
+	@Mapping(ignore = true, target = "platos")
+	Restaurante aEntidad(RestauranteEntradaDto restauranteDto);
+
+	@Mapping(ignore = true, target = "tiposComidaIds")
+	RestauranteSalidaDto aDto(Restaurante restauranteCreado);
 }
