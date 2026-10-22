@@ -80,4 +80,29 @@ public class AdminServiceImpl implements AdminService {
 		
 		return restauranteMapper.aDto(restauranteCreado);
 	}
+
+	@Override
+	public RestauranteSalidaDto modificarRestaurante(RestauranteEntradaDto restauranteDto) {
+		System.out.println(restauranteDto);
+		var restauranteObj=restauranteMapper.aEntidad(restauranteDto);
+		
+		List<Long> ids = restauranteDto.getTiposComidaIds() == null
+                ? List.of()
+                : restauranteDto.getTiposComidaIds().stream()
+                    .distinct()
+                    .toList();
+
+        List<TipoComida> tipos = tipoComidaRepository.findAllById(ids);
+
+        if (tipos.size() != ids.size()) {
+            throw new EntityNotFoundException(
+                "Uno o varios tipos de comida no existen"
+            );
+        }
+        
+        restauranteObj.setTiposComida(tipos);
+		
+		restauranteRepository.save(restauranteObj);
+		return restauranteMapper.aDto(restauranteObj);
+	}
 }

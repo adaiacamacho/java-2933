@@ -15,4 +15,6 @@ public interface AdminService {
 
 	RestauranteSalidaDto crearRestaurante(RestauranteEntradaDto aDto);
 
+	RestauranteSalidaDto modificarRestaurante(RestauranteEntradaDto aDto);
+
 }
