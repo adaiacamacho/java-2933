@@ -3,12 +3,12 @@
 	xmlns:th="https://www.thymeleaf.org">
 <title>UberitSpring</title>
 <main class="container">
-	<form th:action="@{/admin/restaurantes/formulario}" th:method="post"
+	<form th:action="${restauranteFormModel.id == null} ? @{/admin/restaurantes/formulario} : @{/admin/restaurantes/formulario/{id}(id=${restauranteFormModel.id})}" th:method="post"
 		th:object="${restauranteFormModel}" novalidate>
 		<div class="row mb-3">
 			<label for="nombre" class="col-sm-2 col-form-label">Nombre</label>
 			<div class="col-sm">
-				<input type="text" required maxlength="20" class="form-control"
+				<input type="text" required maxlength="30" class="form-control"
 					th:errorclass="is-invalid" th:field="*{nombre}">
 				<div class="invalid-feedback">El nombre debe estar rellenado y
 					tener como máximo 30 caracteres</div>
