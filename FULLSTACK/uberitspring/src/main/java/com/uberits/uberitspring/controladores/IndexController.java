@@ -45,12 +45,12 @@ public class IndexController {
 		return "restaurante";
 	}
 
-	@GetMapping("/registro")
+	@GetMapping("registro")
 	public String registro(UsuarioFormModel usuarioFormModel) {
 		return "registro";
 	}
 
-	@PostMapping("/registro")
+	@PostMapping("registro")
 	public String registroPost(Model modelo, @Valid UsuarioFormModel usuarioFormModel, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
 		if (bindingResult.hasErrors()) {
 			modelo.addAttribute("alerta", AlertaDto.builder()
@@ -68,7 +68,7 @@ public class IndexController {
 		return "redirect:/";
 	}
 	
-	@GetMapping("/login")
+	@GetMapping("login")
 	public String login() {
 		return "login";
 	}
