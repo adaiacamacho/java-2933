@@ -8,5 +8,5 @@ import lombok.Builder;
 public record RestauranteDetalleDto(String nombre, Iterable<String> tiposComida, Iterable<PlatoDto> platos) {
 
 	@Builder
-	public record PlatoDto(String nombre, BigDecimal precio, String descripcion) {}
+	public record PlatoDto(Long id, String nombre, BigDecimal precio, String descripcion) {}
 }

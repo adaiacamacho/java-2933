@@ -24,6 +24,7 @@
 				<th>Nombre</th>
 				<th>Descripción</th>
 				<th class="text-end">Precio</th>
+				<th>OPCIONES</th>
 			</tr>
 		</thead>
 
@@ -32,6 +33,9 @@
 				<th th:text="*{nombre}">COMIDA</th>
 				<td th:text="*{descripcion}">DESCRIPCION</td>
 				<td class="text-end" th:text="*{precio}">PRECIO</td>
+				<td>
+					<a class="btn btn-sm btn-primary" th:href="@{/usuario/carrito/agregar(id=*{id})}" href="#"><i class="bi bi-plus-lg"></i></a>
+				</td>
 			</tr>
 		</tbody>
 	</table>

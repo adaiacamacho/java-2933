@@ -47,7 +47,8 @@ public class CarritoViewModel {
 		
 		@NotNull
 		@Positive
-		private Integer cantidad;
+		@Builder.Default
+		private Integer cantidad = 1;
 		
 		public BigDecimal getTotal() {
 			return precioPlato.multiply(new BigDecimal(cantidad));
