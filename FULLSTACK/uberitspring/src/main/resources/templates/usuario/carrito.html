@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html th:replace="~{_global :: plantilla(~{::title}, ~{::main})}"
+	xmlns:th="https://www.thymeleaf.org">
+<title>UberitSpring</title>
+<main class="container">
+	<h1>Carrito</h1>
+
+	<table class="table">
+		<thead>
+			<tr>
+				<th>Nombre</th>
+				<th>Precio</th>
+				<th>Cantidad</th>
+				<th>Total</th>
+			</tr>
+		</thead>
+		
+		<tbody>
+			<tr th:each="linea: ${carrito.lineas}" th:object="${linea}">
+				<td th:text="*{nombrePlato}">BURGER</td>
+				<th th:text="*{precioPlato}">12,34€</th>
+				<td th:text="*{cantidad}">2</td>
+				<td th:text="*{total}">24,68€</td>
+			</tr>
+		</tbody>
+		
+		<tfoot>
+			<tr>
+				<td colspan="3"></td>
+				<td th:text="${carrito.total}">24,68€</td>
+			</tr>
+		</tfoot>
+	</table>
+</main>
+</html>

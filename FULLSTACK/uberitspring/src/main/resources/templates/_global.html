@@ -40,6 +40,8 @@
 						sec:authentication="principal.rol">ROLES</span></li>
 					<li class="nav-item" sec:authorize="hasRole('ADMINISTRADOR')"><a
 						class="nav-link" href="#" th:href="@{/admin}">Administración</a></li>
+					<li class="nav-item" sec:authorize="hasRole('USUARIO')"><a
+						class="nav-link" href="#" th:href="@{/usuario/carrito}">Carrito</a></li>
 					<li class="nav-item" sec:authorize="isAuthenticated()">
 						<form th:action="@{/logout}" th:method="post">
 							<button class="nav-link">Cerrar sesión</button>
