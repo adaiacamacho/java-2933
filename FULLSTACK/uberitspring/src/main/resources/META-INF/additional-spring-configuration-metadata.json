@@ -1,0 +1,14 @@
+{
+	"properties": [
+		{
+			"name": "seguridad.jwt.secreto",
+			"type": "java.lang.String",
+			"description": "Aquí guardaremos una clave generada con openssl rand -base64 32"
+		},
+		{
+			"name": "seguridad.jwt.caducidad",
+			"type": "java.lang.String",
+			"description": "Caducidad del token"
+		}
+	]
+}
