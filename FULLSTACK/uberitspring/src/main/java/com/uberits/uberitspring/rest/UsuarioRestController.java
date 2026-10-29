@@ -50,7 +50,7 @@ public class UsuarioRestController {
 
 	@GetMapping("prueba")
 	public String pruebaSeguridad() {
-		return "OK";
+		return "\"OK\"";
 	}
 
 	@PostMapping("autenticar")

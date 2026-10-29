@@ -6,7 +6,6 @@ import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.LogoutConfigurer;
-import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
@@ -26,13 +25,13 @@ class WebSecurityConfig {
 		// @formatter:off
 		http
 			.csrf(csrf -> csrf.disable())
-			.sessionManagement(session -> session
-                    .sessionCreationPolicy(
-                            SessionCreationPolicy.STATELESS))
+//			.sessionManagement(session -> session
+//                    .sessionCreationPolicy(
+//                            SessionCreationPolicy.STATELESS))
 			.authorizeHttpRequests(requests -> requests
 				.requestMatchers("/usuario/**").hasRole("USUARIO")
 				.requestMatchers("/admin/**").hasRole("ADMINISTRADOR")
-				.requestMatchers("/", "/registro", "/api/v2/usuarios/registrar", "/api/v2/usuarios/login").permitAll()
+				.requestMatchers("/frontend.html", "/js/frontend.js", "/", "/registro", "/api/v2/usuarios/registrar", "/api/v2/usuarios/login").permitAll()
 				.anyRequest().authenticated()
 			)
 			.oauth2ResourceServer(oauth2 -> oauth2
