@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { RestauranteListado } from '../restaurante-listado';
+import { AnonimoService } from '../anonimo-service';
 
 @Component({
   imports: [],
@@ -8,8 +9,7 @@ import { RestauranteListado } from '../restaurante-listado';
   templateUrl: './principal.html',
 })
 export class Principal {
-  restaurantes: RestauranteListado[] = [
-    { id: 1, nombre: 'TeleBurger', tiposComida: ['Americana', 'Basura'] },
-    { id: 2, nombre: 'Pizza A Domicilio', tiposComida: ['Italiana', 'Basura'] },
-  ];
+  private readonly anonimoService = inject(AnonimoService);
+
+  restaurantes: RestauranteListado[] = this.anonimoService.listadoRestaurantes();
 }
