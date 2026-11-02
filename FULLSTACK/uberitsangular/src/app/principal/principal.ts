@@ -1,6 +1,6 @@
-import { Component, inject } from '@angular/core';
-import { RestauranteListado } from '../restaurante-listado';
+import { Component, inject, signal } from '@angular/core';
 import { AnonimoService } from '../anonimo-service';
+import { RestauranteListado } from '../restaurante-listado';
 
 @Component({
   imports: [],
@@ -10,6 +10,19 @@ import { AnonimoService } from '../anonimo-service';
 })
 export class Principal {
   private readonly anonimoService = inject(AnonimoService);
+  // private readonly changeDetectorRef = inject(ChangeDetectorRef);
 
-  restaurantes: RestauranteListado[] = this.anonimoService.listadoRestaurantes();
+  restaurantes = signal<RestauranteListado[]>([]);
+
+  constructor() {
+    this.anonimoService.listadoRestaurantes().then((restaurantes) => {
+      console.log('Principal', restaurantes);
+
+      this.restaurantes.set(restaurantes);
+
+      console.log('Principal', this.restaurantes());
+
+      // this.changeDetectorRef.markForCheck();
+    });
+  }
 }

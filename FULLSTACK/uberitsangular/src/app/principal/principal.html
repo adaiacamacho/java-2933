@@ -11,7 +11,7 @@
   </thead>
 
   <tbody>
-    @for (restaurante of restaurantes; track restaurante.id) {
+    @for (restaurante of restaurantes(); track restaurante.id) {
       <tr>
         <th>
           <a>{{ restaurante.nombre }}</a>
