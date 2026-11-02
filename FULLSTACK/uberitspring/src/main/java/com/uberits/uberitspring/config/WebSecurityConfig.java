@@ -24,11 +24,13 @@ class WebSecurityConfig {
 	SecurityFilterChain securityFilterChain(HttpSecurity http) {
 		// @formatter:off
 		http
+			.cors(Customizer.withDefaults())
 			.csrf(csrf -> csrf.disable())
 //			.sessionManagement(session -> session
 //                    .sessionCreationPolicy(
 //                            SessionCreationPolicy.STATELESS))
 			.authorizeHttpRequests(requests -> requests
+				.requestMatchers("/api/v2/restaurantes").permitAll()
 				.requestMatchers("/usuario/**").hasRole("USUARIO")
 				.requestMatchers("/admin/**").hasRole("ADMINISTRADOR")
 				.requestMatchers("/frontend.html", "/js/frontend.js", "/", "/registro", "/api/v2/usuarios/registrar", "/api/v2/usuarios/login").permitAll()
