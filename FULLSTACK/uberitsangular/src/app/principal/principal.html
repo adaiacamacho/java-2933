@@ -1,1 +1,29 @@
-<p>principal works!</p>
+<table class="table">
+  <caption>
+    Restaurantes
+  </caption>
+
+  <thead>
+    <tr>
+      <th>Nombre</th>
+      <th>Tipo de comida</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    @for (restaurante of restaurantes; track restaurante.id) {
+      <tr>
+        <th>
+          <a>{{ restaurante.nombre }}</a>
+        </th>
+        <td>
+          <ul>
+            @for (tipoComida of restaurante.tiposComida; track tipoComida) {
+              <li>{{ tipoComida }}</li>
+            }
+          </ul>
+        </td>
+      </tr>
+    }
+  </tbody>
+</table>

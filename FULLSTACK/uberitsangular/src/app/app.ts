@@ -9,6 +9,4 @@ import { RouterOutlet } from '@angular/router';
   templateUrl: './app.html',
   imports: [Cabecera, Pie, RouterOutlet],
 })
-export class App {
-  protected readonly title = signal('uberitsangular');
-}
+export class App {}
