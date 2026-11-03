@@ -30,7 +30,7 @@ class WebSecurityConfig {
 //                    .sessionCreationPolicy(
 //                            SessionCreationPolicy.STATELESS))
 			.authorizeHttpRequests(requests -> requests
-				.requestMatchers("/api/v2/restaurantes").permitAll()
+				.requestMatchers("/api/v2/restaurantes/**").permitAll()
 				.requestMatchers("/usuario/**").hasRole("USUARIO")
 				.requestMatchers("/admin/**").hasRole("ADMINISTRADOR")
 				.requestMatchers("/frontend.html", "/js/frontend.js", "/", "/registro", "/api/v2/usuarios/registrar", "/api/v2/usuarios/login").permitAll()

@@ -1,1 +1,39 @@
-<p>restaurante-detalle works!</p>
+<div class="card mb-5">
+  <img src="https://picsum.photos/400/100" height="100" class="card-img-top" alt="..." />
+  <div class="card-body">
+    <h5 class="card-title">{{ restaurante().nombre }}</h5>
+    <ul class="card-text">
+      @for (tipoComida of restaurante().tiposComida; track tipoComida) {
+        <li>{{ tipoComida }}</li>
+      }
+    </ul>
+  </div>
+</div>
+
+<table class="table">
+  <caption>
+    Platos
+  </caption>
+
+  <thead>
+    <tr>
+      <th>Nombre</th>
+      <th>Descripción</th>
+      <th class="text-end">Precio</th>
+      <th>OPCIONES</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    @for (plato of restaurante().platos; track plato.id) {
+      <tr>
+        <th>{{ plato.nombre }}</th>
+        <td>{{ plato.descripcion }}</td>
+        <td class="text-end">{{ plato.precio | currency }}</td>
+        <td>
+          <a class="btn btn-sm btn-primary" href="#"><i class="bi bi-plus-lg"></i></a>
+        </td>
+      </tr>
+    }
+  </tbody>
+</table>
