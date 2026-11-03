@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   imports: [],
@@ -6,4 +7,12 @@ import { Component } from '@angular/core';
   styleUrl: './restaurante-detalle.css',
   templateUrl: './restaurante-detalle.html',
 })
-export class RestauranteDetalle {}
+export class RestauranteDetalle {
+  private readonly route = inject(ActivatedRoute);
+
+  constructor() {
+    const id = Number(this.route.snapshot.paramMap.get('id'));
+
+    console.log(id);
+  }
+}
