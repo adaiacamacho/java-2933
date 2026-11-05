@@ -14,7 +14,7 @@
     @for (restaurante of restaurantes(); track restaurante.id) {
       <tr>
         <th>
-          <a>{{ restaurante.nombre }}</a>
+          <a routerLink="restaurante/{{restaurante.id}}">{{ restaurante.nombre }}</a>
         </th>
         <td>
           <ul>

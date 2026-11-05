@@ -1,9 +1,10 @@
 import { Component, inject, signal } from '@angular/core';
 import { AnonimoService } from '../anonimo-service';
 import { RestauranteListado } from '../restaurante-listado';
+import { RouterLink } from '@angular/router';
 
 @Component({
-  imports: [],
+  imports: [RouterLink],
   selector: 'app-principal',
   styleUrl: './principal.css',
   templateUrl: './principal.html',
