@@ -1,10 +1,13 @@
-import { Service } from '@angular/core';
+import { inject, Service } from '@angular/core';
 import { RestauranteListado } from './restaurante-listado';
+import { JwtService } from './jwt-service';
 
 @Service()
 export class AnonimoService {
   private readonly URL_RESTAURANTES = 'http://localhost:8080/api/v2/restaurantes';
   private readonly URL_USUARIOS = 'http://localhost:8080/api/v2/usuarios/';
+
+  private readonly jwtService = inject(JwtService);
 
   async listadoRestaurantes(): Promise<RestauranteListado[]> {
     const respuesta = await fetch(this.URL_RESTAURANTES);
@@ -26,7 +29,7 @@ export class AnonimoService {
 
     const datos = await respuesta.json();
 
-    sessionStorage.setItem('token', datos.accessToken);
+    this.jwtService.guardar(datos.accessToken);
 
     return datos;
   }

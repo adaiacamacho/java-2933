@@ -1,20 +1,23 @@
-import { Service } from '@angular/core';
+import { inject, Service } from '@angular/core';
 import { RestauranteCompleto } from './restaurante-completo';
+import { JwtService } from './jwt-service';
 
 @Service()
 export class AutenticadoService {
   private readonly URL_RESTAURANTES = 'http://localhost:8080/api/v2/restaurantes/';
 
-    async verRestaurante(id: number): Promise<RestauranteCompleto> {
-      const respuesta = await fetch(this.URL_RESTAURANTES + id, {
-        headers: {
-          Authorization: 'Bearer ' + sessionStorage.getItem('token')
-        }
-      });
-      const restaurante: RestauranteCompleto = await respuesta.json();
+  private readonly jwtService = inject(JwtService);
 
-      console.log('verRestaurante()', id, restaurante);
+  async verRestaurante(id: number): Promise<RestauranteCompleto> {
+    const respuesta = await fetch(this.URL_RESTAURANTES + id, {
+      headers: {
+        Authorization: 'Bearer ' + this.jwtService.obtener(),
+      },
+    });
+    const restaurante: RestauranteCompleto = await respuesta.json();
 
-      return restaurante;
-    }
+    console.log('verRestaurante()', id, restaurante);
+
+    return restaurante;
+  }
 }
