@@ -2,6 +2,7 @@ package com.uberits.uberitspring.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -30,7 +31,7 @@ class WebSecurityConfig {
 //                    .sessionCreationPolicy(
 //                            SessionCreationPolicy.STATELESS))
 			.authorizeHttpRequests(requests -> requests
-				.requestMatchers("/api/v2/restaurantes/**").permitAll()
+				.requestMatchers(HttpMethod.GET, "/api/v2/restaurantes").permitAll()
 				.requestMatchers("/usuario/**").hasRole("USUARIO")
 				.requestMatchers("/admin/**").hasRole("ADMINISTRADOR")
 				.requestMatchers("/frontend.html", "/js/frontend.js", "/", "/registro", "/api/v2/usuarios/registrar", "/api/v2/usuarios/login").permitAll()
