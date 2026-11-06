@@ -1,5 +1,5 @@
 import { Component, inject } from '@angular/core';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { JwtService } from '../jwt-service';
 
 @Component({
@@ -10,4 +10,10 @@ import { JwtService } from '../jwt-service';
 })
 export class Cabecera {
   private readonly jwtService = inject(JwtService);
+  private readonly router = inject(Router);
+
+  cerrarSesion() {
+    this.jwtService.cerrarSesion();
+    this.router.navigateByUrl('/');
+  }
 }
