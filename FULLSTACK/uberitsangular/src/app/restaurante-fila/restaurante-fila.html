@@ -1,1 +1,10 @@
-<p>restaurante-fila works!</p>
+<th>
+  <a routerLink="restaurante/{{ restaurante().id }}">{{ restaurante().nombre }}</a>
+</th>
+<td>
+  <ul>
+    @for (tipoComida of restaurante().tiposComida; track tipoComida) {
+      <li>{{ tipoComida }}</li>
+    }
+  </ul>
+</td>
