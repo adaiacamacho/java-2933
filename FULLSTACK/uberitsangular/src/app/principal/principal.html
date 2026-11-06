@@ -12,7 +12,7 @@
 
   <tbody>
     @for (restaurante of restaurantes(); track restaurante.id) {
-      <tr [restaurante]="restaurante"></tr>
+      <tr [restaurante]="restaurante" (clic)="verRestaurante($event)"></tr>
     }
   </tbody>
 </table>

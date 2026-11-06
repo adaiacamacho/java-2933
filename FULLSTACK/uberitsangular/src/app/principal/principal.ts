@@ -2,6 +2,7 @@ import { Component, inject, signal } from '@angular/core';
 import { AnonimoService } from '../anonimo-service';
 import { RestauranteFila } from '../restaurante-fila/restaurante-fila';
 import { RestauranteListado } from '../restaurante-listado';
+import { Router } from '@angular/router';
 
 @Component({
   imports: [RestauranteFila],
@@ -11,6 +12,8 @@ import { RestauranteListado } from '../restaurante-listado';
 })
 export class Principal {
   private readonly anonimoService = inject(AnonimoService);
+  private readonly router = inject(Router);
+
   // private readonly changeDetectorRef = inject(ChangeDetectorRef);
 
   restaurantes = signal<RestauranteListado[]>([]);
@@ -25,5 +28,9 @@ export class Principal {
 
       // this.changeDetectorRef.markForCheck();
     });
+  }
+
+  verRestaurante(restaurante: RestauranteListado) {
+    this.router.navigate(['restaurante', restaurante.id]);
   }
 }

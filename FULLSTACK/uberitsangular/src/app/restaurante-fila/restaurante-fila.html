@@ -1,7 +1,7 @@
-<th>
-  <a routerLink="restaurante/{{ restaurante().id }}">{{ restaurante().nombre }}</a>
+<th (click)="clicRestaurante(restaurante())">
+  {{ restaurante().nombre }}
 </th>
-<td>
+<td (click)="clicRestaurante(restaurante())">
   <ul>
     @for (tipoComida of restaurante().tiposComida; track tipoComida) {
       <li>{{ tipoComida }}</li>
