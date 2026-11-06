@@ -10,6 +10,7 @@ import org.springframework.security.oauth2.jwt.JwtEncoder;
 import org.springframework.security.oauth2.jwt.JwtEncoderParameters;
 import org.springframework.stereotype.Service;
 
+import com.uberits.uberitspring.config.UberitSpringUserDetails;
 import com.uberits.uberitspring.servicios.JwtService;
 
 @Service
@@ -24,15 +25,17 @@ public class JwtServiceImpl implements JwtService {
 	}
 
 	@Override
-	public String generarToken(String username) {
+	public String generarToken(UberitSpringUserDetails usuario) {
 		Instant now = Instant.now();
 
 		// @formatter:off
 		JwtClaimsSet claims = JwtClaimsSet.builder()
-				.issuer("ubertiSpring")
+				.issuer("uberitSpring")
 				.issuedAt(now)
 				.expiresAt(now.plusSeconds(caducidadEnSegundos))
-				.subject(username)
+				.subject(usuario.email())
+				.claim("nombre", usuario.nombre())
+				.claim("rol", usuario.getRol())
 				.build();
 
 		JwsHeader header = JwsHeader

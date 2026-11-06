@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
+import com.uberits.uberitspring.config.UberitSpringUserDetails;
 import com.uberits.uberitspring.dtos.UsuarioAutenticarEntradaDto;
 import com.uberits.uberitspring.dtos.UsuarioAutenticarSalidaDto;
 import com.uberits.uberitspring.dtos.UsuarioRegistrarEntradaDto;
@@ -37,13 +38,17 @@ public class UsuarioRestController {
 	@PostMapping("/login")
 	public Map<String, String> login(@Valid @RequestBody UsuarioAutenticarEntradaDto dto) {
 		System.out.println("LOGIN: " + dto);
-		
+
 		Authentication authentication = authenticationConfiguration.getAuthenticationManager()
 				.authenticate(new UsernamePasswordAuthenticationToken(dto.email(), dto.password()));
 
-		System.out.println("AUTHENTICATION: "+ authentication);
+		System.out.println("AUTHENTICATION: " + authentication);
 
-		String token = jwtService.generarToken(authentication.getName());
+		UberitSpringUserDetails uberitSpringUserDetails = (UberitSpringUserDetails) authentication.getPrincipal();
+
+		System.out.println("UberitSpringUserDetails: " + uberitSpringUserDetails);
+
+		String token = jwtService.generarToken(uberitSpringUserDetails);
 
 		return Map.of("accessToken", token, "tokenType", "Bearer");
 	}
@@ -69,5 +74,5 @@ public class UsuarioRestController {
 	public UsuarioRegistrarSalidaDto registrar(@Valid @RequestBody UsuarioRegistrarEntradaDto usuarioDto) {
 		return anonimoService.registrarse(usuarioDto);
 	}
-	
+
 }

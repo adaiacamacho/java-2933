@@ -18,7 +18,11 @@
       </ul>
       <ul class="navbar-nav mb-2 mb-sm-0">
         @if (jwtService.autenticado()) {
-          <li class="navbar-text">{{ jwtService.getEmail() }}</li>
+          @if (jwtService.getRol() === 'ADMINISTRADOR') {
+            <li class="nav-item"><a class="nav-link" routerLink="/admin/restaurantes">Administración</a></li>
+          }
+          <li class="navbar-text">{{ jwtService.getNombre() }}</li>
+          <li class="navbar-text">{{ jwtService.getRol() }}</li>
           <li class="nav-item">
             <button class="nav-link" (click)="jwtService.cerrarSesion()">Cerrar sesión</button>
           </li>

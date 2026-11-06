@@ -3,4 +3,6 @@ export interface Token {
   sub: string;
   exp: number;
   iat: number;
+  nombre: string;
+  rol: string;
 }

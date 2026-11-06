@@ -50,6 +50,14 @@ export class JwtService {
     return this.getToken()?.sub;
   }
 
+  getNombre(): string | undefined {
+    return this.getToken()?.nombre;
+  }
+
+  getRol(): string | undefined {
+    return this.getToken()?.rol;
+  }
+
   getCaducidad(): Date | undefined {
     const token = this.getToken();
 
