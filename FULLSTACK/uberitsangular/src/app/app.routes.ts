@@ -3,10 +3,11 @@ import { Principal } from './principal/principal';
 import { Login } from './login/login';
 import { Registro } from './registro/registro';
 import { RestauranteDetalle } from './restaurante-detalle/restaurante-detalle';
+import { autenticadoGuard } from './autenticado-guard';
 
 export const routes: Routes = [
   { path: '', component: Principal },
-  { path: 'restaurante/:id', component: RestauranteDetalle },
+  { path: 'restaurante/:id', component: RestauranteDetalle, canActivate: [autenticadoGuard] },
   { path: 'login', component: Login },
   { path: 'registro', component: Registro },
 ];
