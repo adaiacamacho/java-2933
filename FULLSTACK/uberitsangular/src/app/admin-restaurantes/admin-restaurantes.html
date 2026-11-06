@@ -1,1 +1,41 @@
-<p>admin-restaurantes works!</p>
+<table class="table table-hover table-striped table-bordered">
+  <caption>
+    Restaurantes
+  </caption>
+
+  <thead class="table-secondary">
+    <tr>
+      <th>Id</th>
+      <th>Nombre</th>
+      <th>Tipos de comida</th>
+      <th>OPCIONES</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    @for (restaurante of restaurantes(); track restaurante.id) {
+      <tr>
+        <th>{{ restaurante.id }}</th>
+        <td>{{ restaurante.nombre }}</td>
+        <td>
+          @for (tipoComida of restaurante.tiposComida; track tipoComida) {
+            {{ tipoComida }}
+          }
+        </td>
+        <td>
+          <a href="#" class="btn btn-sm btn-primary"><i class="bi bi-pencil-fill"></i></a>
+          <a href="#" class="btn btn-sm btn-danger"><i class="bi bi-trash-fill"></i></a>
+        </td>
+      </tr>
+    }
+  </tbody>
+
+  <tfoot class="table-secondary">
+    <tr>
+      <td colspan="3"></td>
+      <td>
+        <a href="#" class="btn btn-sm btn-primary"><i class="bi bi-plus-lg"></i></a>
+      </td>
+    </tr>
+  </tfoot>
+</table>
